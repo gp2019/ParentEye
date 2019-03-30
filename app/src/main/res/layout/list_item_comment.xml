@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/imageUserComment"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        app:civ_border_width="0.2dp"
+        app:civ_border_color="#FF000000"
+        android:layout_marginBottom="15dp"
+        android:scaleType="centerCrop"/>
+
+    <RelativeLayout
+        android:id="@+id/content_of_comment"
+        android:layout_weight="1"
+        android:layout_toEndOf="@id/profile_post"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:padding="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/name_of_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ibrahim Ahmed"
+            android:textColor="@color/black"
+            android:gravity="left"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/textViewComment"
+            android:layout_below="@id/name_of_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:textColor="#555"
+            android:fontFamily="@string/common_google_play_services_enable_text"
+            android:textSize="18sp"/>
+
+        <LinearLayout
+            android:id="@+id/contentOfImageViewComment"
+            android:layout_below="@id/textViewComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp">
+
+            <ImageView
+                android:id="@+id/imageViewComment"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:layout_marginBottom="10dp"
+                android:adjustViewBounds="true"
+                android:cropToPadding="true"
+                android:padding="10dp"
+                android:paddingBottom="16dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/add_friend" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_below="@id/contentOfImageViewComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/TimeOfComment"
+                android:layout_alignParentStart="true"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:text="1 h"/>
+
+            <TextView
+                android:id="@+id/countLikeOfComment"
+                android:layout_toEndOf="@id/TimeOfComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:layout_marginEnd="10dp" />
+
+            <TextView
+                android:id="@+id/replyOfComment"
+                android:textColor="@color/black"
+                android:layout_toEndOf="@id/countLikeOfComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reply"/>
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btLike"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
+        android:gravity="center" />
+
+</LinearLayout>
