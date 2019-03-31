@@ -335,7 +335,7 @@ public class AccountActivity extends AppCompatActivity {
     private void GetPagePosts(){
         final String PageId="-La0sXFPy2dXzxX-Xws6";
         final String PageName="aya page";
-       final PagePostAdapter pageAdapter=new PagePostAdapter(AccountActivity.this,Group_posts);
+       final PagePostAdapter pageAdapter=new PagePostAdapter(AccountActivity.this,Page_posts);
         Post_listview.setAdapter(pageAdapter);
         postref.addValueEventListener(new ValueEventListener() {
             @Override
