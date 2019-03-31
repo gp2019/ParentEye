@@ -9,7 +9,7 @@ import java.util.Date;
 public class custom_posts_returned {
     private String post_owner_name;
     private String post_text;
-    private String profile_image;
+    private String post_owner_ID;
     private String post_image;
     private Date post_date;
 
@@ -23,9 +23,9 @@ public class custom_posts_returned {
 
 
 
-    public custom_posts_returned(String post_text, String profile_image, String post_image, Date post_date, String post_owner_name) {
+    public custom_posts_returned(String post_text, String post_owner_ID, String post_image, Date post_date, String post_owner_name) {
         this.post_text = post_text;
-        this.profile_image = profile_image;
+        this.post_owner_ID = post_owner_ID;
         this.post_image = post_image;
         this.post_date = post_date;
         this.post_owner_name=post_owner_name;
@@ -43,8 +43,8 @@ public class custom_posts_returned {
         this.post_text = post_text;
     }
 
-    public void setProfile_image(String profile_image) {
-        this.profile_image = profile_image;
+    public void setpost_owner_ID(String profile_image) {
+        this.post_owner_ID = profile_image;
     }
 
     public void setPost_image(String post_image) {
@@ -59,8 +59,8 @@ public class custom_posts_returned {
         return post_text;
     }
 
-    public String getProfile_image() {
-        return profile_image;
+    public String getpost_owner_ID() {
+        return post_owner_ID;
     }
 
     public String getPost_image() {
@@ -70,8 +70,8 @@ public class custom_posts_returned {
     public Date getPost_date() {
         return post_date;
     }
-    public boolean hasprofieimage(){
-        if(profile_image!=null){
+    public boolean haspost_owner_ID(){
+        if(post_owner_ID!=null){
             return true;
         }
         else{

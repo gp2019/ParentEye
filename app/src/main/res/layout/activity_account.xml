@@ -7,6 +7,10 @@
     android:background="@drawable/background_gradient"
     android:orientation="vertical"
     tools:context=".AccountActivity">
+    <ListView
+        android:id="@+id/accountPost_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></ListView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -117,10 +121,6 @@
 
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/accountPost_listview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
 
 
 

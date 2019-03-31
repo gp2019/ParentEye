@@ -26,7 +26,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
-public class PostAdapter extends ArrayAdapter<custom_posts_returned> {
+public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned> {
     int count=0;
     final long ONE_MEGABYTE = 1024 * 1024;
     private StorageReference userStorageRef= FirebaseStorage.getInstance().getReference("UserImages/");
@@ -34,7 +34,7 @@ public class PostAdapter extends ArrayAdapter<custom_posts_returned> {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference userRef = database.getReference("Users");
     ArrayList<custom_posts_returned> post_returnedd;
-    public PostAdapter(Activity context, ArrayList<custom_posts_returned> post_returned){
+    public ProfilePostAdapter(Activity context, ArrayList<custom_posts_returned> post_returned){
 
         super(context,0,post_returned);
         post_returnedd=post_returned;
@@ -83,11 +83,10 @@ public class PostAdapter extends ArrayAdapter<custom_posts_returned> {
         final ImageView profileimage=(ImageView) postlist.findViewById(R.id.profile_post);
         final  ImageView postimage=(ImageView) postlist.findViewById(R.id.post_image);
 
-        if(post.hasprofieimage()==true) {
             userRef.addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                    if(TextUtils.equals(dataSnapshot.getKey(),post.getProfile_image())){
+                    if(TextUtils.equals(dataSnapshot.getKey(),post.getpost_owner_ID())){
                         Users user=dataSnapshot.getValue(Users.class);
                         if(user.getProfile_pic_id()!=null){
                             userStorageRef.child(user.getProfile_pic_id()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
@@ -129,11 +128,7 @@ public class PostAdapter extends ArrayAdapter<custom_posts_returned> {
 
 
 
-        }
-        else{
-            profileimage.setImageResource(R.drawable.defaultprofile);
 
-        }
         if(post.haspostimage()==true){
             postimage.setVisibility(View.VISIBLE);
             postStorageRef.child(post.getPost_image()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {

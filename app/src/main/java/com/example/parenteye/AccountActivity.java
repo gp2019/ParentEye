@@ -86,43 +86,6 @@ public class AccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
              final String userId="memzoiT3c2TbPsACnDMNcl7jnrs2";
-             /*   ValueEventListener listener = new ValueEventListener(){
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (DataSnapshot friendtSnapshot: dataSnapshot.getChildren()) {
-                            FriendRequest fr=friendtSnapshot.getValue(FriendRequest.class);
-                            if(TextUtils.equals(fr.getSenderid(),mAuth.getCurrentUser().getUid())&&TextUtils.equals(fr.getRecieverid(),userId)){
-                                FriendRequestRef.child(friendtSnapshot.getKey()).removeValue();
-                                Addfriend.setText("Add Friend");
-                                IsExist=true;
-
-                            }
-
-                        }
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                };
-                FriendRequestRef.addValueEventListener(listener);
-                FriendRequestRef.removeEventListener(listener);
-
-
-                if(IsExist!=true){
-                    FriendRequest friend=new FriendRequest();
-                    friend.setSenderid(mAuth.getCurrentUser().getUid());
-                    friend.setRecieverid("memzoiT3c2TbPsACnDMNcl7jnrs2");
-                    friend.setState(1);
-                    FriendRequestRef.push().setValue(friend);
-                    Addfriend.setText("cancel request");
-                    FriendRequestRef.removeEventListener(listener);
-                }
-
-                  */
-
                 if (IsExist == true) {
                     FriendRequestRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -164,15 +127,11 @@ public class AccountActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        GetUserProfiledata();
-        // getGroupInfo();
-        //getPageInfo();
+       // GetUserProfiledata();
+        GetPagePosts();
 
         super.onStart();
     }
-
-
-
 
     private void GetUserProfiledata(){
         final String userID="memzoiT3c2TbPsACnDMNcl7jnrs2";
@@ -314,16 +273,15 @@ public class AccountActivity extends AppCompatActivity {
 
 
         //GetProfilePosts();
-        New_Posts();
+        GetProfilePosts();
 
     }
 
 
-
-    private void New_Posts()
+    private void GetProfilePosts()
     {
 
-        final PostAdapter postadapterr=new PostAdapter(AccountActivity.this,Profile_posts);
+        final ProfilePostAdapter postadapterr=new ProfilePostAdapter(AccountActivity.this,Profile_posts);
         Post_listview.setAdapter(postadapterr);
 
 
@@ -338,7 +296,7 @@ public class AccountActivity extends AppCompatActivity {
                     if(TextUtils.equals(newpost.getUserId(),profileId)&&TextUtils.equals(newpost.getPlaceTypeId(),"1")){
                         custom_posts_returned custom =new custom_posts_returned();
                         custom.setPost_owner_name(username);
-                        custom.setProfile_image(newpost.getUserId());
+                        custom.setpost_owner_ID(newpost.getUserId());
                         if(newpost.getPostcontent()!=null){
                             custom.setPost_text(newpost.getPostcontent());
                         }
@@ -374,7 +332,45 @@ public class AccountActivity extends AppCompatActivity {
 
     }
 
+    private void GetPagePosts(){
+        final String PageId="-La0sXFPy2dXzxX-Xws6";
+        final String PageName="aya page";
+       final PagePostAdapter pageAdapter=new PagePostAdapter(AccountActivity.this,Group_posts);
+        Post_listview.setAdapter(pageAdapter);
+        postref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Page_posts.clear();
+                for(DataSnapshot pagepostsnapshot:dataSnapshot.getChildren()){
+                    Posts pagepost=pagepostsnapshot.getValue(Posts.class);
+  if(TextUtils.equals(pagepost.getPlaceTypeId(),"2")&&TextUtils.equals(pagepost.getPlaceId(),PageId)){
+           custom_posts_returned custom=new custom_posts_returned();
+           custom.setPost_owner_name(PageName);
+           custom.setpost_owner_ID(pagepost.getPlaceId());
+           if(pagepost.getPostcontent()!=null){
+               custom.setPost_text(pagepost.getPostcontent());
+              // System.out.println("content "+ custom.getPost_text());
+           }
+           if(pagepost.isHasimage()==true){
+               custom.setPost_image(pagepost.getImageId());
+           }
+                    Page_posts.add(custom);
+                   //   System.out.println("added "+ custom.getpost_owner_ID());
+             }
+                }
 
+                Collections.reverse(Page_posts);
+                pageAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
 
 
 
