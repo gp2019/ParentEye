@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     final long ONE_MEGABYTE = 1024 * 1024;
     private Button makePage;
     private FloatingActionButton floatingActionButton;
+    private Button goprofile;
 
 
     @Override
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference("UserImages/");
         mStorageRef2 = FirebaseStorage.getInstance().getReference("PostsImages/");
+        goprofile=(Button)findViewById(R.id.goprofile);
 
         floatingActionButton = findViewById(R.id.floatingButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +103,22 @@ public class MainActivity extends AppCompatActivity {
          //finish();
             }
         });
+
+        goprofile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GoAccount();
+            }
+        });
+
+
+
+
+
+
+
+
+
 
 /*
         Friends friend=new Friends();
@@ -269,6 +287,11 @@ c.setPost_text("post1 text");
         startActivity(main_login);
         finish();
 
+    }
+    private void GoAccount(){
+        Intent goAccount=new Intent(MainActivity.this,AccountActivity.class);
+        startActivity(goAccount);
+        finish();
     }
     private void check_complete_profile(){
 

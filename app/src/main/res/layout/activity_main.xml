@@ -39,6 +39,11 @@
             android:layout_height="wrap_content"
             android:id="@+id/ShowComments"
             android:text="Show comments"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/goprofile"
+            android:text="Go profile"/>
 
         <ListView
             android:id="@+id/Post_listview"
