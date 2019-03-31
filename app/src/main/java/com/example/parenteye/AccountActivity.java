@@ -251,7 +251,7 @@ public class AccountActivity extends AppCompatActivity {
                     for(String friend:friends){
                         if(TextUtils.equals(friend,mAuth.getCurrentUser().getUid())){
                             Addfriend.setText("Friends");
-                           // Addfriend.setEnabled(false);
+                            Addfriend.setEnabled(false);
                         }
                     }
 
@@ -280,12 +280,13 @@ public class AccountActivity extends AppCompatActivity {
 
             }
         });
-      /*  FriendRequestRef.addChildEventListener(new ChildEventListener() {
+        FriendRequestRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 FriendRequest friendRequest=dataSnapshot.getValue(FriendRequest.class);
                 if(TextUtils.equals(friendRequest.getSenderid(),mAuth.getCurrentUser().getUid())&&TextUtils.equals(friendRequest.getRecieverid(),userID)&&friendRequest.getState()==1){
-                    Addfriend.setText("Request sent");
+                    Addfriend.setText("cancel request");
+                    IsExist=true;
                 }
             }
 
@@ -310,7 +311,7 @@ public class AccountActivity extends AppCompatActivity {
             }
         });
 
-      */
+
 
         //GetProfilePosts();
         New_Posts();
