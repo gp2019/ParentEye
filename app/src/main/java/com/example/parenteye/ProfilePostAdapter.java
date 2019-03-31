@@ -60,8 +60,48 @@ public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned> {
 
        final custom_posts_returned post= getItem(position);
         count=count+1;
-        TextView postownername=(TextView) postlist.findViewById(R.id.postowner);
-        postownername.setText(post.getPost_owner_name());
+       final TextView postownername=(TextView) postlist.findViewById(R.id.postowner);
+       // postownername.setText(post.getPost_owner_name());
+
+        userRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if(TextUtils.equals(dataSnapshot.getKey(),post.getPost_owner_name())){
+                    Users user=dataSnapshot.getValue(Users.class);
+                    postownername.setText(user.getUsername());
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
+
+
+
+
+
+
         TextView postDescription=(TextView) postlist.findViewById(R.id.postDescription);
         if(post.getPost_text()!=null){
 

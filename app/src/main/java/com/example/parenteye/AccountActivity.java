@@ -127,8 +127,9 @@ public class AccountActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-       // GetUserProfiledata();
-        GetPagePosts();
+      GetUserProfiledata();
+       // GetPagePosts();
+       // GetGroupPosts();
 
         super.onStart();
     }
@@ -295,7 +296,7 @@ public class AccountActivity extends AppCompatActivity {
                     Posts newpost=postSnapshot.getValue(Posts.class);
                     if(TextUtils.equals(newpost.getUserId(),profileId)&&TextUtils.equals(newpost.getPlaceTypeId(),"1")){
                         custom_posts_returned custom =new custom_posts_returned();
-                        custom.setPost_owner_name(username);
+                        custom.setPost_owner_name(newpost.getUserId());
                         custom.setpost_owner_ID(newpost.getUserId());
                         if(newpost.getPostcontent()!=null){
                             custom.setPost_text(newpost.getPostcontent());
@@ -372,6 +373,42 @@ public class AccountActivity extends AppCompatActivity {
 
     }
 
+    private void GetGroupPosts(){
+        final String GropuId="-LaD606SB3PE0sWfy6Pc";
+        final String GroupName="group1 test";
+ final ProfilePostAdapter groupAdapter=new ProfilePostAdapter(AccountActivity.this,Group_posts);
+        Post_listview.setAdapter(groupAdapter);
+        postref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Group_posts.clear();
+           for(DataSnapshot grouppostsnapshot:dataSnapshot.getChildren()){
+            Posts post=grouppostsnapshot.getValue(Posts.class);
+   if(TextUtils.equals(post.getPlaceTypeId(),"3")&&TextUtils.equals(post.getPlaceId(),GropuId)){
+         custom_posts_returned custom=new custom_posts_returned();
+           custom.setPost_owner_name(post.getUserId());
+         custom.setpost_owner_ID(post.getUserId());
+       if(post.getPostcontent()!=null){
+           custom.setPost_text(post.getPostcontent());
+       }
+       if(post.isHasimage()==true){
+           custom.setPost_image(post.getImageId());
+       }
+       Group_posts.add(custom);
+  }
+           }
+           Collections.reverse(Group_posts);
+                groupAdapter.notifyDataSetInvalidated();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
 
 
 
