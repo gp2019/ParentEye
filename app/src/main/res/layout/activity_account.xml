@@ -97,14 +97,14 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="35dp"/>
         <TextView
-            android:id="@+id/userdate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Date of birth "
-            android:textColor="#000"
-            android:textSize="18dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="8dp"/>
+        android:id="@+id/userdate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Date of birth "
+        android:textColor="#000"
+        android:textSize="18dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="8dp"/>
         <TextView
             android:id="@+id/userGender"
             android:layout_width="match_parent"

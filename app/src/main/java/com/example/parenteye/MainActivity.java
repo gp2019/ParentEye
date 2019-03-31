@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private Button makePage;
     private FloatingActionButton floatingActionButton;
     private Button goprofile;
+    private Button makeGroup;
 
 
     @Override
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
         makePage=(Button) findViewById(R.id.makepage);
         logout=(Button) findViewById(R.id.logout);
+        makeGroup=(Button) findViewById(R.id.makeGroup);
         logout.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
@@ -101,6 +103,14 @@ public class MainActivity extends AppCompatActivity {
          Intent makepage=new Intent(MainActivity.this,AddPageActivity.class);
          startActivity(makepage);
          //finish();
+            }
+        });
+      makeGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent makeGroup=new Intent(MainActivity.this,MakeGroupActivity.class);
+                startActivity(makeGroup);
+                //finish();
             }
         });
 
