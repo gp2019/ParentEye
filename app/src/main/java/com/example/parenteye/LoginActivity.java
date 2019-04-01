@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String email=login_email.getText().toString();
-                String password=login_password.getText().toString();
+                final String password=login_password.getText().toString();
                 if(!TextUtils.isEmpty(email)&&!TextUtils.isEmpty(password)){
                     final ProgressDialog progressdialogue=new ProgressDialog(LoginActivity.this);
                     progressdialogue.setTitle("loading...");

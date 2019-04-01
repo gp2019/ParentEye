@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private Button goprofile;
     private Button makeGroup;
     private Button addchild;
+    private Button mychildren;
 
 
     @Override
@@ -130,8 +131,15 @@ public class MainActivity extends AppCompatActivity {
                 // finish();
             }
         });
-
-
+        mychildren=(Button) findViewById(R.id.mychildren);
+        mychildren.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mychildren=new Intent(MainActivity.this,MyChildrenActivity.class);
+                startActivity(mychildren);
+                finish();
+            }
+        });
 
 
 

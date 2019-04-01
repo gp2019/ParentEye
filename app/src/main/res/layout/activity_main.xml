@@ -54,6 +54,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="add new child" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/mychildren"
+            android:text="View MyChildren"/>
 
 
         <ListView
