@@ -7,6 +7,8 @@ import java.util.Date;
 public class Users {
     private String userId;
     private String Username;
+    private String userEmail;
+    private String userPassword;
     private Date dateofbirth;
     private String location;
     private boolean gender;
@@ -16,20 +18,39 @@ public class Users {
     private String cover_pic_id;
 
 
-    public Users(String username,Date dateofbirth, String location, boolean gender, String roleId, boolean activeStatus, String profile_pic_id) {
-
+    public Users(String userId, String username, String userEmail, String userPassword, Date dateofbirth, String location, boolean gender, String roleId, boolean activeStatus, String profile_pic_id, String cover_pic_id) {
+        this.userId = userId;
         Username = username;
-      //  this.dateofbirth = dateofbirth;
+        this.userEmail = userEmail;
+        this.userPassword = userPassword;
+        this.dateofbirth = dateofbirth;
         this.location = location;
         this.gender = gender;
         RoleId = roleId;
         ActiveStatus = activeStatus;
         this.profile_pic_id = profile_pic_id;
-        this.dateofbirth=dateofbirth;
+        this.cover_pic_id = cover_pic_id;
     }
-  public Users(){
+
+    public Users(){
 
   }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public String getUserPassword() {
+        return userPassword;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
+    }
 
     public void setCover_pic_id(String cover_pic_id) {
         this.cover_pic_id = cover_pic_id;
