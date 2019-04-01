@@ -49,6 +49,11 @@
             android:layout_height="wrap_content"
             android:id="@+id/makeGroup"
             android:text="Create Group"/>
+        <Button
+            android:id="@+id/addchild"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="add new child" />
 
 
         <ListView

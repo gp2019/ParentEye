@@ -74,6 +74,9 @@ public class UserdataActivity extends AppCompatActivity {
     private TextView logout;
     //private TextView test;          //for test
     private  ProgressDialog progressdialogue;
+    private EditText childemail;
+    private EditText childpassword;
+    private TextView finaltextindesign;
 
 
 
@@ -82,6 +85,15 @@ public class UserdataActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_userdata);
+
+
+
+        childemail=(EditText)findViewById(R.id.childemaildittext);
+        childpassword=(EditText) findViewById(R.id.childpasswodedittext);
+        childemail.setVisibility(View.GONE);
+        childpassword.setVisibility(View.GONE);
+        finaltextindesign=(TextView) findViewById(R.id.finaltext);
+        finaltextindesign.setVisibility(View.VISIBLE);
 
         mAuth=FirebaseAuth.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
@@ -135,37 +147,37 @@ public class UserdataActivity extends AppCompatActivity {
         datepicker=new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                  month=month+1;
-                   choosendate=dayOfMonth +"/" + month +"/" +year;
-                    date.setText(choosendate);
-                    filldate=1;
-                    newdate=new Date(year,month,dayOfMonth);
-                   useryear=year;
+                month=month+1;
+                choosendate=dayOfMonth +"/" + month +"/" +year;
+                date.setText(choosendate);
+                filldate=1;
+                newdate=new Date(year,month,dayOfMonth);
+                useryear=year;
 
 
-                }
+            }
 
 
         };
 
-       submit.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               showDialogue();
-               String name=username.getText().toString();
-               String useraddresse=addresse.getText().toString();
-               if(!TextUtils.isEmpty(name)&&!TextUtils.isEmpty(useraddresse)&&filldate!=0){
-                   if(currentyear-useryear>1){
-                       int genderId=radio_group_gender.getCheckedRadioButtonId();
-                       choosenRadiobutton= (RadioButton)findViewById(genderId);
-                       if(TextUtils.equals(choosenRadiobutton.getText().toString(),"Male")){
-                           isMale=true;
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialogue();
+                String name=username.getText().toString();
+                String useraddresse=addresse.getText().toString();
+                if(!TextUtils.isEmpty(name)&&!TextUtils.isEmpty(useraddresse)&&filldate!=0){
+                    if(currentyear-useryear>20){
+                        int genderId=radio_group_gender.getCheckedRadioButtonId();
+                        choosenRadiobutton= (RadioButton)findViewById(genderId);
+                        if(TextUtils.equals(choosenRadiobutton.getText().toString(),"Male")){
+                            isMale=true;
 
-                       }
-                       else{
-                           isMale=false;
+                        }
+                        else{
+                            isMale=false;
 
-                       }
+                        }
 
                  /*  SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yy");
                  try {
@@ -175,44 +187,48 @@ public class UserdataActivity extends AppCompatActivity {
                        e.printStackTrace();
                    }
                    */
-                       upload_profile_pic();
+                        upload_profile_pic();
 
 
-     Users newuser=new Users(name,newdate,useraddresse,isMale,"1",true,imagekey);
-                       myRef.child(mAuth.getCurrentUser().getUid()).setValue(newuser).addOnCompleteListener(new OnCompleteListener<Void>() {
-                           @Override
-                           public void onComplete(@NonNull Task<Void> task) {
-                               if(task.isSuccessful()){
-                                   dismissProgressDialog();
-                                   Toast.makeText(UserdataActivity.this,"Profile Information completed Successfully",Toast.LENGTH_LONG).show();
-                                   Go_to_main();
-                               }
-                               else{
-                                   dismissProgressDialog();
-                                   Toast.makeText(UserdataActivity.this,"Error !!!  "+task.getException(),Toast.LENGTH_LONG).show();
+                        Users newuser=new Users(name,newdate,useraddresse,isMale,"1",true,imagekey);
+                        myRef.child(mAuth.getCurrentUser().getUid()).setValue(newuser).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()){
+                                    dismissProgressDialog();
+                                    Toast.makeText(UserdataActivity.this,"Profile Information completed Successfully",Toast.LENGTH_LONG).show();
+                                    Go_to_main();
+                                }
+                                else{
+                                    dismissProgressDialog();
+                                    Toast.makeText(UserdataActivity.this,"Error !!!  "+task.getException(),Toast.LENGTH_LONG).show();
 
-                               }
-                           }
-                       });
-                   }
-                     else{
-                       dismissProgressDialog();
-        Toast.makeText(UserdataActivity.this,"Sorry,your age should not less than 20 years!!",Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+                    }
+                    else{
+                        dismissProgressDialog();
+                        Toast.makeText(UserdataActivity.this,"Sorry,your age should not less than 20 years!!",Toast.LENGTH_LONG).show();
 
-                   }
-               }
+                    }
+                }
 
 
-                 else{
-                   dismissProgressDialog();
-                   Toast.makeText(UserdataActivity.this,"Fill all fields please ,they are all mandatory !!",Toast.LENGTH_LONG).show();
 
-               }
 
-              // String chosen=choosenRadiobutton.getText().toString();
-             //  Toast.makeText(UserdataActivity.this,choosenRadiobutton.getText(),Toast.LENGTH_LONG).show();
-           }
-       });
+
+
+                else{
+                    dismissProgressDialog();
+                    Toast.makeText(UserdataActivity.this,"Fill all fields please ,they are all mandatory !!",Toast.LENGTH_LONG).show();
+
+                }
+
+                // String chosen=choosenRadiobutton.getText().toString();
+                //  Toast.makeText(UserdataActivity.this,choosenRadiobutton.getText(),Toast.LENGTH_LONG).show();
+            }
+        });
 
 
         circleimage.setOnClickListener(new View.OnClickListener() {
@@ -251,9 +267,9 @@ public class UserdataActivity extends AppCompatActivity {
 
     private void upload_profile_pic(){
         if(filepath!=null){
-           // final ProgressDialog progressdialogue=new ProgressDialog(this);
-          //  progressdialogue.setTitle("loading...");
-          //  progressdialogue.show();
+            // final ProgressDialog progressdialogue=new ProgressDialog(this);
+            //  progressdialogue.setTitle("loading...");
+            //  progressdialogue.show();
 
             imagekey = UUID.randomUUID().toString();
             StorageReference ref = mStorageRef.child("UserImages/"+imagekey);
@@ -262,18 +278,18 @@ public class UserdataActivity extends AppCompatActivity {
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                           // progressdialogue.dismiss();
+                            // progressdialogue.dismiss();
                             dismissProgressDialog();
                         }
                     })
-            .addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    //progressdialogue.dismiss();
-                    dismissProgressDialog();
-            Toast.makeText(UserdataActivity.this,"Profile Photo uploading error",Toast.LENGTH_LONG).show();
-                }
-            });
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            //progressdialogue.dismiss();
+                            dismissProgressDialog();
+                            Toast.makeText(UserdataActivity.this,"Profile Photo uploading error",Toast.LENGTH_LONG).show();
+                        }
+                    });
         }
     }
     private void Go_to_main(){

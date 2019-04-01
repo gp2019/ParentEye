@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton floatingActionButton;
     private Button goprofile;
     private Button makeGroup;
+    private Button addchild;
 
 
     @Override
@@ -120,7 +121,15 @@ public class MainActivity extends AppCompatActivity {
                 GoAccount();
             }
         });
-
+        addchild=(Button) findViewById(R.id.addchild);
+        addchild.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addchild=new Intent(MainActivity.this,AddChildActivity.class);
+                startActivity(addchild);
+                // finish();
+            }
+        });
 
 
 
