@@ -107,15 +107,6 @@ public class Create_Post extends Activity implements View.OnClickListener {
             }
         });
         }
-        else {
-           mStorageRef2.child("1ec33d61-8a29-433a-9d97-84cea5da78ba").getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-               @Override
-               public void onSuccess(byte[] bytes) {
-                   final Bitmap bm = BitmapFactory.decodeByteArray( bytes, 0, bytes.length );
-                  profileImage.setImageBitmap( bm );
-               }
-           });
-        }
 
          dbRef.child(userId).addValueEventListener(new ValueEventListener() {
             @Override
@@ -215,7 +206,7 @@ public class Create_Post extends Activity implements View.OnClickListener {
         else {
             showDialogue();
             boolean hasImage=false;
-            if (imageViewPost!=null)
+            if (imageViewPost.getDrawable()!=null)
             {
                 upload_post_pic();
                 hasImage= true;
@@ -302,7 +293,7 @@ public class Create_Post extends Activity implements View.OnClickListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (writePost.getText().toString().equals("")&&imageViewPost.getDrawable()==null)
+        if (writePost.getText().toString().equals(""))
         {
             writePost.setHint("say something about this photo...");
         }

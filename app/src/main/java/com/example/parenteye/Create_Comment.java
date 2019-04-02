@@ -2,6 +2,9 @@ package com.example.parenteye;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -9,42 +12,59 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.UUID;
+
+import static android.support.constraint.Constraints.TAG;
 
 public class Create_Comment extends Activity {
     private Uri filepath;
     ProgressBar progressBar;
-    DatabaseReference dbRef;
+    DatabaseReference dbRef,dbRef2,dbRef3;
     ArrayList<PostComments> comments_of_post=new ArrayList<>(  );
     PostComments postComments;
     private RecyclerView recyclerView;
     private ArrayAdapterForComment mAdapter;
     String postId=null;
+    private static String POPUP_CONSTANT = "mPopup";
+    private static String POPUP_FORCE_SHOW_ICON = "setForceShowIcon";
     ImageView noInernet;
-   private RelativeLayout cameraRelative,bottom_WriteComment;
-   private EditText writeComment;
-   private  ImageView btCamare,Image_of_gallery;
-    private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
+    private String imagekey;
+    private RelativeLayout cameraRelative,bottom_WriteComment;
+    private EditText writeComment;
+    private  ImageView btCamare,Image_of_gallery,cancelImage;
+    private int SELECT_FILE = 1;
+    private int CHECK_IMAGE=0;
+    private StorageReference mStorageRef;
+    private ProgressDialog progressdialogue;
+    private int position;
     final long ONE_MEGABYTE = 1024 * 1024;
+    private String CommentId,ContentComment;
+
     @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,55 +78,58 @@ public class Create_Comment extends Activity {
         progressBar = findViewById( R.id.progressBar );
         progressBar.setVisibility( View.GONE );
         writeComment=findViewById( R.id.writeComment );
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+        registerForContextMenu(recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(Create_Comment.this));
+        dbRef2= FirebaseDatabase.getInstance().getReference().child("CommentsPost");
+        dbRef3= FirebaseDatabase.getInstance().getReference().child("ReactionComment");
 
-        writeComment.addTextChangedListener( new TextWatcher() {
+
+
+        writeComment.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable){
-
-   if (writeComment.getText().toString().trim().length()!=0){
-    writeComment.setOnTouchListener(new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            if(event.getAction() == MotionEvent.ACTION_UP) {
-                if(event.getRawX() >= writeComment.getRight()) {
-                    String cID= dbRef.push().getKey();
-                    if (writeComment.getText().toString().trim().length()!=0){
-                    postComments=new PostComments(cID,writeComment.getText().toString(),"memzoiT3c2TbPsACnDMNcl7jnrs2","LaSrDr3I6cDE93j1hU1",false,false,null,new getCurrentTime().getDateTime(),0,false);
-                    dbRef.child( cID ).setValue( postComments );
-                    writeComment.setText( "" );
-                    return true;
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_UP) {
+                    if(event.getRawX() >= writeComment.getRight()) {
+                        String cID= dbRef.push().getKey();
+                        if (!(writeComment.getText().toString().isEmpty())||CHECK_IMAGE==1){
+                            boolean hasImage=false;
+                            if (CHECK_IMAGE==1)
+                            {
+                                cameraRelative.setVisibility(View.GONE);
+                                upload_post_pic();
+                                hasImage= true;
+                                CHECK_IMAGE=0;
+                            }
+                            postComments=new PostComments(cID,writeComment.getText().toString(),"djm6VqH1f1QlIW8FeEMGAjsRaVf2","LbPiuLzPqypsRDskYNg",false,hasImage,imagekey,new getCurrentTime().getDateTime(),0,false);
+                            dbRef.child( cID ).setValue( postComments );
+                            writeComment.setText( "" );
+                            return true;
+                        }
                     }
                 }
+                return false;
             }
-            return false;
-        }
-    });
-}
-            }
-        } );
+        });
 
         btCamare= findViewById( R.id.btCamera );
         btCamare.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                bottom_WriteComment.setVisibility( View.GONE );
-                cameraRelative.setVisibility( View.VISIBLE );
                 galleryIntent();
             }
         } );
 
+        cancelImage = findViewById(R.id.cancelImage);
+        cancelImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cameraRelative.setVisibility(View.GONE);
+                CHECK_IMAGE=0;
+            }
+        });
 
 //        noInernet = findViewById( R.id.noInternet );
 //        noInernet.setVisibility( View.GONE);
@@ -128,6 +151,118 @@ public class Create_Comment extends Activity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        CommentId = getIntent().getStringExtra("CommentId");
+        ContentComment = getIntent().getStringExtra("CommentContent");
+        if (!(CommentId==null&&ContentComment==null)) {
+            dbRef2.child(CommentId).child("commentcontent").setValue(ContentComment);
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+      //  int position = -1;
+        try {
+            position = ((ArrayAdapterForComment)recyclerView.getAdapter()).getPosition();
+        } catch (Exception e) {
+            Log.d(TAG, e.getLocalizedMessage(), e);
+            return super.onContextItemSelected(item);
+        }
+        {
+        switch (item.getItemId()) {
+            case R.id.Delete:
+                showAlertDialog();
+
+
+                break;
+            case R.id.Edit:
+                UpdateComment();
+                break;
+        }
+        }
+        return super.onContextItemSelected(item);
+    }
+
+    private  void DeletComment() {
+        dbRef2= FirebaseDatabase.getInstance().getReference().child("CommentsPost");
+        dbRef3= FirebaseDatabase.getInstance().getReference().child("ReactionComment");
+        String keyCoPost= comments_of_post.get(position).getCommentID();
+        String keyRecId= position +comments_of_post.get(position ).getPostId()+comments_of_post.get( position ).getUserId();
+
+
+
+        if (comments_of_post.get( position ).isDidLike()==true){
+            dbRef3.child( keyRecId ).removeValue();
+            dbRef2.child( keyCoPost ).removeValue();
+        }
+        else {
+            dbRef2.child( keyCoPost ).removeValue();
+        }
+
+        comments_of_post.remove(position);
+        mAdapter.notifyItemRemoved(position);
+        mAdapter.notifyItemRangeChanged(position,comments_of_post.size());
+    }
+
+    private  void UpdateComment() {
+
+        String keyCoPost= comments_of_post.get(position).getCommentID();
+
+        Intent intent = new Intent( Create_Comment.this, Edit_Comment.class );
+        intent.putExtra( "CommentId",keyCoPost );
+        intent.putExtra( "CommentContent",comments_of_post.get(position).getCommentcontent() );
+        intent.putExtra( "CommentUserId",comments_of_post.get(position).getUserId() );
+        startActivity( intent );
+        finish();
+    }
+    private void upload_post_pic(){
+        if(filepath!=null){
+
+            imagekey = UUID.randomUUID().toString();
+            StorageReference ref = mStorageRef.child("CommentImages/"+imagekey);
+            ref.putFile(filepath)
+
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(Create_Comment.this,"Post Photo uploading error",Toast.LENGTH_LONG).show();
+                        }
+                    });
+        }
+    }
+
+    //function of Alert Dialog
+    private void showAlertDialog(){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        builder.setTitle("Delete Comment");
+        builder.setMessage("Are you sure you want to Delete comment ?");
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                DeletComment();
+            }
+        });
+
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+
+        builder.create().show();
+    }
 
     // Gallery Intent
     private void galleryIntent()
@@ -155,7 +290,9 @@ public class Create_Comment extends Activity {
 
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == SELECT_FILE)
-                onSelectFromGalleryResult(data);
+                CHECK_IMAGE=requestCode;
+            cameraRelative.setVisibility( View.VISIBLE );
+            onSelectFromGalleryResult(data);
         }
     }
 
@@ -176,6 +313,7 @@ public class Create_Comment extends Activity {
         Image_of_gallery.setImageBitmap( bm );
 
     }
+
 
     class getComment extends AsyncTask<Void, Void, ArrayList<PostComments>> {
 
@@ -202,9 +340,6 @@ public class Create_Comment extends Activity {
                         PostComments postComments = commentSnapshot.getValue( PostComments.class );
                         comments_of_post.add( postComments );
                     }
-                    mAdapter = new ArrayAdapterForComment( Create_Comment.this, comments_of_post );
-                    // RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-                    //recyclerView.setLayoutManager(mLayoutManager);
 
                     if (comments_of_post.size()==0) {
                         progressBar.setVisibility( View.GONE );
@@ -212,9 +347,10 @@ public class Create_Comment extends Activity {
                     else {
                         progressBar.setVisibility( View.GONE );
                         if (recyclerView.getAdapter() == null) {
-                            recyclerView.setLayoutManager( new LinearLayoutManager( getApplicationContext(), LinearLayoutManager.VERTICAL, false ) );
-                            recyclerView.setItemAnimator( new DefaultItemAnimator() );
-                            recyclerView.setAdapter( mAdapter );
+                            mAdapter = new ArrayAdapterForComment( Create_Comment.this, comments_of_post );
+                            recyclerView.setAdapter(mAdapter);
+
+
                         } else {
                             recyclerView.getAdapter().notifyDataSetChanged();
                         }

@@ -1,6 +1,7 @@
 package com.example.parenteye;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
@@ -8,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -32,23 +32,22 @@ public class ArrayAdapterForComment extends RecyclerView.Adapter {
 
 
     private DatabaseReference dbRef,dbRef2,dbRef3;
-    private StorageReference mStorageRef;
+    private StorageReference mStorageRef,mStorageRef2;
     CreateTime calTime ;
     final long ONE_MEGABYTE = 1024 * 1024;
     public ArrayList<PostComments> CommentArrayList;
     public Context contextAdapter;
     Users users = new Users();
-    PostComments postComments = new PostComments(  );
-    private int currPosition;
+    private int position;
+
 
     public ArrayAdapterForComment(Context context, ArrayList<PostComments> comments) {
         this.contextAdapter = context;
         this.CommentArrayList = comments;
     }
 
-    public ArrayAdapterForComment() {
 
-    }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
 
@@ -67,57 +66,28 @@ public class ArrayAdapterForComment extends RecyclerView.Adapter {
             imageViewUser=itemView.findViewById( R.id.imageUserComment );
             textViewUserName=itemView.findViewById( R.id.name_of_user );
 
-            itemView.setOnCreateContextMenuListener(this); //REGISTER ONCREATE MENU LISTENER
+            itemView.setOnCreateContextMenuListener(this);
         }
+
+
+
 
         @Override
-        public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
-            MenuItem Edit = menu.add( Menu.NONE, 1, 1, "Edit");
-            MenuItem Delete = menu.add(Menu.NONE, 2, 2, "Delete");
-            Edit.setOnMenuItemClickListener(onEditMenu);
-            Delete.setOnMenuItemClickListener(onEditMenu);
+        public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+                //menuInfo is null
+                contextMenu.add(Menu.NONE, R.id.Edit,
+                        Menu.NONE, "Edit");
+                contextMenu.add(Menu.NONE, R.id.Delete,
+                        Menu.NONE, "Delete");
         }
-
-        private  MenuItem.OnMenuItemClickListener onEditMenu = new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-
-                switch (item.getItemId()) {
-                    case 1:
-
-                        break;
-
-                    case 2:
-                        DeletComment();
-                        break;
-                }
-                return true;
-            }
-        };
-
-        private  void DeletComment() {
-            dbRef2= FirebaseDatabase.getInstance().getReference().child("CommentsPost");
-            dbRef3= FirebaseDatabase.getInstance().getReference().child("ReactionComment");
-            String keyCoPost= CommentArrayList.get(currPosition).getCommentID();
-            String keyRecId= currPosition +CommentArrayList.get(currPosition ).getPostId()+CommentArrayList.get( currPosition ).getUserId();
+    }
 
 
 
-            if (CommentArrayList.get( getAdapterPosition() ).isDidLike()==true){
-                dbRef3.child( keyRecId ).removeValue();
-                dbRef2.child( keyCoPost ).removeValue();
-            }
-            else {
-                dbRef2.child( keyCoPost ).removeValue();
-            }
-
-            CommentArrayList.remove( currPosition );
-            notifyItemRemoved(currPosition);
-            notifyItemRangeChanged(currPosition,CommentArrayList.size());
-
-        }
-
-
+    @Override
+    public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
+        holder.itemView.setOnLongClickListener(null);
+        super.onViewRecycled(holder);
     }
 
     @NonNull
@@ -130,11 +100,11 @@ public class ArrayAdapterForComment extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
-         currPosition=position;
         dbRef= FirebaseDatabase.getInstance().getReference().child("Users");
         dbRef2= FirebaseDatabase.getInstance().getReference().child("CommentsPost");
         dbRef3= FirebaseDatabase.getInstance().getReference().child("ReactionComment");
         mStorageRef = FirebaseStorage.getInstance().getReference("UserImages/");
+        mStorageRef2 = FirebaseStorage.getInstance().getReference("CommentImages/");
 
         if (users.getProfile_pic_id()!=null){
             mStorageRef.child(users.getProfile_pic_id()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
@@ -145,16 +115,7 @@ public class ArrayAdapterForComment extends RecyclerView.Adapter {
                 }
             });
         }
-        else {
 
-            mStorageRef.child("1ec33d61-8a29-433a-9d97-84cea5da78ba").getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                @Override
-                public void onSuccess(byte[] bytes) {
-                    final Bitmap bm = BitmapFactory.decodeByteArray( bytes, 0, bytes.length );
-                    ((ViewHolder)holder).imageViewUser.setImageBitmap(bm);
-                }
-            });
-        }
 
         dbRef.child(CommentArrayList.get( position ).getUserId()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -174,13 +135,20 @@ public class ArrayAdapterForComment extends RecyclerView.Adapter {
             }
         });
 
-        if (CommentArrayList.get( position ).getImageId() == null) {
+        if (CommentArrayList.get( position ).isHasimage() == false) {
             ((ViewHolder) holder).imageViewComment.setVisibility( View.GONE );
         } else {
-            //  ((ViewHolder) holder).imageViewComment.setImageBitmap( CommentArrayList.get( position ).getImageId() );
+            mStorageRef2.child(CommentArrayList.get(position).getImageId()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                @Override
+                public void onSuccess(byte[] bytes) {
+                    final Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    ((ViewHolder) holder).imageViewComment.setImageBitmap(bm);
+                }
+            });
         }
 
-        if (CommentArrayList.get( position ).getCommentcontent() == null) {
+
+        if (CommentArrayList.get( position ).getCommentcontent().equals("") ) {
             ((ViewHolder) holder).textViewComment.setVisibility( View.GONE );
         } else {
             ((ViewHolder) holder).textViewComment.setText( CommentArrayList.get( position ).getCommentcontent() );
@@ -233,9 +201,37 @@ public class ArrayAdapterForComment extends RecyclerView.Adapter {
                 }
 
 
+            }
+        } );
+
+        ((ViewHolder) holder).imageViewComment.setOnClickListener( new View.OnClickListener() {
+            public void onClick(View v) {
+
+                Intent intent = new Intent( contextAdapter, ViewImage.class );
+                intent.putExtra( "image", CommentArrayList.get(position).getImageId() );
+                intent.putExtra("userName",users.getUsername());
+                String timePublish=CommentArrayList.get( position ).getCommentDate();
+
+                try {
+                    calTime =new CreateTime(timePublish);
+                    calTime.sdf();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                intent.putExtra("time",calTime.calculateTime());
+                contextAdapter.startActivity( intent );
 
             }
         } );
+
+
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                setPosition(holder.getPosition());
+                return false;
+            }
+        });
 
      /*   ((ViewHolder) holder).itemView.setOnLongClickListener( new View.OnLongClickListener() {
             @Override
@@ -301,5 +297,29 @@ public class ArrayAdapterForComment extends RecyclerView.Adapter {
         return a;
     }
 
+    @Override
+
+    public long getItemId(int position) {
+
+        return position;
+
+    }
+
+    @Override
+
+    public int getItemViewType(int position) {
+
+        return position;
+
+    }
+
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
 
 }

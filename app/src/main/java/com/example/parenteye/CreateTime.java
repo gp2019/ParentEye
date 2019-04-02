@@ -1,15 +1,17 @@
 package com.example.parenteye;
 
+import android.provider.ContactsContract;
+
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
 public class CreateTime {
 
-    int s;
     String date1 ;
 
     Date dateObj1,dateObj2;
@@ -20,7 +22,7 @@ public class CreateTime {
     String format = "MM/dd/yyyy HH:mm";
 
 
-    public CreateTime(String ago) throws ParseException {
+    public CreateTime(String ago)  {
         this.date1=ago;
     }
 
@@ -31,10 +33,6 @@ public class CreateTime {
 
          dateObj1= sdf.parse(date1);
          dateObj2= sdf.parse(date2);
-
-        System.out.println("_______________________________");
-        System.out.println( dateObj1+"____________"+dateObj2 );
-        System.out.println("_______________________________");
 
 
     }
@@ -65,29 +63,47 @@ public class CreateTime {
         String min=crunchifyFormatter.format(diffmin);
         String hr=crunchifyFormatter.format(diffhours);
         String day=crunchifyFormatter.format(diffDays);
+
         NumberFormat format=NumberFormat.getInstance( Locale.UK);
         try {
-            Number number = format.parse( sec );
-          s=number.intValue();
-            System.out.println("_______________________________");
-            System.out.println("the sec is "+number.intValue() );
-            System.out.println("_______________________________");
+            Number number_sec = format.parse( sec );
+            Number number_min = format.parse( min );
+            Number number_hr = format.parse( hr);
+
+           // System.out.println("sec "+number_sec.intValue()+" min "+number_min.intValue()+" hr "+number_hr.intValue());
+
+           if (number_sec.intValue()<60){
+                return number_sec.intValue()+" s";
+            }
+            else if (number_min.intValue()<60){
+                return number_min.intValue()+" min";
+            }
+            else if (number_hr.intValue()<24){
+                return number_hr.intValue() +" hr";
+            }
+            else if (Integer.parseInt( day )<7) {
+                return day+" day";
+            }
+            else if (Integer.parseInt(day)%7==0){
+                return Integer.parseInt(day)/7+" w";
+            }
+
+            else if (Integer.parseInt(day)%30==0){
+                return Integer.parseInt(day)/30+" m";
+            }
+            else if (Integer.valueOf( day )%365==0){
+                return String.valueOf( (Integer.valueOf( day )/365) )+" y" ;}
+            else{
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(dateObj2);
+            int year = cal.get(Calendar.YEAR);
+            int month = cal.get(Calendar.MONTH);
+            return month+" / "+year;
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-
-
-
-
-        System.out.println("_______________________________");
-        System.out.println("the sec is "+s/60);
-        System.out.println("_______________________________");
-
-        if (Integer.parseInt( day )==1){return day;}
-        else if (Integer.valueOf( day )%365==0){
-            return String.valueOf( (Integer.valueOf( day )/365) ) ;}
-        else{return date2;}
+        return null;
     }
 
 

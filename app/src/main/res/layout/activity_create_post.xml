@@ -78,7 +78,8 @@
                 <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/profile_image"
                     android:layout_width="80dp"
-                    android:layout_height="80dp" />
+                    android:layout_height="80dp"
+                    android:src="@drawable/user" />
 
             </android.support.v7.widget.CardView>
 

@@ -14,7 +14,7 @@ public class PostComments {
 
     private boolean didLike;
 
-    public PostComments(String commentID,String commentcontent, String userId, String postId, boolean hasreply, boolean hasimage, String imageId, String commentDate, int countOfLike,boolean didLike) {
+    public PostComments(String commentID, String commentcontent, String userId, String postId, boolean hasreply, boolean hasimage, String imageId, String commentDate, int countOfLike, boolean didLike) {
         this.commentID = commentID;
         this.commentcontent = commentcontent;
         this.userId = userId;
