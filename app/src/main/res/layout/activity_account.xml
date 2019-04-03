@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/background_gradient"
     tools:context=".AccountActivity">
-    <ListView
-        android:id="@+id/accountPost_listview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,81 +43,162 @@
                 android:id="@+id/Accountname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" user name"
                 android:textStyle="bold"
                 android:textColor="#000"
                 android:layout_marginTop="-8dp"
                 android:textSize="30sp"/>
-            <Button
-                android:id="@+id/addfriend"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Add Friend"
-                android:textStyle="bold"
-                android:textColor="#000"
-                android:textSize="20sp"/>
-
-
         </LinearLayout>
 
-
-
+</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp"
+        android:paddingLeft="40dp"
+        android:background="@drawable/custom_border">
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="-130dp"
-            android:padding="5dp">
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
             <ImageView
-                android:id="@+id/optionMenu"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/option"
-                android:layout_marginLeft="10dp"/>
+                android:id="@+id/addfriend"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/addfriendd"/>
             <TextView
-                android:id="@+id/friendsNumber"
+                android:id="@+id/addfriendtext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="234"
                 android:textColor="#000"
-                android:textSize="27sp"
-                android:layout_marginLeft="250dp"/>
+                android:textSize="16sp"
+                android:text="Add Friend"
+                android:textStyle="bold" />
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+           android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:src="@drawable/followers2" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="Friends"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:src="@drawable/option4" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="More"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="35dp" >
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/email2"/>
         <TextView
-            android:paddingTop="40dp"
-            android:id="@+id/userAdresse"
+            android:id="@+id/userEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Lives in user addresse"
+            android:layout_marginTop="10dp"
             android:textColor="#000"
             android:textSize="18dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="35dp"/>
+          />
+    </LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginLeft="10dp"
+    android:layout_marginTop="8dp">
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/addresse2"/>
+    <TextView
+        android:id="@+id/userAdresse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:textSize="18dp"
+        android:layout_marginTop="10dp"
+       />
+</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="8dp">
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/dob"/>
         <TextView
         android:id="@+id/userdate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Date of birth "
         android:textColor="#000"
         android:textSize="18dp"
+        android:layout_marginTop="10dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="10dp">
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/gender"/>
         <TextView
             android:id="@+id/userGender"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Female "
             android:textColor="#000"
             android:textSize="18dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="10dp"/>
-
-
-
-
+            android:layout_marginTop="10dp"
+          />
     </LinearLayout>
 
+
+    <ListView
+        android:id="@+id/accountPost_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></ListView>
 
 
 
