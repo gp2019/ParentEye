@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollView01"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -37,16 +41,27 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:gravity="center_horizontal">
             <TextView
                 android:id="@+id/Accountname"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:textStyle="bold"
                 android:textColor="#000"
-                android:layout_marginTop="-8dp"
+                android:text="username"
                 android:textSize="30sp"/>
+            <EditText
+                android:id="@+id/editAccountname"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:padding="7dp"
+                android:background="@drawable/rectangleedittext"
+                android:layout_below="@id/Accountname"
+                android:textSize="30sp"/>
+
         </LinearLayout>
 
 </LinearLayout>
@@ -120,8 +135,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="35dp" >
+        android:padding="10dp"
+        android:layout_marginTop="10dp">
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -130,18 +145,29 @@
             android:id="@+id/userEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
             android:textColor="#000"
-            android:textSize="18dp"
-          />
+            android:textSize="20dp"
+         />
+        <EditText
+            android:padding="5dp"
+            android:id="@+id/EdituserEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:textSize="20dp"
+            android:background="@drawable/rectangleedittext"
+            />
     </LinearLayout>
 
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:layout_marginLeft="10dp"
-    android:layout_marginTop="8dp">
+    android:padding="10dp">
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -151,9 +177,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="#000"
-        android:textSize="18dp"
-        android:layout_marginTop="10dp"
-       />
+        android:textSize="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp" />
+    <EditText
+        android:padding="5dp"
+        android:id="@+id/Edituseraddresse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:textSize="20sp"
+        android:background="@drawable/rectangleedittext" />
 </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -162,6 +198,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="8dp">
         <ImageView
+            android:id="@+id/birthday"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/dob"/>
@@ -190,8 +227,36 @@
             android:layout_height="wrap_content"
             android:textColor="#000"
             android:textSize="18dp"
-            android:layout_marginTop="10dp"
-          />
+            android:layout_marginTop="10dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+        <Button
+            android:id="@+id/btnsubmitupdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:text="Update"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/newbtnstyle"
+            android:textColor="@color/white"/>
+        <Button
+            android:id="@+id/btncancelupdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:text="cancel"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/newbtnstyle"
+            android:textColor="@color/white"/>
+
     </LinearLayout>
 
 
@@ -203,3 +268,4 @@
 
 
 </LinearLayout>
+</ScrollView>

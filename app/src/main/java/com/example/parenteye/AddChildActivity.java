@@ -213,11 +213,11 @@ public class AddChildActivity extends AppCompatActivity {
                                                                         @Override
                                                                         public void onComplete(@NonNull Task<AuthResult> task) {
                                                                             if(task.isSuccessful()){
-                                                                               // System.out.println("login with "+Email);
+                                                                              // System.out.println("login with "+Email);
                                                                                 Go_to_main();
 
                                                                             }else{
-                                                                               // System.out.println(" not login");
+                                                                              //  System.out.println(" not login");
                                                                             }
                                                                         }
                                                                     });

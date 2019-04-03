@@ -1,20 +1,31 @@
 package com.example.parenteye;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -60,6 +71,19 @@ public class AccountActivity extends AppCompatActivity {
     ArrayList<custom_posts_returned> Group_posts=new ArrayList<custom_posts_returned>();
     ArrayList<custom_posts_returned> Page_posts=new ArrayList<custom_posts_returned>();
 
+   private Dialog myDialog;
+   private  TextView txtclose;
+   private Button btnsubmitpass;
+   private EditText submitpassword;
+   private EditText edituseremail;
+   private EditText editAccountname;
+   private EditText Edituseraddresse;
+   private ImageView birthday;
+   private Button btnsubmitupdate;
+   private Button btncancelupdate;
+    private  String name;
+    private  String email;
+    private String addresse;
 
 
 
@@ -86,13 +110,73 @@ public class AccountActivity extends AppCompatActivity {
         userEmail=(TextView) findViewById(R.id.userEmail);
         Addfriend=(ImageView) findViewById(R.id.addfriend);
         addfriendtext=(TextView) findViewById(R.id.addfriendtext);
+        myDialog = new Dialog(this);
+        myDialog.setContentView(R.layout.custompopup);
+        txtclose =(TextView) myDialog.findViewById(R.id.txtclose);
+        submitpassword=(EditText)myDialog.findViewById(R.id.passwordfield);
+        btnsubmitpass = (Button)myDialog. findViewById(R.id.btnsubmitpassword);
+        edituseremail=(EditText) findViewById(R.id.EdituserEmail);
+
+        editAccountname=(EditText) findViewById(R.id.editAccountname);
+        editAccountname.setVisibility(View.GONE);
+        Edituseraddresse=(EditText)findViewById(R.id.Edituseraddresse);
+        Edituseraddresse.setVisibility(View.GONE);
+        birthday=(ImageView) findViewById(R.id.birthday);
+        birthday.setEnabled(false);
+        btnsubmitupdate=(Button) findViewById(R.id.btnsubmitupdate);
+        btnsubmitupdate.setVisibility(View.GONE);
+        btncancelupdate=(Button) findViewById(R.id.btncancelupdate);
+        btncancelupdate.setVisibility(View.GONE);
         Addfriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
              final String userId="cR6RdBeU5Lg7CEFLhEniBT16ZxM2";
              if(TextUtils.equals(mAuth.getCurrentUser().getUid(),userId)){
-                 Addfriend.setEnabled(false);
-                 //here update profile funtion
+                 //here go updating profile
+
+
+                 txtclose.setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick(View v) {
+                         myDialog.dismiss();
+                     }
+                 });
+
+                 btnsubmitpass.setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick(View v) {
+                  final String userpass=submitpassword.getText().toString().trim();
+                   if(userpass.isEmpty()){
+                       submitpassword.setError("you must enter the password");
+                   }
+                   else{
+                       userRef.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+                           @Override
+                           public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                               if(TextUtils.equals(dataSnapshot.getValue(Users.class).getUserPassword(),userpass)){
+                                   myDialog.dismiss();
+                                   submitpassword.setText("");
+                                   prepareUpdate();
+                                   Addfriend.setEnabled(false);
+
+                               }
+                               else{
+                                   submitpassword.setError("Wrong password!");
+                               }
+                           }
+
+                           @Override
+                           public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                           }
+                       });
+                   }
+
+                     }
+                 });
+                 myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                 myDialog.show();
+
 
              }
                else{
@@ -132,7 +216,25 @@ public class AccountActivity extends AppCompatActivity {
 
              }
             }});
+        btnsubmitupdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(validate()){
+                    updateInfo();
 
+
+                }
+
+            }
+        });
+
+        btncancelupdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                returntoinfo();
+                Addfriend.setEnabled(true);
+            }
+        });
 
     }
 
@@ -166,7 +268,7 @@ public class AccountActivity extends AppCompatActivity {
                 IssentRequest(userID);
                 GetProfileData(userID);
             }
-            GetProfilePosts();
+           // GetProfilePosts();
         }
     }
 
@@ -178,8 +280,8 @@ public class AccountActivity extends AppCompatActivity {
         Post_listview.setAdapter(postadapterr);
 
 
-        final String username="Ibrahim";
-        final String profileId="memzoiT3c2TbPsACnDMNcl7jnrs2";
+        final String username="aya";
+        final String profileId="cR6RdBeU5Lg7CEFLhEniBT16ZxM2";
         postref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -310,7 +412,8 @@ public class AccountActivity extends AppCompatActivity {
                Accountname.setText(user.getUsername());
                userEmail.setText(user.getUserEmail());
                useraddresse.setText(user.getLocation());
-               userdate.setText("not done yet");
+               userdate.setText(user.getDateofbirth().getDay()+"/"+user.getDateofbirth().getMonth()+"/"+user.getDateofbirth().getYear());
+
                // userdate.setText(user.getDateofbirth());
                if(user.isGender()==true){
                    usergender.setText("Male");
@@ -430,8 +533,144 @@ public class AccountActivity extends AppCompatActivity {
            }
        });
    }
+   private void prepareUpdate(){
+        if(mAuth.getCurrentUser()!=null) {
+            Accountname.setVisibility(View.GONE);
+            editAccountname.setVisibility(View.VISIBLE);
+            editAccountname.setText(Accountname.getText().toString());
+            userEmail.setVisibility(View.GONE);
+            edituseremail.setVisibility(View.VISIBLE);
+            edituseremail.setText(userEmail.getText().toString());
+            useraddresse.setVisibility(View.GONE);
+            Edituseraddresse.setVisibility(View.VISIBLE);
+            Edituseraddresse.setText(useraddresse.getText().toString());
+            birthday.setImageResource(R.drawable.calender);
+            birthday.setEnabled(true);
+            btnsubmitupdate.setVisibility(View.VISIBLE);
+            btncancelupdate.setVisibility(View.VISIBLE);
+
+        }
 
 
+ /*Intent updateprofileintent=new Intent(AccountActivity.this,UpdateProfileActivity.class);
+ startActivity(updateprofileintent);
+ finish();
+ */
+   }
+    private boolean validate(){
+        boolean valid=true;
+        name=editAccountname.getText().toString().trim();
+        email=edituseremail.getText().toString().trim();
+        addresse=Edituseraddresse.getText().toString().trim();
+        if(name.isEmpty()){
+            editAccountname.setError("name is required");
+            valid=false;
+        }
+        if(name.length()>25){
+            editAccountname.setError("name can not be that length");
+            valid=false;
+        }
+        if(email.isEmpty()){
+            edituseremail.setError("Email is required");
+            valid=false;
+        }
+        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            edituseremail.setError("Email format not valid , please enter valid email");
+            valid=false;
+        }
+        if(email.contains(" ")){
+            email = email.replaceAll("\\s","");
+        }
+        if(addresse.isEmpty()){
+            Edituseraddresse.setError("address is required");
+            valid=false;
+        }
+        if(userdate.getText().toString().trim().isEmpty()){
+            userdate.setError("Date of birth is required");
+            valid=false;
+        }
+        return valid;
+
+    }
+ private void updateInfo(){
+
+        if(mAuth.getCurrentUser()!=null) {
+            String currentuserId=mAuth.getCurrentUser().getUid();
+            mAuth.signOut();
+            userRef.child(currentuserId).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    final Users user = dataSnapshot.getValue(Users.class);
+
+                    mAuth.signInWithEmailAndPassword(user.getUserEmail(),user.getUserPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful()){
+                                mAuth.getCurrentUser().updateEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()){
+                                            user.setUserEmail(email);
+                                            user.setUsername(name);
+                                            user.setLocation(addresse);
+                                            userRef.child(mAuth.getCurrentUser().getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        Toast.makeText(AccountActivity.this, "  your info update successfully", Toast.LENGTH_LONG).show();
+                                                        returntoinfo();
+                                                        Addfriend.setEnabled(true);
+                                                    } else {
+                                                        Toast.makeText(AccountActivity.this, "Error !! "+task.getException(), Toast.LENGTH_LONG).show();
+
+                                                        returntoinfo();
+                                                        Addfriend.setEnabled(true);
+                                                    }
+                                                }
+                                            });
+
+                                        }
+                                        else{
+                                            Toast.makeText(AccountActivity.this, "Error "+task.getException(), Toast.LENGTH_LONG).show();
+
+                                            System.out.println("Error "+task.getException());
+                                        }
+                                    }
+                                });
+
+                            }
+                            else{
+                                Toast.makeText(AccountActivity.this, "not sign in !! "+task.getException(), Toast.LENGTH_LONG).show();
+
+                            }
+                        }
+                    });
+
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+ }
+ private void returntoinfo(){
+     editAccountname.setVisibility(View.GONE);
+     Accountname.setVisibility(View.VISIBLE);
+     edituseremail.setVisibility(View.GONE);
+     userEmail.setVisibility(View.VISIBLE);
+     Edituseraddresse.setVisibility(View.GONE);
+     useraddresse.setVisibility(View.VISIBLE);
+     birthday.setImageResource(R.drawable.dob);
+     birthday.setEnabled(false);
+     btnsubmitupdate.setVisibility(View.GONE);
+     btncancelupdate.setVisibility(View.GONE);
+     GetProfileData(mAuth.getCurrentUser().getUid());
+
+
+ }
 
 
 
