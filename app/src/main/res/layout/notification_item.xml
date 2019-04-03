@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp">
+
+
+
+
+
+
+    <!-- user profile  image (circle view) -->
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/notification_profile_image_"/>
+    <!-- End user profile  image (circle view) -->
+
+
+    <!-- notifications texts layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:orientation="vertical"
+        android:layout_toEndOf="@+id/notification_profile_image_"
+        android:layout_toStartOf="@+id/notification_post_image_">
+
+
+        <!-- notification user name -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/notification_user_name_"
+            android:textStyle="bold"
+            android:textColor="@android:color/background_dark"
+
+            />
+        <!-- End notification user name -->
+
+
+        <!-- notification content Text-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/notification_content_text_"
+            android:textColor="@android:color/background_dark"
+            />
+        <!--  end notification content Text-->
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/post_content"
+            android:maxLines="5"
+            android:textColor="@android:color/background_dark"
+            />
+        <!--  end notification content Text-->
+
+    </LinearLayout>
+
+    <!--end notification texts layout-->
+
+
+    <!-- post image if exist! -->
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/notification_post_image_"
+        android:layout_alignParentEnd="true"/>
+    <!-- End post image if exist! -->
+</RelativeLayout>

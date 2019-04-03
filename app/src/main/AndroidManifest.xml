@@ -34,6 +34,9 @@
         <activity android:name=".SignupActivity" />
         <activity android:name=".Create_Comment" />
         <activity android:name=".MakeGroupActivity" />
+        <activity android:name=".NotificationPreview" />
+
+
     </application>
 
 </manifest>

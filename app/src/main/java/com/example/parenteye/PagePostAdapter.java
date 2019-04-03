@@ -32,6 +32,11 @@ public class PagePostAdapter  extends ArrayAdapter<custom_posts_returned> {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference comRef = database.getReference("Community");
     ArrayList<custom_posts_returned> post_returnedd;
+
+
+
+
+
     public PagePostAdapter(Activity context, ArrayList<custom_posts_returned> post_returned){
 
         super(context,0,post_returned);
