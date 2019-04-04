@@ -59,29 +59,68 @@
             android:id="@+id/mychildren"
             android:text="View MyChildren"/>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <ImageButton
-            android:id="@+id/notification_icon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/notification_round_button"
-            android:src="@drawable/notification_icon"
-            android:textColor="#fff"
-            android:layout_marginTop="25dp"
-            android:layout_marginRight="35dp"
-            />
 
-        <ImageButton
+            <ImageButton
 
-            android:id="@+id/like_icon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/notification_round_button"
-            android:background="@drawable/like_round_button"
-            android:textColor="#fff"
-            android:layout_marginTop="25dp"
-            android:layout_marginRight="35dp"
-            />
+                android:id="@+id/like_icon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/notification_round_button"
+                android:background="@drawable/like_round_button"
+                android:textColor="#fff"
+                android:layout_marginTop="25dp"
+                android:layout_marginRight="35dp"
+                />
+
+            <ImageButton
+
+                android:id="@+id/dislike_icon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/dis_like"
+                android:textColor="#fff"
+                android:layout_marginTop="25dp"
+                android:layout_marginRight="35dp"
+
+                />
+            <ImageButton
+                android:id="@+id/notification_icon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/notification_round_button"
+                android:src="@drawable/notification_icon"
+                android:textColor="#fff"
+                android:layout_marginTop="25dp"
+                android:layout_marginRight="35dp"
+                />
+            <ImageButton
+
+                android:id="@+id/addfriend_icon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/addfriend_round_btn"
+                android:textColor="#fff"
+                android:layout_marginTop="25dp"
+                android:layout_marginRight="35dp"
+                />
+
+            <ImageButton
+
+                android:id="@+id/removeFriend_icon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/remove_friend_round_btn"
+                android:textColor="#fff"
+                android:layout_marginTop="25dp"
+                android:layout_marginRight="35dp"
+                />
+
+        </LinearLayout>
+
 
         <ListView
             android:id="@+id/Post_listview"
