@@ -1,8 +1,24 @@
 package com.example.parenteye;
 
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Date;
+import java.util.HashMap;
+
+import static android.content.ContentValues.TAG;
 
 public class Notifications {
     private String id;
@@ -10,9 +26,14 @@ public class Notifications {
 
 
     private String publisherId;
+
     private String NotificationMessage;
     private Date date;
     private boolean seen;
+
+//*********
+    private boolean isFriendRequest;
+
 
 
 
@@ -23,6 +44,17 @@ public class Notifications {
 
 
     private boolean isPost;
+    String record;
+
+
+
+    ////////////////////////////
+    private FirebaseAuth mAuth =FirebaseAuth.getInstance();
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+    FirebaseUser currentUser = mAuth.getCurrentUser();
+
+
 
     public Notifications(){
 
@@ -101,9 +133,123 @@ public class Notifications {
         return isPost;
     }
 
+    public boolean isFriendRequest() {
+        return isFriendRequest;
+    }
+
+    public void setFriendRequest(boolean friendRequest) {
+        isFriendRequest = friendRequest;
+    }
 
 
 
+
+
+    //****************************** add notification on like********************************
+    public void addNotificationsOfLikes(String postid, String post_publisher_Id) {
+
+        DatabaseReference notification_reference = database.getReference("notifications").child(post_publisher_Id);
+
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("userId", currentUser.getUid()); // or hashMap.put("userid ", firebaseUser.getUid());
+        hashMap.put("NotificationMessage", "liked your post");
+        hashMap.put("postId", postid);
+        hashMap.put("isPost", true);
+        hashMap.put("isFriendRequest",false);
+
+
+        notification_reference.push().setValue(hashMap);
+
+        //to call ----->  addNotificationsOfLikes(String postid, String post_publisher_Id)
+
+    }
+
+    //************************  add notification func on comment***************
+
+    public void addNotificationsOfComments(String postid, String post_publisher_Id) {
+
+        DatabaseReference notification_reference = database.getReference("notifications").child(post_publisher_Id);
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("userId", currentUser.getUid()); // or hashMap.put("userid ", firebaseUser.getUid());
+        hashMap.put("NotificationMessage", "commented: welcome clever");
+        hashMap.put("postId", postid);
+        hashMap.put("isPost", true);
+
+        notification_reference.push().setValue(hashMap);
+
+        //+addcomment.getText().toString()
+        //to call ----->  addNotificationsOfFollowers(post.getpublisher() //getUserId\\ )
+    }
+
+
+    //************************  add notification func on Friend request ***************
+
+    public void addNotificationsOfFriendRequest( String FriendWantToRequest_Id) {
+        DatabaseReference notification_reference = database.getReference("notifications").child(FriendWantToRequest_Id);
+
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("userId", currentUser.getUid()); // or hashMap.put("userid ", firebaseUser.getUid());
+        hashMap.put("NotificationMessage", "send to you a Friend Request ");
+        hashMap.put("postId", " ");
+        hashMap.put("isPost", false);
+        hashMap.put("isFriendRequest",true);
+        notification_reference.push().setValue(hashMap);
+
+        //to call ----->  addNotificationsOfFriendRequest(FriendRequesterId)
+
+    }
+
+
+/*
+    public void DeleteNotificationOfFriendRequest(final String FriendWantToRequest_Id)
+    {
+        final DatabaseReference notification_reference = database.getReference("notifications").child(currentUser.getUid());
+
+        notification_reference.child("-LbcspbE8eJk7k_Lrew3").removeValue();
+
+
+
+
+        notification_reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists())
+                {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Notifications notification = snapshot.getValue(Notifications.class);
+                        if(notification.isFriendRequest() == true && notification.getUserId()== FriendWantToRequest_Id )
+                        {
+                             record = snapshot.getKey();
+
+
+                            //notification_reference.orderByChild("userId").equalTo(FriendWantToRequest_Id).removeEventListener();
+
+                        }
+
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+            notification_reference.child(record).removeValue();
+
+
+
+    }
+
+
+
+*/
 
 
 }
