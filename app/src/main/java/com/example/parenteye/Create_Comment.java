@@ -70,6 +70,7 @@ public class Create_Comment extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
+        mAuth = FirebaseAuth.getInstance();
         setContentView( R.layout.activity_create_comment );
         recyclerView=findViewById( R.id.Post_recyclelistview);
         Image_of_gallery=findViewById( R.id.image_of_gallery );

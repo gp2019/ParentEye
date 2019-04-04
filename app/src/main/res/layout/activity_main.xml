@@ -122,6 +122,15 @@
         </LinearLayout>
 
 
+
+
+
+        <ImageView
+            android:id="@+id/firendrequestid"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/friendrequest"/>
+
         <ListView
             android:id="@+id/Post_listview"
             android:layout_width="match_parent"

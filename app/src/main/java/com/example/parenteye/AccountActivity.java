@@ -212,6 +212,9 @@ public class AccountActivity extends AppCompatActivity {
                      FriendRequestRef.push().setValue(friend);
                      Addfriend.setImageResource(R.drawable.addfriendd);
                      addfriendtext.setText("cancel request");
+                    Notifications notifi =new Notifications();
+                    notifi.addNotificationsOfFriendRequest(userId);
+
                      IsExist=true;
                  }
 
@@ -269,7 +272,7 @@ public class AccountActivity extends AppCompatActivity {
                 IssentRequest(userID);
                 GetProfileData(userID);
             }
-           // GetProfilePosts();
+            GetProfilePosts();
         }
     }
 
