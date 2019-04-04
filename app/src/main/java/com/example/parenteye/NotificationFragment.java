@@ -92,14 +92,18 @@ public class NotificationFragment extends Fragment {
         notification_reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                notificationsList.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Notifications notifications = snapshot.getValue(Notifications.class);
-                    notificationsList.add(notifications);
+                if(dataSnapshot.exists())
+                {
+                    notificationsList.clear();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Notifications notifications = snapshot.getValue(Notifications.class);
+                        notificationsList.add(notifications);
+                    }
+                    Collections.reverse(notificationsList);
+                    notificationAdapter.notifyDataSetChanged();
                 }
 
-                Collections.reverse(notificationsList);
-                notificationAdapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -107,8 +111,10 @@ public class NotificationFragment extends Fragment {
 
             }
         });
+/*
 
-        /*
+
+
         //if (notification_reference.getDatabase()!=null) {
         ChildEventListener nchildEventListener = new ChildEventListener() {
             @Override
@@ -150,7 +156,7 @@ public class NotificationFragment extends Fragment {
 
         notification_reference.addChildEventListener(nchildEventListener);
 
-*/
+
 
 
 
@@ -158,7 +164,7 @@ public class NotificationFragment extends Fragment {
         // }else{
         //HAVE_NOTIFICATIONS=false;
 
-        // }
+        // }*/
     }
 }
 

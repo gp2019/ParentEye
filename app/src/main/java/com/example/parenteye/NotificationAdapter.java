@@ -282,13 +282,17 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 Posts post = dataSnapshot.getValue(Posts.class);
                 post_content.setText(post.getPostcontent());
 
-                PStorageRef.child(post.getImageId()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                    @Override
-                    public void onSuccess(byte[] bytes) {
-                        final Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                        imageView.setImageBitmap(bm);
-                    }
-                });
+                if(post.getImageId() !=null)
+                {
+                    PStorageRef.child(post.getImageId()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                        @Override
+                        public void onSuccess(byte[] bytes) {
+                            final Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                            imageView.setImageBitmap(bm);
+                        }
+                    });
+                }
+
 
 
             }
@@ -363,14 +367,17 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Users user = dataSnapshot.getValue(Users.class);
+                if(user.getProfile_pic_id() !=null)
+                {
+                    UStorageRef.child(user.getProfile_pic_id()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                        @Override
+                        public void onSuccess(byte[] bytes) {
+                            final Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                            imageView.setImageBitmap(bm);
+                        }
+                    });
+                }
 
-                UStorageRef.child(user.getProfile_pic_id()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                    @Override
-                    public void onSuccess(byte[] bytes) {
-                        final Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                        imageView.setImageBitmap(bm);
-                    }
-                });
                 username.setText(user.getUsername());
                 //Glide.with(mContext).load(user.getProfile_pic_id()).into(imageView);
 
