@@ -87,6 +87,28 @@ public class NotificationFragment extends Fragment {
 
 
         DatabaseReference notification_reference = database.getReference("notifications").child(user.getUid());
+
+
+        notification_reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                notificationsList.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Notifications notifications = snapshot.getValue(Notifications.class);
+                    notificationsList.add(notifications);
+                }
+
+                Collections.reverse(notificationsList);
+                notificationAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        /*
         //if (notification_reference.getDatabase()!=null) {
         ChildEventListener nchildEventListener = new ChildEventListener() {
             @Override
@@ -128,27 +150,9 @@ public class NotificationFragment extends Fragment {
 
         notification_reference.addChildEventListener(nchildEventListener);
 
-
-
-       /* notification_reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                notificationsList.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Notifications notifications = snapshot.getValue(Notifications.class);
-                    notificationsList.add(notifications);
-                }
-
-                Collections.reverse(notificationsList);
-                notificationAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 */
+
+
 
 
         // }else{

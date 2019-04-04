@@ -59,10 +59,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageView firendrequestid;
 
 
-    private ImageButton notification_icon;
-
-
-    private ImageButton likeNotify;
+    Notifications notifi = new Notifications();
+    private ImageButton notification_icon,likeNotify,disLikeNotifi,addFriendNotifi,removeFrindNotify;
 
     private Button commentNotify;
 
@@ -171,6 +169,10 @@ public class MainActivity extends AppCompatActivity {
 
         notification_icon = findViewById(R.id.notification_icon);
         likeNotify = findViewById(R.id.like_icon);
+        disLikeNotifi=findViewById(R.id.dislike_icon);
+        addFriendNotifi = findViewById(R.id.addfriend_icon);
+        removeFrindNotify = findViewById(R.id.removeFriend_icon);
+
         //commentNotify=findViewById(R.id.commentNotify);
 
         notification_icon.setOnClickListener(new View.OnClickListener() {
@@ -197,21 +199,60 @@ public class MainActivity extends AppCompatActivity {
                 /*Intent makepage=new Intent(MainActivity.this,NotificationFragment.class);
                 startActivity(makepage);*/
                 // L7zI36Be0qS2pwLic4Jd8RDdWjD2
-                String postid1 = "-LbU2g1M1oso-oW9qOPB";
+                //String postid1 = "-LbU2g1M1oso-oW9qOPB";
                 String postid2 = "-LbU7gdO1Mkx4ZhulHxA";
                 //String myuserId="currentUser";
-                String LikeridAya = "cR6RdBeU5Lg7CEFLhEniBT16ZxM2";
-                String LikerEman = "bb6wXlVRzdUWnij5KkgPltKdCz43";
+                String Aya = "cR6RdBeU5Lg7CEFLhEniBT16ZxM2";
+
+                String Eman = "bb6wXlVRzdUWnij5KkgPltKdCz43";
 
 
-                addNotificationsOfLikes(postid1, LikeridAya);
-                addNotificationsOfLikes(postid2, LikerEman);
-
-                addNotificationsOfComments(postid1, LikeridAya);
-
-                addNotificationsOfComments(postid2, LikerEman);
+                //addNotificationsOfLikes(postid1, post_publisher_Id);
+                String post_publisher_Id =Eman;
+                notifi.addNotificationsOfLikes(postid2, post_publisher_Id);
 
 
+
+                //addNotificationsOfComments(postid1, LikeridAya);
+                notifi.addNotificationsOfComments(postid2, post_publisher_Id);
+
+                /*Add friend request notification header
+                   parm Friend Want To Request Id
+                 */
+
+                String FriendWantToRequest_Id= Aya;
+
+                notifi.addNotificationsOfFriendRequest(FriendWantToRequest_Id);
+
+
+            }
+        });
+
+
+        addFriendNotifi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String Aya = "cR6RdBeU5Lg7CEFLhEniBT16ZxM2";
+                String FriendWantToRequest_Id= Aya;
+
+                notifi.addNotificationsOfFriendRequest(FriendWantToRequest_Id);
+
+            }
+        });
+
+
+
+
+        removeFrindNotify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String Aya = "cR6RdBeU5Lg7CEFLhEniBT16ZxM2";
+                String FriendWantToRequest_Id= Aya;
+
+
+
+               // notifi.DeleteNotificationOfFriendRequest(Aya);
             }
         });
 
@@ -219,48 +260,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+
+
+
+
+
+
+
+
     //****************************** add notification on like********************************
-    private void addNotificationsOfLikes(String postid, String Likerid) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        DatabaseReference notification_reference = database.getReference("notifications").child(currentUser.getUid());
-
-
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("userId", Likerid); // or hashMap.put("userid ", firebaseUser.getUid());
-        hashMap.put("NotificationMessage", "liked your post");
-        hashMap.put("postId", postid);
-        hashMap.put("isPost", true);
-
-
-        notification_reference.push().setValue(hashMap);
-
-        //to call ----->  addNotificationsOfLikes(post.getpublisher() //getUserId\\ , post.getPostId())
-
-    }
-
-
-    //************************  add notification fun on comment***************
-
-    private void addNotificationsOfComments(String postid, String commenter) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-
-
-        DatabaseReference notification_reference = database.getReference("notifications").child(currentUser.getUid());
-
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("userId", commenter); // or hashMap.put("userid ", firebaseUser.getUid());
-        hashMap.put("NotificationMessage", "commented: welcome clever");
-        hashMap.put("postId", postid);
-        hashMap.put("isPost", true);
-
-        notification_reference.push().setValue(hashMap);
-
-        //+addcomment.getText().toString()
-        //to call ----->  addNotificationsOfFollowers(post.getpublisher() //getUserId\\ )
-    }
 
 
     @Override

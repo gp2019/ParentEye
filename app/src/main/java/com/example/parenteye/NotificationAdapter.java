@@ -14,7 +14,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -96,17 +98,30 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             //if ispost is true photo will visible
             viewHolder.Holder_notification_post_image.setVisibility(View.VISIBLE);
 
+            //friend request layout gone
+            viewHolder.Holder_Friend_request_notifi_layout.setVisibility(View.GONE);
+
             //call  getPostImage func to get the post pic
             getPostImage(viewHolder.Holder_notification_post_content, viewHolder.Holder_notification_post_image, notification.getPostId());
 
 
-        } else {
+        } else if(notification.isFriendRequest()){
             //if ispost is false photo will gone
             viewHolder.Holder_notification_post_image.setVisibility(View.GONE);
+            viewHolder.Holder_notification_post_content.setVisibility(View.GONE);
+
+
+            viewHolder.Holder_Friend_request_notifi_layout.setVisibility(View.VISIBLE);
+
+
+
         }
+        //check about friend request
+
+
 
         //********************** action on the notification item in the list ***********************
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+        viewHolder.Holder_notification_post_content.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -116,6 +131,28 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
                 // new Intent((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.notification_fragment_container,
                 //new custom_posts_returned()).commit();
+            }
+        });
+
+        /*************************************** action on Accept btn**************************
+         *
+         */
+        viewHolder.Holder_reject_notifi_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+
+        /*************************************** action on Reject btn**************************
+         *
+         */
+
+        viewHolder.Holder_reject_notifi_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
 
@@ -166,6 +203,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
         public ImageView Holder_notification_profile_image, Holder_notification_post_image;
         public TextView Holder_notification_user_name, Holder_notification_content_text, Holder_notification_post_content;
+        public LinearLayout Holder_Friend_request_notifi_layout;
+        public Button Holder_Accept_notifi_btn,Holder_reject_notifi_btn;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -176,6 +215,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             Holder_notification_user_name = itemView.findViewById(R.id.notification_user_name_);
             Holder_notification_content_text = itemView.findViewById(R.id.notification_content_text_);
             Holder_notification_post_content = itemView.findViewById(R.id.post_content);
+
+
+            Holder_Friend_request_notifi_layout = itemView.findViewById(R.id.Friend_request_notifi_layout);
+            Holder_Accept_notifi_btn = itemView.findViewById(R.id.Accept_notifi_btn);
+            Holder_reject_notifi_btn= itemView.findViewById(R.id.reject_notifi_btn);
         }
     }
 
