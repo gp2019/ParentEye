@@ -187,11 +187,11 @@ public class Notifications {
     //************************  add notification func on Friend request ***************
 
     public void addNotificationsOfFriendRequest( String FriendWantToRequest_Id) {
-        DatabaseReference notification_reference = database.getReference("notifications").child(currentUser.getUid());
+        DatabaseReference notification_reference = database.getReference("notifications").child(FriendWantToRequest_Id);
 
 
         HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("userId", FriendWantToRequest_Id); // or hashMap.put("userid ", firebaseUser.getUid());
+        hashMap.put("userId", currentUser.getUid()); // or hashMap.put("userid ", firebaseUser.getUid());
         hashMap.put("NotificationMessage", "send to you a Friend Request ");
         hashMap.put("postId", " ");
         hashMap.put("isPost", false);
@@ -222,9 +222,12 @@ public class Notifications {
 
                         Notifications notification = snapshot.getValue(Notifications.class);
 
-                        notification_reference.child("-LbdvUQb4wAHEtWjsqoN").removeValue();
-                        //notification_reference.child("-LbdvUQb4wAHEtWjsqoN").removeValue();
-                        snapshot.getRef();
+                        if(notification.getUserId()==FriendWantToRequest_Id) {
+
+                            //notification_reference.child("-LbdvUQb4wAHEtWjsqoN").removeValue();
+                            //notification_reference.child("-LbdvUQb4wAHEtWjsqoN").removeValue();
+                            snapshot.getRef().removeValue();
+                        }
 
                         if(notification.getUserId() ==FriendWantToRequest_Id)
                         {

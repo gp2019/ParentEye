@@ -236,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
                 String Aya = "cR6RdBeU5Lg7CEFLhEniBT16ZxM2";
                 String FriendWantToRequest_Id= Aya;
 
-                notifi.addNotificationsOfFriendRequest(FriendWantToRequest_Id);
+                //notifi.addNotificationsOfFriendRequest(FriendWantToRequest_Id);
 
             }
         });
@@ -252,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-               // notifi.DeleteNotificationOfFriendRequest(Aya);
+                notifi.DeleteNotificationOfFriendRequest(Aya);
             }
         });
 
