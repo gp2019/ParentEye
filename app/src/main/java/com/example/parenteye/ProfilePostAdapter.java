@@ -29,7 +29,7 @@ import java.util.ArrayList;
 
 public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned> {
     int count=0;
-    private Activity ContextAdapter;
+    private  Activity contextAdapter;
     final long ONE_MEGABYTE = 1024 * 1024;
     private StorageReference userStorageRef= FirebaseStorage.getInstance().getReference("UserImages/");
     private StorageReference postStorageRef= FirebaseStorage.getInstance().getReference("PostImages/");
@@ -40,7 +40,7 @@ public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned> {
 
         super(context,0,post_returned);
         post_returnedd=post_returned;
-        this.ContextAdapter=context;
+        this.contextAdapter=context;
 
     }
 
@@ -98,15 +98,8 @@ public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned> {
 
 
 
-
-
-
-
-
-
-
-        TextView postDescription=(TextView) postlist.findViewById(R.id.postDescription);
-        if(post.getPost_text()!=null){
+        TextView postDescription= postlist.findViewById(R.id.postDescription);
+        if(post.getPost_text()!=null&&!(post.getPost_text().isEmpty())){
 
             postDescription.setVisibility(View.VISIBLE);
 
@@ -140,9 +133,6 @@ public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned> {
 
                                 }
                             });
-                        }
-                        else{
-                            profileimage.setImageResource(R.drawable.defaultprofile);
                         }
 
                     }
@@ -186,20 +176,20 @@ public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned> {
 
         }
         else{
-
-            // postimage.setImageResource(R.drawable.defaultprofile);
             postimage.setVisibility(View.GONE);
         }
 
+        final ImageView btLike=postlist.findViewById(R.id.btLike);
 
-        final  ImageView btComment = postlist.findViewById(R.id.btcomment);
+
+        final ImageView btComment=postlist.findViewById(R.id.btLike);
         btComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ContextAdapter , Create_Comment.class );
-                intent.putExtra("postId",post_returnedd.get(position).getPost_Id());
-                ContextAdapter.startActivity(intent);
-                ContextAdapter.finish();
+                Intent intent = new Intent( contextAdapter, Create_Comment.class );
+              //  intent.putExtra("postId",post_returnedd.get(position));
+                contextAdapter.startActivity(intent);
+                contextAdapter.finish();
             }
         });
 

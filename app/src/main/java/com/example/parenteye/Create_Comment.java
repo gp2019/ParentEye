@@ -53,8 +53,6 @@ public class Create_Comment extends Activity {
     private RecyclerView recyclerView;
     private ArrayAdapterForComment mAdapter;
     String postId=null;
-    private static String POPUP_CONSTANT = "mPopup";
-    private static String POPUP_FORCE_SHOW_ICON = "setForceShowIcon";
     ImageView noInernet;
     private String imagekey;
     private RelativeLayout cameraRelative,bottom_WriteComment;

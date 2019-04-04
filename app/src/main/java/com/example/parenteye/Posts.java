@@ -10,8 +10,8 @@ public class Posts {
     private boolean hasimage;       //1 if post contain image and 0 if post not contain image
     private String imageId;        //image id if post has image and it will be null if post do not have image
 
-    public Posts(String postId, String userId, String postdate, String placeTypeId, String placeId, String postcontent, boolean hasimage, String imageId) {
-        this.postId=postId;
+    public Posts(String postId ,String userId, String postdate, String placeTypeId, String placeId, String postcontent, boolean hasimage, String imageId) {
+        this.postId = postId;
         this.userId = userId;
         this.postdate = postdate;
         this.placeTypeId = placeTypeId;

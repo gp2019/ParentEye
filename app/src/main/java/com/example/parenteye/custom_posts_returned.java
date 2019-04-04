@@ -1,9 +1,5 @@
 package com.example.parenteye;
 
-import android.graphics.Bitmap;
-import android.net.Uri;
-
-import java.net.URI;
 import java.util.Date;
 
 public class custom_posts_returned {
