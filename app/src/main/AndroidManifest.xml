@@ -16,7 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UpdateProfileActivity"></activity>
+        <activity android:name=".FriendRequestActivity"></activity>
+        <activity android:name=".UpdateProfileActivity" />
         <activity android:name=".MyChildrenActivity" />
         <activity android:name=".ViewImage" />
         <activity android:name=".Edit_Comment" />
@@ -36,8 +37,6 @@
         <activity android:name=".Create_Comment" />
         <activity android:name=".MakeGroupActivity" />
         <activity android:name=".NotificationPreview" />
-
-
     </application>
 
 </manifest>

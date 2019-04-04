@@ -14,6 +14,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private Button makeGroup;
     private Button addchild;
     private Button mychildren;
+    private ImageView firendrequestid;
 
 
     private ImageButton notification_icon;
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         mStorageRef = FirebaseStorage.getInstance().getReference("UserImages/");
         mStorageRef2 = FirebaseStorage.getInstance().getReference("PostsImages/");
         goprofile = (Button) findViewById(R.id.goprofile);
+        firendrequestid=(ImageView) findViewById(R.id.firendrequestid);
 
         floatingActionButton = findViewById(R.id.floatingButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -148,6 +151,16 @@ public class MainActivity extends AppCompatActivity {
                 Intent mychildren = new Intent(MainActivity.this, MyChildrenActivity.class);
                 startActivity(mychildren);
                 finish();
+            }
+        });
+
+
+        firendrequestid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+         Intent friendrequest=new Intent(MainActivity.this,FriendRequestActivity.class);
+         startActivity(friendrequest);
+         finish();
             }
         });
 
@@ -293,6 +306,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(goAccount);
         finish();
     }
+
 
 
 }
