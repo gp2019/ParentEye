@@ -213,10 +213,10 @@ public class Create_Post extends Activity implements View.OnClickListener {
             }
 
             dbRef= FirebaseDatabase.getInstance().getReference().child("Posts");
+            String postId=dbRef.push().getKey();
+            Posts posts = new Posts(postId,userId,new getCurrentTime().getDateTime(),typePost,typePost,writePost.getText().toString(),hasImage,imagekey);
 
-            Posts posts = new Posts(userId,new getCurrentTime().getDateTime(),typePost,typePost,writePost.getText().toString(),hasImage,imagekey);
-
-            dbRef.push().setValue(posts).addOnCompleteListener(new OnCompleteListener<Void>() {
+            dbRef.setValue(posts).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if(task.isSuccessful()){

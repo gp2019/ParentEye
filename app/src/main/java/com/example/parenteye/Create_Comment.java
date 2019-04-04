@@ -26,6 +26,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,6 +45,7 @@ import static android.support.constraint.Constraints.TAG;
 
 public class Create_Comment extends Activity {
     private Uri filepath;
+    private FirebaseAuth mAuth;
     ProgressBar progressBar;
     DatabaseReference dbRef,dbRef2,dbRef3;
     ArrayList<PostComments> comments_of_post=new ArrayList<>(  );
@@ -85,7 +88,9 @@ public class Create_Comment extends Activity {
         dbRef2= FirebaseDatabase.getInstance().getReference().child("CommentsPost");
         dbRef3= FirebaseDatabase.getInstance().getReference().child("ReactionComment");
 
+        final FirebaseUser currentUser = mAuth.getCurrentUser();
 
+        postId=getIntent().getStringExtra("postId");
 
         writeComment.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -102,7 +107,7 @@ public class Create_Comment extends Activity {
                                 hasImage= true;
                                 CHECK_IMAGE=0;
                             }
-                            postComments=new PostComments(cID,writeComment.getText().toString(),"djm6VqH1f1QlIW8FeEMGAjsRaVf2","LbPiuLzPqypsRDskYNg",false,hasImage,imagekey,new getCurrentTime().getDateTime(),0,false);
+                            postComments=new PostComments(cID,writeComment.getText().toString(),currentUser.getUid(),postId,false,hasImage,imagekey,new getCurrentTime().getDateTime(),0,false);
                             dbRef.child( cID ).setValue( postComments );
                             writeComment.setText( "" );
                             return true;

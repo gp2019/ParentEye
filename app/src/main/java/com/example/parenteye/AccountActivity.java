@@ -451,7 +451,7 @@ public class AccountActivity extends AppCompatActivity {
                        }
                    });
                } else {
-                   AccountCover.setImageResource(R.drawable.cover);
+//                   AccountCover.setImageResource(R.drawable.cover);
                }
 
 
