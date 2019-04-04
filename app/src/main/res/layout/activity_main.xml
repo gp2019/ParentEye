@@ -85,6 +85,7 @@
                 android:textColor="#fff"
                 android:layout_marginTop="25dp"
                 android:layout_marginRight="35dp"
+
                 />
             <ImageButton
                 android:id="@+id/notification_icon"
