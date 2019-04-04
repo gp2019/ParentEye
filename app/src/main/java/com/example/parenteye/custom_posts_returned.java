@@ -7,6 +7,7 @@ import java.net.URI;
 import java.util.Date;
 
 public class custom_posts_returned {
+    private String post_Id;
     private String post_owner_name;
     private String post_text;
     private String post_owner_ID;
@@ -21,7 +22,13 @@ public class custom_posts_returned {
 
     }
 
+    public String getPost_Id() {
+        return post_Id;
+    }
 
+    public void setPost_Id(String post_Id) {
+        this.post_Id = post_Id;
+    }
 
     public custom_posts_returned(String post_text, String post_owner_ID, String post_image, Date post_date, String post_owner_name) {
         this.post_text = post_text;

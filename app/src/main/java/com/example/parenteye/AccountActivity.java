@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -292,6 +293,7 @@ public class AccountActivity extends AppCompatActivity {
                         custom_posts_returned custom =new custom_posts_returned();
                         custom.setPost_owner_name(newpost.getUserId());
                         custom.setpost_owner_ID(newpost.getUserId());
+                        custom.setPost_Id(postSnapshot.getKey());
                         if(newpost.getPostcontent()!=null){
                             custom.setPost_text(newpost.getPostcontent());
                         }
@@ -342,6 +344,7 @@ public class AccountActivity extends AppCompatActivity {
            custom_posts_returned custom=new custom_posts_returned();
            custom.setPost_owner_name(PageName);
            custom.setpost_owner_ID(pagepost.getPlaceId());
+           custom.setPost_Id(pagepostsnapshot.getKey());
            if(pagepost.getPostcontent()!=null){
                custom.setPost_text(pagepost.getPostcontent());
               // System.out.println("content "+ custom.getPost_text());
@@ -382,6 +385,7 @@ public class AccountActivity extends AppCompatActivity {
          custom_posts_returned custom=new custom_posts_returned();
            custom.setPost_owner_name(post.getUserId());
          custom.setpost_owner_ID(post.getUserId());
+         custom.setPost_Id(grouppostsnapshot.getKey());
        if(post.getPostcontent()!=null){
            custom.setPost_text(post.getPostcontent());
        }
@@ -447,7 +451,7 @@ public class AccountActivity extends AppCompatActivity {
                        }
                    });
                } else {
-                   AccountCover.setImageResource(R.drawable.cover);
+//                   AccountCover.setImageResource(R.drawable.cover);
                }
 
 
