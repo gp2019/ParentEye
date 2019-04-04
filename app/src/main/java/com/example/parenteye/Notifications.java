@@ -187,11 +187,11 @@ public class Notifications {
     //************************  add notification func on Friend request ***************
 
     public void addNotificationsOfFriendRequest( String FriendWantToRequest_Id) {
-        DatabaseReference notification_reference = database.getReference("notifications").child(FriendWantToRequest_Id);
+        DatabaseReference notification_reference = database.getReference("notifications").child(currentUser.getUid());
 
 
         HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("userId", currentUser.getUid()); // or hashMap.put("userid ", firebaseUser.getUid());
+        hashMap.put("userId", FriendWantToRequest_Id); // or hashMap.put("userid ", firebaseUser.getUid());
         hashMap.put("NotificationMessage", "send to you a Friend Request ");
         hashMap.put("postId", " ");
         hashMap.put("isPost", false);
@@ -203,12 +203,12 @@ public class Notifications {
     }
 
 
-/*
+
     public void DeleteNotificationOfFriendRequest(final String FriendWantToRequest_Id)
     {
         final DatabaseReference notification_reference = database.getReference("notifications").child(currentUser.getUid());
 
-        notification_reference.child("-LbcspbE8eJk7k_Lrew3").removeValue();
+
 
 
 
@@ -219,10 +219,19 @@ public class Notifications {
                 if(dataSnapshot.exists())
                 {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
                         Notifications notification = snapshot.getValue(Notifications.class);
-                        if(notification.isFriendRequest() == true && notification.getUserId()== FriendWantToRequest_Id )
+
+                        notification_reference.child("-LbdvUQb4wAHEtWjsqoN").removeValue();
+                        //notification_reference.child("-LbdvUQb4wAHEtWjsqoN").removeValue();
+                        snapshot.getRef();
+
+                        if(notification.getUserId() ==FriendWantToRequest_Id)
                         {
-                             record = snapshot.getKey();
+                             //record = snapshot.getKey();
+                             //snapshot.getRef().removeValue();
+
+
 
 
                             //notification_reference.orderByChild("userId").equalTo(FriendWantToRequest_Id).removeEventListener();
@@ -241,7 +250,7 @@ public class Notifications {
         });
 
 
-            notification_reference.child(record).removeValue();
+//            notification_reference.child(record).removeValue();
 
 
 
@@ -249,7 +258,7 @@ public class Notifications {
 
 
 
-*/
+
 
 
 }
