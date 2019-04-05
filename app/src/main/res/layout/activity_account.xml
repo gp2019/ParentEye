@@ -121,16 +121,17 @@
             android:layout_weight="1">
 
             <ImageView
+                android:id="@+id/gallery"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:src="@drawable/option4" />
+                android:src="@drawable/gallery" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#000"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:text="More"/>
+                android:text="Gallery"/>
         </LinearLayout>
     </LinearLayout>
 

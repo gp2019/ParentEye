@@ -85,6 +85,7 @@ public class AccountActivity extends AppCompatActivity {
     private  String name;
     private  String email;
     private String addresse;
+    private ImageView gallery;
 
 
 
@@ -128,6 +129,7 @@ public class AccountActivity extends AppCompatActivity {
         btnsubmitupdate.setVisibility(View.GONE);
         btncancelupdate=(Button) findViewById(R.id.btncancelupdate);
         btncancelupdate.setVisibility(View.GONE);
+        gallery=(ImageView) findViewById(R.id.gallery);
         Addfriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -239,6 +241,14 @@ public class AccountActivity extends AppCompatActivity {
                 Addfriend.setEnabled(true);
             }
         });
+        gallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+          Intent galleryIntent=new Intent(AccountActivity.this,GalleryActivity.class);
+          startActivity(galleryIntent);
+          finish();
+            }
+        });
 
     }
 
@@ -272,7 +282,7 @@ public class AccountActivity extends AppCompatActivity {
                 IssentRequest(userID);
                 GetProfileData(userID);
             }
-            GetProfilePosts();
+           // GetProfilePosts();
         }
     }
 
