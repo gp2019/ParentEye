@@ -342,7 +342,12 @@ public class Create_Comment extends Activity {
                     comments_of_post.clear();
                     for (DataSnapshot commentSnapshot : dataSnapshot.getChildren()) {
                         PostComments postComments = commentSnapshot.getValue( PostComments.class );
+                        System.out.println("______________");
+                        System.out.println(postComments.getPostId()+"=="+postId);
+                        System.out.println("______________");
+                        if(postComments.getPostId().equals(postId)){
                         comments_of_post.add( postComments );
+                        }
                     }
 
                     if (comments_of_post.size()==0) {

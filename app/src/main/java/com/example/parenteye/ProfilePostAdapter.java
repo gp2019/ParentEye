@@ -182,12 +182,12 @@ public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned> {
         final ImageView btLike=postlist.findViewById(R.id.btLike);
 
 
-        final ImageView btComment=postlist.findViewById(R.id.btLike);
+        final ImageView btComment=postlist.findViewById(R.id.btcomment);
         btComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent( contextAdapter, Create_Comment.class );
-              //  intent.putExtra("postId",post_returnedd.get(position));
+                intent.putExtra("postId",post_returnedd.get(position).getPost_Id());
                 contextAdapter.startActivity(intent);
                 contextAdapter.finish();
             }

@@ -9,16 +9,21 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Patterns;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,9 +45,16 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import butterknife.BindAnim;
+import butterknife.BindView;
+import butterknife.BindViews;
+import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AccountActivity extends AppCompatActivity {
+
+
+
     private FirebaseAuth mAuth;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference postref = database.getReference("Posts");
@@ -57,7 +69,7 @@ public class AccountActivity extends AppCompatActivity {
     private StorageReference mStorageRef4;
     private ListView Post_listview;
     private CircleImageView Accountprofile;
-    private ImageView AccountCover;
+    private LinearLayout AccountCover;
     private TextView Accountname;
     private TextView useraddresse;
     private TextView usergender;
@@ -85,6 +97,8 @@ public class AccountActivity extends AppCompatActivity {
     private  String name;
     private  String email;
     private String addresse;
+    private ScrollView scrollView;
+    private LinearLayout linearLayout;
 
 
 
@@ -92,7 +106,7 @@ public class AccountActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
-
+        ButterKnife.bind(this);
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -102,8 +116,9 @@ public class AccountActivity extends AppCompatActivity {
         mStorageRef4 = FirebaseStorage.getInstance().getReference("GroupImages/");
 
         Post_listview=(ListView)findViewById(R.id.accountPost_listview);
+
         Accountprofile=(CircleImageView) findViewById(R.id.Accountprofile);
-        AccountCover=(ImageView)findViewById(R.id.Accountcover);
+        AccountCover=findViewById(R.id.Accountcover);
         Accountname=(TextView) findViewById(R.id.Accountname);
         userdate=(TextView) findViewById(R.id.userdate);
         useraddresse=(TextView) findViewById(R.id.userAdresse);
@@ -116,7 +131,10 @@ public class AccountActivity extends AppCompatActivity {
         txtclose =(TextView) myDialog.findViewById(R.id.txtclose);
         submitpassword=(EditText)myDialog.findViewById(R.id.passwordfield);
         btnsubmitpass = (Button)myDialog. findViewById(R.id.btnsubmitpassword);
-        edituseremail=(EditText) findViewById(R.id.EdituserEmail);
+
+
+
+      /*  edituseremail=(EditText) findViewById(R.id.EdituserEmail);
 
         editAccountname=(EditText) findViewById(R.id.editAccountname);
         editAccountname.setVisibility(View.GONE);
@@ -128,6 +146,7 @@ public class AccountActivity extends AppCompatActivity {
         btnsubmitupdate.setVisibility(View.GONE);
         btncancelupdate=(Button) findViewById(R.id.btncancelupdate);
         btncancelupdate.setVisibility(View.GONE);
+        */
         Addfriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,7 +161,7 @@ public class AccountActivity extends AppCompatActivity {
                          myDialog.dismiss();
                      }
                  });
-
+/*
                  btnsubmitpass.setOnClickListener(new View.OnClickListener() {
                      @Override
                      public void onClick(View v) {
@@ -174,7 +193,7 @@ public class AccountActivity extends AppCompatActivity {
                    }
 
                      }
-                 });
+                 });*/
                  myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                  myDialog.show();
 
@@ -217,7 +236,7 @@ public class AccountActivity extends AppCompatActivity {
 
              }
             }});
-        btnsubmitupdate.setOnClickListener(new View.OnClickListener() {
+/*        btnsubmitupdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(validate()){
@@ -236,7 +255,7 @@ public class AccountActivity extends AppCompatActivity {
                 Addfriend.setEnabled(true);
             }
         });
-
+*/
     }
 
 
@@ -269,7 +288,7 @@ public class AccountActivity extends AppCompatActivity {
                 IssentRequest(userID);
                 GetProfileData(userID);
             }
-           // GetProfilePosts();
+            GetProfilePosts();
         }
     }
 
@@ -282,7 +301,7 @@ public class AccountActivity extends AppCompatActivity {
 
 
         final String username="aya";
-        final String profileId="cR6RdBeU5Lg7CEFLhEniBT16ZxM2";
+        final String profileId="djm6VqH1f1QlIW8FeEMGAjsRaVf2";
         postref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -446,7 +465,7 @@ public class AccountActivity extends AppCompatActivity {
                            final Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                            DisplayMetrics dm = new DisplayMetrics();
                            getWindowManager().getDefaultDisplay().getMetrics(dm);
-                           AccountCover.setImageBitmap(bm);
+                          // AccountCover.setBackground(bm);
 
                        }
                    });
@@ -510,7 +529,7 @@ public class AccountActivity extends AppCompatActivity {
            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                FriendRequest friendRequest = dataSnapshot.getValue(FriendRequest.class);
                if (TextUtils.equals(friendRequest.getSenderid(), mAuth.getCurrentUser().getUid()) && TextUtils.equals(friendRequest.getRecieverid(), userID) && friendRequest.getState() == 1) {
-                   Addfriend.setImageResource(R.drawable.addfriendd);
+                   Addfriend.setImageResource(R.drawable.add_friend);
                    addfriendtext.setText("cancel request");
                    IsExist = true;
                }
