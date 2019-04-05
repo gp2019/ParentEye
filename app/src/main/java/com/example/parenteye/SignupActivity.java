@@ -75,6 +75,7 @@ public class SignupActivity extends AppCompatActivity {
     private String name,Email,password,Reenterpass,Addresse;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference UserRef = database.getReference("Users");
+    DatabaseReference galleryRef = database.getReference("Gallery");
 
 
     @Override
@@ -180,6 +181,10 @@ public class SignupActivity extends AppCompatActivity {
                       @Override
                       public void onComplete(@NonNull Task<Void> task) {
                           if(task.isSuccessful()){
+                              if(imagekey!=null){
+                                  AddtoGallery(mAuth.getCurrentUser().getUid(),imagekey,"1");
+                              }
+
                               dismissProgressDialog();
               Toast.makeText(SignupActivity.this,"Congratulation, Your Account Created Successfully",Toast.LENGTH_LONG).show();
                               Go_to_main();
@@ -391,6 +396,14 @@ public class SignupActivity extends AppCompatActivity {
                     });
                     */
         }
+    }
+  private void AddtoGallery(String ownerId,String photoId,String typeid){
+        // 1=user,2=post,3=comment
+        Users user=new Users();
+        user.setProfile_pic_id(photoId);
+        user.setRoleId(typeid);
+        galleryRef.child(ownerId).push().setValue(user);
+
     }
 
 }

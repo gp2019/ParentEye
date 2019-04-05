@@ -65,6 +65,8 @@ public class Create_Comment extends Activity {
     private int position;
     final long ONE_MEGABYTE = 1024 * 1024;
     private String CommentId,ContentComment;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference galleryRef = database.getReference("Gallery");
 
     @SuppressLint("ResourceType")
     @Override
@@ -409,4 +411,14 @@ public class Create_Comment extends Activity {
             return false;
         }
     }*/
+
+ //aya
+ private void AddtoGallery(String ownerId,String photoId,String typeid){
+     // 1=user,2=post,3=comment
+     Users user=new Users();
+     user.setProfile_pic_id(photoId);
+     user.setRoleId(typeid);
+     galleryRef.child(ownerId).push().setValue(user);
+
+ }
 }

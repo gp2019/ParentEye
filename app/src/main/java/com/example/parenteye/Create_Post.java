@@ -65,6 +65,8 @@ public class Create_Post extends Activity implements View.OnClickListener {
     private String ImageId;
     private StorageReference mStorageRef,mStorageRef2;
     final long ONE_MEGABYTE = 1024 * 1024;
+   FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference galleryRef = database.getReference("Gallery");
 
 
 

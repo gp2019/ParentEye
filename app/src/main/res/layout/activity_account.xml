@@ -1,235 +1,275 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollView01"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AccountActivity"
-    android:background="@color/white"
-    android:fillViewport="true">
+    android:orientation="vertical"
+    android:background="@drawable/background_gradient"
+    tools:context=".AccountActivity">
 
-
-
-    <LinearLayout
-        android:id="@+id/linerContent"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="405dp">
-
-        <LinearLayout
-            android:id="@+id/Accountcover"
-            android:layout_width="match_parent"
-            android:layout_height="350dp"
-            android:background="@drawable/gradientbackground"
-            android:orientation="vertical">
-
-            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/Accountprofile"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="90dp"
-                android:src="@drawable/user" />
-
-            <TextView
-                android:id="@+id/Accountname"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="6dp"
-                android:textColor="@color/black"
-                android:textSize="21sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/card_view"
-            android:layout_width="350dp"
-            android:layout_height="100dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="275dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:weightSum="3">
-                <LinearLayout
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent">
-
-                    <ImageView
-                        android:background="@drawable/round_edittext"
-                        android:id="@+id/addfriend"                        android:layout_width="50dp"
-                        android:layout_height="40dp"
-                        android:textSize="20sp"
-                        android:paddingTop="10dp"
-                        android:src="@drawable/add_friend"
-                        />
-
-                    <TextView
-                        android:id="@+id/addfriendtext"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Add Friend"
-                        android:textSize="16sp"
-                        />
-                </LinearLayout>
-                <LinearLayout
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent">
-
-                        />
-                    <ImageView
-                        android:background="@drawable/round_edittext"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:textSize="20sp"
-                        android:paddingTop="10dp"
-                        android:src="@drawable/friendship"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Friends"
-                        android:textSize="16sp"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent">
-                        />
-                    <ImageView
-                        android:background="@drawable/round_edittext"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:textStyle="bold"
-                        android:paddingTop="10dp"
-                        android:src="@drawable/gallery"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Photoes"
-                        android:textSize="16sp"/>
-                </LinearLayout>
-            </LinearLayout>
-
-        </android.support.v7.widget.CardView>
-        <View
-            android:layout_below="@id/card_view"
-            android:layout_width="match_parent"
-            android:layout_height="0.9dp"
-            android:background="#cdcdcd" />
-    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_gravity="center">
-        <LinearLayout
-            android:orientation="horizontal"
-            android:paddingLeft="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:src="@drawable/email"/>
-            <TextView
-                android:id="@+id/userEmail"
-                android:textStyle="bold"
-                android:layout_gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:text="ia8723052@gmail.com"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_marginTop="25dp"
-            android:orientation="horizontal"
-            android:paddingLeft="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:src="@drawable/candle"/>
-            <TextView
-                android:id="@+id/userdate"
-                android:textStyle="bold"
-                android:layout_gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:text="6/2/1997"/>
-        </LinearLayout>
+        android:gravity="center_horizontal">
 
-        <LinearLayout
-            android:layout_marginTop="25dp"
-            android:orientation="horizontal"
-            android:paddingLeft="15dp"
+        <ImageView
+            android:id="@+id/Accountcover"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:src="@drawable/placeholder"/>
+            android:layout_height="220dp"
+            android:src="@drawable/cover"
+            android:scaleType="centerCrop" />
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/Accountprofile"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/defaultprofile"
+            app:civ_border_width="2dp"
+            app:civ_border_color="#FF000000"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="-100dp"
+            android:scaleType="centerCrop"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
             <TextView
-                android:id="@+id/userAdresse"
-                android:textStyle="bold"
-                android:layout_gravity="center_vertical"
+                android:id="@+id/Accountname"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:text="Giza/cairo"/>
+                android:layout_height="match_parent"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:text="username"
+                android:textSize="30sp"/>
+            <EditText
+                android:id="@+id/editAccountname"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:padding="7dp"
+                android:background="@drawable/rectangleedittext"
+                android:layout_below="@id/Accountname"
+                android:textSize="30sp"/>
+
         </LinearLayout>
 
+</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp"
+        android:paddingLeft="40dp"
+        android:background="@drawable/custom_border">
         <LinearLayout
-            android:layout_marginTop="25dp"
-            android:orientation="horizontal"
-            android:paddingLeft="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:src="@drawable/boy"/>
-            <TextView
-                android:id="@+id/userGender"
-                android:textStyle="bold"
-                android:layout_gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:text="Male"/>
-        </LinearLayout>
-
-    </LinearLayout>
-
-        <View
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="0.7dp"
-            android:background="#cdcdcd" />
-
-           <ListView
-            android:id="@+id/accountPost_listview"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"/>
+            android:orientation="vertical"
+            android:layout_weight="1">
 
+            <ImageView
+                android:id="@+id/addfriend"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/addfriendd"/>
+            <TextView
+                android:id="@+id/addfriendtext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:text="Add Friend"
+                android:textStyle="bold" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+           android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:src="@drawable/followers2" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="Friends"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:src="@drawable/option4" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="More"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:layout_marginTop="10dp">
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/email2"/>
+        <TextView
+            android:id="@+id/userEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:textColor="#000"
+            android:textSize="20dp"
+         />
+        <EditText
+            android:padding="5dp"
+            android:id="@+id/EdituserEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:textSize="20dp"
+            android:background="@drawable/rectangleedittext"
+            />
+    </LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dp">
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/addresse2"/>
+    <TextView
+        android:id="@+id/userAdresse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:textSize="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp" />
+    <EditText
+        android:padding="5dp"
+        android:id="@+id/Edituseraddresse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:textSize="20sp"
+        android:background="@drawable/rectangleedittext" />
+</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="8dp">
+        <ImageView
+            android:id="@+id/birthday"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/dob"/>
+        <TextView
+        android:id="@+id/userdate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:textSize="18dp"
+        android:layout_marginTop="10dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="10dp">
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/gender"/>
+        <TextView
+            android:id="@+id/userGender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:textSize="18dp"
+            android:layout_marginTop="10dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+        <Button
+            android:id="@+id/btnsubmitupdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:text="Update"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/newbtnstyle"
+            android:textColor="@color/white"/>
+        <Button
+            android:id="@+id/btncancelupdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:text="cancel"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/newbtnstyle"
+            android:textColor="@color/white"/>
+        <ListView
+            android:id="@+id/accountPost_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></ListView>
 
     </LinearLayout>
-    </ScrollView>
+
+
+
+
+
+
+</LinearLayout>
+</ScrollView>
