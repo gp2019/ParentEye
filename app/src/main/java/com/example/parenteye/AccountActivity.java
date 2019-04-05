@@ -73,19 +73,20 @@ public class AccountActivity extends AppCompatActivity {
     ArrayList<custom_posts_returned> Page_posts=new ArrayList<custom_posts_returned>();
 
    private Dialog myDialog;
+   private Dialog updateprofileDialoge;
    private  TextView txtclose;
    private Button btnsubmitpass;
    private EditText submitpassword;
    private EditText edituseremail;
    private EditText editAccountname;
    private EditText Edituseraddresse;
-   private ImageView birthday;
    private Button btnsubmitupdate;
    private Button btncancelupdate;
     private  String name;
     private  String email;
     private String addresse;
     private ImageView gallery;
+    private TextView updatetextclose;
 
 
 
@@ -114,21 +115,18 @@ public class AccountActivity extends AppCompatActivity {
         addfriendtext=(TextView) findViewById(R.id.addfriendtext);
         myDialog = new Dialog(this);
         myDialog.setContentView(R.layout.custompopup);
+        updateprofileDialoge=new Dialog(this);
+        updateprofileDialoge.setContentView(R.layout.updateprofilepopup);
         txtclose =(TextView) myDialog.findViewById(R.id.txtclose);
+        updatetextclose=(TextView) updateprofileDialoge.findViewById(R.id.txtclose);
         submitpassword=(EditText)myDialog.findViewById(R.id.passwordfield);
         btnsubmitpass = (Button)myDialog. findViewById(R.id.btnsubmitpassword);
-        edituseremail=(EditText) findViewById(R.id.EdituserEmail);
+        edituseremail=(EditText) updateprofileDialoge.findViewById(R.id.EdituserEmail);
 
-        editAccountname=(EditText) findViewById(R.id.editAccountname);
-        editAccountname.setVisibility(View.GONE);
-        Edituseraddresse=(EditText)findViewById(R.id.Edituseraddresse);
-        Edituseraddresse.setVisibility(View.GONE);
-        birthday=(ImageView) findViewById(R.id.birthday);
-        birthday.setEnabled(false);
-        btnsubmitupdate=(Button) findViewById(R.id.btnsubmitupdate);
-        btnsubmitupdate.setVisibility(View.GONE);
-        btncancelupdate=(Button) findViewById(R.id.btncancelupdate);
-        btncancelupdate.setVisibility(View.GONE);
+        editAccountname=(EditText) updateprofileDialoge.findViewById(R.id.editAccountname);
+        Edituseraddresse=(EditText) updateprofileDialoge.findViewById(R.id.Edituseraddresse);
+        btnsubmitupdate=(Button) updateprofileDialoge. findViewById(R.id.btnsubmitupdate);
+        btncancelupdate=(Button) updateprofileDialoge.findViewById(R.id.btncancelupdate);
         gallery=(ImageView) findViewById(R.id.gallery);
         Addfriend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,6 +140,12 @@ public class AccountActivity extends AppCompatActivity {
                      @Override
                      public void onClick(View v) {
                          myDialog.dismiss();
+                     }
+                 });
+                 updatetextclose.setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick(View v) {
+                         updateprofileDialoge.dismiss();
                      }
                  });
 
@@ -159,8 +163,9 @@ public class AccountActivity extends AppCompatActivity {
                                if(TextUtils.equals(dataSnapshot.getValue(Users.class).getUserPassword(),userpass)){
                                    myDialog.dismiss();
                                    submitpassword.setText("");
-                                   prepareUpdate();
-                                   Addfriend.setEnabled(false);
+                                   putuserdatainupdateform();
+                                   updateprofileDialoge.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                   updateprofileDialoge.show();
 
                                }
                                else{
@@ -227,8 +232,7 @@ public class AccountActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(validate()){
                     updateInfo();
-
-
+                    updateprofileDialoge.dismiss();
                 }
 
             }
@@ -237,8 +241,7 @@ public class AccountActivity extends AppCompatActivity {
         btncancelupdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                returntoinfo();
-                Addfriend.setEnabled(true);
+                updateprofileDialoge.dismiss();
             }
         });
         gallery.setOnClickListener(new View.OnClickListener() {
@@ -550,30 +553,6 @@ public class AccountActivity extends AppCompatActivity {
            }
        });
    }
-   private void prepareUpdate(){
-        if(mAuth.getCurrentUser()!=null) {
-            Accountname.setVisibility(View.GONE);
-            editAccountname.setVisibility(View.VISIBLE);
-            editAccountname.setText(Accountname.getText().toString());
-            userEmail.setVisibility(View.GONE);
-            edituseremail.setVisibility(View.VISIBLE);
-            edituseremail.setText(userEmail.getText().toString());
-            useraddresse.setVisibility(View.GONE);
-            Edituseraddresse.setVisibility(View.VISIBLE);
-            Edituseraddresse.setText(useraddresse.getText().toString());
-            birthday.setImageResource(R.drawable.calender);
-            birthday.setEnabled(true);
-            btnsubmitupdate.setVisibility(View.VISIBLE);
-            btncancelupdate.setVisibility(View.VISIBLE);
-
-        }
-
-
- /*Intent updateprofileintent=new Intent(AccountActivity.this,UpdateProfileActivity.class);
- startActivity(updateprofileintent);
- finish();
- */
-   }
     private boolean validate(){
         boolean valid=true;
         name=editAccountname.getText().toString().trim();
@@ -634,14 +613,14 @@ public class AccountActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if (task.isSuccessful()) {
+                                                        updateprofileDialoge.dismiss();
                                                         Toast.makeText(AccountActivity.this, "  your info update successfully", Toast.LENGTH_LONG).show();
-                                                        returntoinfo();
-                                                        Addfriend.setEnabled(true);
+
+
                                                     } else {
                                                         Toast.makeText(AccountActivity.this, "Error !! "+task.getException(), Toast.LENGTH_LONG).show();
+                                                        updateprofileDialoge.dismiss();
 
-                                                        returntoinfo();
-                                                        Addfriend.setEnabled(true);
                                                     }
                                                 }
                                             });
@@ -673,21 +652,12 @@ public class AccountActivity extends AppCompatActivity {
             });
         }
  }
- private void returntoinfo(){
-     editAccountname.setVisibility(View.GONE);
-     Accountname.setVisibility(View.VISIBLE);
-     edituseremail.setVisibility(View.GONE);
-     userEmail.setVisibility(View.VISIBLE);
-     Edituseraddresse.setVisibility(View.GONE);
-     useraddresse.setVisibility(View.VISIBLE);
-     birthday.setImageResource(R.drawable.dob);
-     birthday.setEnabled(false);
-     btnsubmitupdate.setVisibility(View.GONE);
-     btncancelupdate.setVisibility(View.GONE);
-     GetProfileData(mAuth.getCurrentUser().getUid());
-
-
+ private void putuserdatainupdateform(){
+     editAccountname.setText(Accountname.getText().toString());
+     edituseremail.setText(userEmail.getText().toString());
+     Edituseraddresse.setText(useraddresse.getText().toString());
  }
+
 
 
 

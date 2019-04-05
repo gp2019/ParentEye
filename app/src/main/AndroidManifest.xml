@@ -18,7 +18,6 @@
         android:theme="@style/AppTheme">
         <activity android:name=".GalleryActivity"></activity>
         <activity android:name=".FriendRequestActivity" />
-        <activity android:name=".UpdateProfileActivity" />
         <activity android:name=".MyChildrenActivity" />
         <activity android:name=".ViewImage" />
         <activity android:name=".Edit_Comment" />
