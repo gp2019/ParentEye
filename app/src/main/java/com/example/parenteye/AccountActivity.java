@@ -15,10 +15,13 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -87,8 +90,12 @@ public class AccountActivity extends AppCompatActivity {
     private String addresse;
     private ImageView gallery;
     private TextView updatetextclose;
-
-
+    private Spinner spinner1;
+    String[] cities = new String[]{"Cairo", "Alexandria", "Giza","Port Said","Suez","Luxor","al-Mansura","El-Mahalla El-Kubra","Tanta","Asyut",
+    "tIsmailia","Fayyum","Zagazig"," Aswan","Damietta","Damanhur","al-Minya","Beni Suef"," Qena","Sohag","Hurghada","6th of October City","Shibin El Kom",
+    "Banha"," Kafr el-Sheikh","Arish","Mallawi","10th of Ramadan City","Bilbais","Marsa Matruh","Idfu","Mit Ghamr","Al-Hamidiyya","Desouk",
+    "Qalyub","Abu Kabir","Kafr el-Dawwar","Girga","Akhmim","Matareya"};
+    private  ProgressDialog progressdialogue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,10 +131,27 @@ public class AccountActivity extends AppCompatActivity {
         edituseremail=(EditText) updateprofileDialoge.findViewById(R.id.EdituserEmail);
 
         editAccountname=(EditText) updateprofileDialoge.findViewById(R.id.editAccountname);
-        Edituseraddresse=(EditText) updateprofileDialoge.findViewById(R.id.Edituseraddresse);
+      //  Edituseraddresse=(EditText) updateprofileDialoge.findViewById(R.id.Edituseraddresse);
         btnsubmitupdate=(Button) updateprofileDialoge. findViewById(R.id.btnsubmitupdate);
         btncancelupdate=(Button) updateprofileDialoge.findViewById(R.id.btncancelupdate);
         gallery=(ImageView) findViewById(R.id.gallery);
+        spinner1=(Spinner)  updateprofileDialoge.findViewById(R.id.spinner1);
+
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, cities);
+        spinner1.setAdapter(adapter);
+        spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String city=(String)parent.getItemAtPosition(position);
+                addresse="Egypt/"+city;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                addresse="Egypt";
+            }
+        });
         Addfriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,6 +163,7 @@ public class AccountActivity extends AppCompatActivity {
                  txtclose.setOnClickListener(new View.OnClickListener() {
                      @Override
                      public void onClick(View v) {
+                         dismissProgressDialog();
                          myDialog.dismiss();
                      }
                  });
@@ -231,8 +256,8 @@ public class AccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(validate()){
+                    showDialogue();
                     updateInfo();
-                    updateprofileDialoge.dismiss();
                 }
 
             }
@@ -241,6 +266,7 @@ public class AccountActivity extends AppCompatActivity {
         btncancelupdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dismissProgressDialog();
                 updateprofileDialoge.dismiss();
             }
         });
@@ -557,7 +583,7 @@ public class AccountActivity extends AppCompatActivity {
         boolean valid=true;
         name=editAccountname.getText().toString().trim();
         email=edituseremail.getText().toString().trim();
-        addresse=Edituseraddresse.getText().toString().trim();
+      //  addresse=Edituseraddresse.getText().toString().trim();
         if(name.isEmpty()){
             editAccountname.setError("name is required");
             valid=false;
@@ -577,10 +603,14 @@ public class AccountActivity extends AppCompatActivity {
         if(email.contains(" ")){
             email = email.replaceAll("\\s","");
         }
-        if(addresse.isEmpty()){
+
+       /* if(addresse.isEmpty()){
             Edituseraddresse.setError("address is required");
             valid=false;
-        }
+        }*/
+       if(addresse==null){
+           Toast.makeText(AccountActivity.this,"address is required",Toast.LENGTH_LONG).show();
+       }
         if(userdate.getText().toString().trim().isEmpty()){
             userdate.setError("Date of birth is required");
             valid=false;
@@ -613,11 +643,13 @@ public class AccountActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if (task.isSuccessful()) {
+                                                        dismissProgressDialog();
                                                         updateprofileDialoge.dismiss();
                                                         Toast.makeText(AccountActivity.this, "  your info update successfully", Toast.LENGTH_LONG).show();
 
 
                                                     } else {
+                                                        dismissProgressDialog();
                                                         Toast.makeText(AccountActivity.this, "Error !! "+task.getException(), Toast.LENGTH_LONG).show();
                                                         updateprofileDialoge.dismiss();
 
@@ -627,6 +659,7 @@ public class AccountActivity extends AppCompatActivity {
 
                                         }
                                         else{
+                                            dismissProgressDialog();
                                             Toast.makeText(AccountActivity.this, "Error "+task.getException(), Toast.LENGTH_LONG).show();
 
                                             System.out.println("Error "+task.getException());
@@ -636,6 +669,7 @@ public class AccountActivity extends AppCompatActivity {
 
                             }
                             else{
+                                dismissProgressDialog();
                                 Toast.makeText(AccountActivity.this, "not sign in !! "+task.getException(), Toast.LENGTH_LONG).show();
 
                             }
@@ -655,8 +689,27 @@ public class AccountActivity extends AppCompatActivity {
  private void putuserdatainupdateform(){
      editAccountname.setText(Accountname.getText().toString());
      edituseremail.setText(userEmail.getText().toString());
-     Edituseraddresse.setText(useraddresse.getText().toString());
+   //  Edituseraddresse.setText(useraddresse.getText().toString());
  }
+    private void showDialogue(){
+        if(progressdialogue==null){
+            progressdialogue=new ProgressDialog(this);
+            progressdialogue.setTitle("loading...");
+            progressdialogue.setMessage("please wait...");
+
+        }
+        progressdialogue.show();
+    }
+    private void dismissProgressDialog() {
+        if (progressdialogue != null && progressdialogue.isShowing()) {
+            progressdialogue.dismiss();
+        }
+    }
+    @Override
+    protected void onDestroy() {
+        dismissProgressDialog();
+        super.onDestroy();
+    }
 
 
 

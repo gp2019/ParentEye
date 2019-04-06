@@ -15,11 +15,14 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,7 +56,7 @@ public class SignupActivity extends AppCompatActivity {
     private EditText signup_email;
     private EditText signup_password;
     private EditText signup_reEnterpassword;
-    private EditText signup_addresse;
+   // private EditText signup_addresse;
     private Integer filldate=0;
     private TextView date;
     private Integer currentyear;
@@ -76,6 +79,11 @@ public class SignupActivity extends AppCompatActivity {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference UserRef = database.getReference("Users");
     DatabaseReference galleryRef = database.getReference("Gallery");
+    private Spinner spinner1;
+    String[] cities = new String[]{"Cairo", "Alexandria", "Giza","Port Said","Suez","Luxor","al-Mansura","El-Mahalla El-Kubra","Tanta","Asyut",
+            "tIsmailia","Fayyum","Zagazig"," Aswan","Damietta","Damanhur","al-Minya","Beni Suef"," Qena","Sohag","Hurghada","6th of October City","Shibin El Kom",
+            "Banha"," Kafr el-Sheikh","Arish","Mallawi","10th of Ramadan City","Bilbais","Marsa Matruh","Idfu","Mit Ghamr","Al-Hamidiyya","Desouk",
+            "Qalyub","Abu Kabir","Kafr el-Dawwar","Girga","Akhmim","Matareya"};
 
 
     @Override
@@ -89,11 +97,26 @@ public class SignupActivity extends AppCompatActivity {
         signup_password=(EditText) findViewById(R.id.signup_password);
         signup_reEnterpassword=(EditText) findViewById(R.id.signup_reenterpassword);
         signup_login=(TextView) findViewById(R.id.signup_login);
-        signup_addresse=(EditText)findViewById(R.id.addresse_edittext);
+       // signup_addresse=(EditText)findViewById(R.id.addresse_edittext);
         date=(TextView) findViewById(R.id.date);
         radio_group_gender=(RadioGroup) findViewById(R.id.radipgp_gender);
         circleimage=(CircleImageView) findViewById(R.id.profile_image);
         signup=(Button) findViewById(R.id.signup_btn);
+        spinner1=(Spinner)findViewById(R.id.spinner1);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, cities);
+        spinner1.setAdapter(adapter);
+        spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String city=(String)parent.getItemAtPosition(position);
+                Addresse="Egypt/"+city;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Addresse="Egypt";
+            }
+        });
 
 
         date.setOnClickListener(new View.OnClickListener() {
@@ -254,7 +277,7 @@ public class SignupActivity extends AppCompatActivity {
        Email=signup_email.getText().toString().trim();
        password=signup_password.getText().toString().trim();
        Reenterpass=signup_reEnterpassword.getText().toString().trim();
-       Addresse=signup_addresse.getText().toString().trim();
+      // Addresse=signup_addresse.getText().toString().trim();
        if(name.isEmpty()){
            signup_username.setError("Username can not be empty");
            valid=false;
@@ -286,7 +309,7 @@ public class SignupActivity extends AppCompatActivity {
           signup_reEnterpassword.setError("The two password should be matched");
           valid=false;
       }
-      if(Addresse.isEmpty()){
+     /* if(Addresse.isEmpty()){
           signup_addresse.setError("Addresse can not be empty");
           valid=false;
       }
@@ -294,7 +317,7 @@ public class SignupActivity extends AppCompatActivity {
             signup_addresse.setError("Addresse can not be that long");
             valid=false;
         }
-
+*/
        if(filldate==0){
            date.setError("Date of birth is mandatory");
            valid=false;

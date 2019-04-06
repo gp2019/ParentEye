@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button login_btn;
     private FirebaseAuth mAuth;
     private TextView login_register;
+    private String Email,password;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,13 +39,11 @@ public class LoginActivity extends AppCompatActivity {
         login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email=login_email.getText().toString();
-                final String password=login_password.getText().toString();
-                if(!TextUtils.isEmpty(email)&&!TextUtils.isEmpty(password)){
+                if(validate()){
                     final ProgressDialog progressdialogue=new ProgressDialog(LoginActivity.this);
                     progressdialogue.setTitle("loading...");
                     progressdialogue.show();
-                    mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    mAuth.signInWithEmailAndPassword(Email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                               if(task.isSuccessful()){
@@ -59,10 +59,7 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     });
                 }
-                else{
-                    Toast.makeText(LoginActivity.this,"Please enter both email and password",Toast.LENGTH_LONG).show();
 
-                }
             }
         });
         login_register.setOnClickListener(new View.OnClickListener() {
@@ -98,4 +95,30 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
+
+    private boolean validate(){
+        boolean valid=true;
+        Email=login_email.getText().toString().trim();
+        password=login_password.getText().toString().trim();
+
+        if(Email.isEmpty()){
+            login_email.setError("Email is mandatory, it can not be empty");
+            valid=false;
+        }
+        if(Email.contains(" ")){
+            Email = Email.replaceAll("\\s","");
+        }
+        if(!Patterns.EMAIL_ADDRESS.matcher(Email).matches()){
+            login_email.setError("Email format not valid , please enter valid email");
+            valid=false;
+        }
+        if(password.isEmpty()){
+            login_password.setError("Password can not be empty");
+            valid=false;
+        }
+
+        return valid;
+
+
+    }
 }
