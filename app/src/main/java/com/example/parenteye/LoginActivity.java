@@ -83,19 +83,6 @@ public class LoginActivity extends AppCompatActivity {
         }
 
     }
-
-    private void GoHome(){
-        Intent login_main=new Intent(LoginActivity.this,MainActivity.class);
-        startActivity(login_main);
-        finish();
-    }
-    private void GoSignupPage(){
-        Intent login_signup=new Intent(LoginActivity.this,SignupActivity.class);
-        startActivity(login_signup);
-        finish();
-    }
-
-
     private boolean validate(){
         boolean valid=true;
         Email=login_email.getText().toString().trim();
@@ -121,4 +108,19 @@ public class LoginActivity extends AppCompatActivity {
 
 
     }
+
+    private void GoHome(){
+        Intent login_main=new Intent(LoginActivity.this,MainActivity.class);
+        startActivity(login_main);
+        finish();
+    }
+
+    private void GoSignupPage(){
+        Intent login_signup=new Intent(LoginActivity.this,SignupActivity.class);
+        startActivity(login_signup);
+        finish();
+    }
+
+
+
 }
