@@ -59,13 +59,12 @@
         android:textSize="18dp"
         android:layout_marginTop="50dp"
         android:textStyle="bold" />
-    <EditText
-        android:id="@+id/Edituseraddresse"
-        android:layout_width="match_parent"
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#fff"
-        android:padding="10dp"
-        android:background="@drawable/rectangleedittext" />
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown"/>
 
 
     <LinearLayout
