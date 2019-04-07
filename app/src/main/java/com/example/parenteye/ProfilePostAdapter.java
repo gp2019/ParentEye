@@ -9,26 +9,41 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.like.LikeButton;
 
 import java.util.ArrayList;
 
-public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned> {
+public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned>{
     int count=0;
+    ArrayList<PostComments> comments_of_post=new ArrayList<>(  );
+
+    private Clipboard clipboard= new Clipboard();
+    private  DatabaseReference dbRef,dbRef2;
     private  Activity contextAdapter;
     final long ONE_MEGABYTE = 1024 * 1024;
     private StorageReference userStorageRef= FirebaseStorage.getInstance().getReference("UserImages/");
@@ -36,12 +51,13 @@ public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned> {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference userRef = database.getReference("Users");
     ArrayList<custom_posts_returned> post_returnedd;
+
+
     public ProfilePostAdapter(Activity context, ArrayList<custom_posts_returned> post_returned){
 
         super(context,0,post_returned);
         post_returnedd=post_returned;
         this.contextAdapter=context;
-
     }
 
     @Override
@@ -52,7 +68,7 @@ public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned> {
     }
 
     @NonNull
-    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable final View convertView, @NonNull ViewGroup parent) {
 
         View postlist=convertView;
 
@@ -98,7 +114,7 @@ public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned> {
 
 
 
-        TextView postDescription= postlist.findViewById(R.id.postDescription);
+        final TextView postDescription= postlist.findViewById(R.id.postDescription);
         if(post.getPost_text()!=null&&!(post.getPost_text().isEmpty())){
 
             postDescription.setVisibility(View.VISIBLE);
@@ -179,10 +195,22 @@ public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned> {
             postimage.setVisibility(View.GONE);
         }
 
+        final TextView countComment = postlist.findViewById(R.id.textComment);
+
+        if (post_returnedd.get(position).getCountComment()==0){
+            countComment.setVisibility(View.GONE);
+        }
+        else {
+
+            countComment.setVisibility(View.VISIBLE);
+            countComment.setText(post_returnedd.get(position).getCountComment()+" Comment");
+
+        }
+
         final ImageView btLike=postlist.findViewById(R.id.btLike);
 
 
-        final ImageView btComment=postlist.findViewById(R.id.btcomment);
+        final ImageView btComment=postlist.findViewById(R.id.btComment);
         btComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -193,10 +221,101 @@ public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned> {
             }
         });
 
+        final ImageView three_dots = postlist.findViewById(R.id.three_dots);
+
+        three_dots.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                 FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+                if (post_returnedd.get(position).getpost_owner_ID().equals(currentUser.getUid())) {
+                    PopupMenu popup = new PopupMenu(contextAdapter, three_dots);
+                    popup.inflate(R.menu.edit_delet);
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.Edit:
+                                    Toast.makeText(contextAdapter, "Edit " + position, Toast.LENGTH_LONG).show();
+                                    break;
+                                case R.id.Delete:
+                                    DeletPost(position, post_returnedd.get(position).getPost_Id());
+                                    break;
+                                case R.id.cancel:
+                                    //handle menu3 click
+                                    break;
+                            }
+                            return false;
+                        }
+                    });
+                    popup.show();
+                }
+                else {
+                    PopupMenu popup = new PopupMenu(contextAdapter, three_dots);
+                    popup.inflate(R.menu.copy_menu);
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.Copy:
+                                    clipboard.setClipboard(contextAdapter,postDescription.getText().toString());
+                                    Toast.makeText(contextAdapter, "Copied to clipboard" , Toast.LENGTH_LONG).show();
+                                    break;
+                            }
+                            return false;
+                        }
+                    });
+                    popup.show();
+                }
+            }
+        });
 
         return postlist;
 
 
     }
 
+    private  void DeletPost(final int position, final String postId) {
+        dbRef= FirebaseDatabase.getInstance().getReference().child("Posts");
+        dbRef2= FirebaseDatabase.getInstance().getReference().child("CommentsPost");
+
+        dbRef2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                comments_of_post.clear();
+                for (DataSnapshot commentSnapshot : dataSnapshot.getChildren()) {
+                    PostComments postComments = commentSnapshot.getValue( PostComments.class );
+
+                    if (postComments.getPostId()!=null){
+                        if(postComments.getPostId().equals(postId)){
+                            dbRef2.child(postComments.getCommentID()).removeValue();
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        dbRef.child( post_returnedd.get(position).getPost_Id() ).removeValue();
+
+    }
+
+
+    public void setClipboard(Context context, String text) {
+        if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
+            android.text.ClipboardManager clipboard = (android.text.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+            clipboard.setText(text);
+        } else {
+            android.content.ClipboardManager clipboard = (android.content.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+            android.content.ClipData clip = android.content.ClipData.newPlainText("Copied Text", text);
+            clipboard.setPrimaryClip(clip);
+        }
+    }
 }

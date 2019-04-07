@@ -218,7 +218,7 @@ public class Create_Post extends Activity implements View.OnClickListener {
 
             String Post_ID= dbRef.push().getKey();
 
-            Posts posts = new Posts(Post_ID,userId,new getCurrentTime().getDateTime(),typePost,typePost,writePost.getText().toString(),hasImage,imagekey);
+            Posts posts = new Posts(Post_ID,userId,new getCurrentTime().getDateTime(),typePost,typePost,writePost.getText().toString(),hasImage,imagekey,0);
 
             dbRef.child(Post_ID).setValue(posts).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override

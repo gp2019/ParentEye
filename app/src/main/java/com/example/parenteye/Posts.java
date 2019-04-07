@@ -9,8 +9,9 @@ public class Posts {
     private String postcontent;    //it will be null if post has image only
     private boolean hasimage;       //1 if post contain image and 0 if post not contain image
     private String imageId;        //image id if post has image and it will be null if post do not have image
+    private int countComment;
 
-    public Posts(String postId ,String userId, String postdate, String placeTypeId, String placeId, String postcontent, boolean hasimage, String imageId) {
+    public Posts(String postId ,String userId, String postdate, String placeTypeId, String placeId, String postcontent, boolean hasimage, String imageId,int countComment) {
         this.postId = postId;
         this.userId = userId;
         this.postdate = postdate;
@@ -19,6 +20,7 @@ public class Posts {
         this.postcontent = postcontent;
         this.hasimage = hasimage;
         this.imageId = imageId;
+        this.countComment=countComment;
     }
 
     public Posts(){
@@ -55,6 +57,11 @@ public class Posts {
     public void setImageId(String imageId) {
         this.imageId = imageId;
     }
+    public int getCountComment() {
+        return countComment;
+    }
+
+
 
     public String getPostId() {
         return postId;
@@ -86,5 +93,8 @@ public class Posts {
 
     public String getImageId() {
         return imageId;
+    }
+    public void setCountComment(int countComment) {
+        this.countComment = countComment;
     }
 }

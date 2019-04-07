@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class custom_posts_returned {
     private String post_Id;
+    private int countComment;
     private String post_owner_name;
     private String post_text;
     private String post_owner_ID;
@@ -70,6 +71,13 @@ public class custom_posts_returned {
         return post_image;
     }
 
+    public int getCountComment() {
+        return countComment;
+    }
+
+    public void setCountComment(int countComment) {
+        this.countComment = countComment;
+    }
     public Date getPost_date() {
         return post_date;
     }

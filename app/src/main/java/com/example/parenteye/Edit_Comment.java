@@ -83,6 +83,12 @@ public class Edit_Comment extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        GoComment();
+    }
+
+    @Override
     public void onClick(View view) {
 
         int id=view.getId();
@@ -98,10 +104,10 @@ public class Edit_Comment extends AppCompatActivity implements View.OnClickListe
 
     private void UpdateComment(){
         if (EditComment.getText().toString().trim().length()!=0) {
-            Intent intent = new Intent( Edit_Comment.this, Create_Comment.class );
-            intent.putExtra( "CommentId",CommentId );
-            intent.putExtra( "CommentContent",EditComment.getText().toString() );
-            startActivity( intent );
+            Intent go_create_comment = new Intent( Edit_Comment.this, Create_Comment.class );
+            go_create_comment.putExtra( "CommentId",CommentId );
+            go_create_comment.putExtra( "CommentContent",EditComment.getText().toString() );
+            startActivity( go_create_comment );
             finish();
         }
 

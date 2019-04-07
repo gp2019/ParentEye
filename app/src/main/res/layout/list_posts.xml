@@ -2,10 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/tools"
     android:background="@color/white"
     android:orientation="vertical"
-    android:padding="10dp">
+    app:ignore="NamespaceTypo">
 
 
     <android.support.v7.widget.CardView
@@ -49,6 +50,7 @@
                android:orientation="vertical">
 
                <ImageView
+                   android:id="@+id/three_dots"
                    android:layout_width="40dp"
                    android:layout_height="25dp"
                    android:layout_alignParentTop="true"
@@ -60,12 +62,12 @@
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:textSize="18sp"
-                   android:layout_marginTop="25dp"
+                   android:layout_marginTop="15dp"
                    android:textColor="@android:color/black"
                    android:textStyle="bold"
                    android:textAlignment="textStart"/>
                <LinearLayout
-                   android:layout_marginTop="25dp"
+                   android:layout_marginTop="10dp"
                    android:layout_below="@id/postowner"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
@@ -95,14 +97,16 @@
            android:layout_height="wrap_content"
            android:textSize="20sp"
            android:textColor="@android:color/black"
-           android:layout_marginLeft="3dp"
-           android:layout_marginRight="3dp"
+           android:layout_marginLeft="10dp"
+           android:layout_marginRight="10dp"
            android:padding="2dp"/>
        <ImageView
            android:id="@+id/post_image"
            android:layout_width="match_parent"
            android:layout_height="200dp"
            android:layout_margin="3dp"
+           android:layout_marginLeft="10dp"
+           android:layout_marginRight="10dp"
            android:background="@drawable/photo"
            android:adjustViewBounds="true"
            android:scaleType="centerCrop"/>
@@ -110,7 +114,9 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
 
             <TextView
                 android:id="@+id/textLike"
@@ -119,6 +125,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:textSize="16sp"
+                android:text="like"
                 android:textColor="@color/black"
                 android:layout_centerVertical="true"
              />
@@ -131,77 +138,55 @@
                 android:layout_margin="8dp"
                 android:textSize="16sp"
                 android:textColor="@color/black"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                />
 
-            <TextView
-                android:id="@+id/textShare"
-                android:layout_alignParentRight="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:textSize="16sp"
-                android:textColor="@color/black"
-                android:layout_centerVertical="true" />
 
         </RelativeLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0.7dp"
-            android:background="#777"
+            android:background="#888"
             />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal">
+
 
             <ImageView
                 android:id="@+id/btLike"
-                android:layout_marginStart="20dp"
-                android:layout_width="35dp"
+                android:layout_width="0dp"
                 android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:background="@drawable/heart" />
-
+                android:layout_weight="1"
+                android:src="@drawable/heart"
+                android:layout_marginTop="2dp"
+                android:layout_alignParentStart="true" />
 
             <View
-                android:layout_width="0.5dp"
-                android:layout_height="55dp"
-                android:layout_centerInParent="true"
-                android:layout_marginEnd="40dp"
-                android:background="#777"
-                />
-            <ImageView
-                android:id="@+id/btcomment"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginEnd="20dp"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:background="@drawable/comment"/>
-<!--
-            <View
-                android:layout_width="0.5dp"
-                android:layout_height="55dp"
-                android:layout_toEndOf="@id/btcomment"
-                android:layout_marginLeft="40dp"
+                android:layout_width="0.7dp"
+                android:layout_height="match_parent"
                 android:background="#777"
                 />
 
             <ImageView
-                android:id="@+id/btShare"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_width="30dp"
+                android:id="@+id/btComment"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="30dp"
-                android:layout_marginEnd="20dp"
-                android:background="@drawable/share"/>
--->
-        </RelativeLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.7dp"
-            android:background="#777" />
+                android:layout_marginTop="3dp"
+                android:src="@drawable/comment"
+                android:layout_alignParentEnd="true" />
+
+
+        </LinearLayout>
+
    </LinearLayout>
 
     </android.support.v7.widget.CardView>

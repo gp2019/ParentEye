@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -43,11 +44,11 @@ import java.util.UUID;
 
 import static android.support.constraint.Constraints.TAG;
 
-public class Create_Comment extends Activity {
+public class Create_Comment extends AppCompatActivity {
     private Uri filepath;
     private FirebaseAuth mAuth;
     ProgressBar progressBar;
-    DatabaseReference dbRef,dbRef2,dbRef3;
+    DatabaseReference dbRef,dbRef2,dbRef3,dbRef4;
     ArrayList<PostComments> comments_of_post=new ArrayList<>(  );
     PostComments postComments;
     private RecyclerView recyclerView;
@@ -65,10 +66,11 @@ public class Create_Comment extends Activity {
     private int position;
     final long ONE_MEGABYTE = 1024 * 1024;
     private String CommentId,ContentComment;
+    private Clipboard clipboard = new Clipboard();
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference galleryRef = database.getReference("Gallery");
 
-    @SuppressLint("ResourceType")
+    @SuppressLint({"ResourceType", "ClickableViewAccessibility"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -84,10 +86,11 @@ public class Create_Comment extends Activity {
         writeComment=findViewById( R.id.writeComment );
         mStorageRef = FirebaseStorage.getInstance().getReference();
         registerForContextMenu(recyclerView);
-        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(Create_Comment.this));
+        recyclerView.setHasFixedSize(true);
         dbRef2= FirebaseDatabase.getInstance().getReference().child("CommentsPost");
         dbRef3= FirebaseDatabase.getInstance().getReference().child("ReactionComment");
+        dbRef4=FirebaseDatabase.getInstance().getReference().child("Posts");
 
         final FirebaseUser currentUser = mAuth.getCurrentUser();
 
@@ -108,8 +111,26 @@ public class Create_Comment extends Activity {
                                 hasImage= true;
                                 CHECK_IMAGE=0;
                             }
+
+
                             postComments=new PostComments(cID,writeComment.getText().toString(),currentUser.getUid(),postId,false,hasImage,imagekey,new getCurrentTime().getDateTime(),0,false);
                             dbRef.child( cID ).setValue( postComments );
+
+                            dbRef4.child(postId).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                     int count=dataSnapshot.child("countComment").getValue(Integer.class);
+                                      dbRef4.child(postId).child("countComment").setValue(count+1);
+
+                                    Log.i("Count",""+count);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
                             writeComment.setText( "" );
                             return true;
                         }
@@ -168,6 +189,14 @@ public class Create_Comment extends Activity {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent goMain = new Intent(this,AccountActivity.class);
+        startActivity(goMain);
+        finish();
+    }
+
+    @Override
     public boolean onContextItemSelected(MenuItem item) {
       //  int position = -1;
         try {
@@ -180,11 +209,15 @@ public class Create_Comment extends Activity {
         switch (item.getItemId()) {
             case R.id.Delete:
                 showAlertDialog();
-
-
                 break;
             case R.id.Edit:
                 UpdateComment();
+                break;
+            case R.id.Copy:
+                clipboard.setClipboard(this,postComments.getCommentcontent());
+                Toast.makeText(this, "Copied to clipboard" , Toast.LENGTH_LONG).show();
+                break;
+            case R.id.cancel:
                 break;
         }
         }
@@ -199,17 +232,24 @@ public class Create_Comment extends Activity {
 
 
 
-        if (comments_of_post.get( position ).isDidLike()==true){
-            dbRef3.child( keyRecId ).removeValue();
-            dbRef2.child( keyCoPost ).removeValue();
-        }
-        else {
-            dbRef2.child( keyCoPost ).removeValue();
-        }
+        dbRef4.child(postId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-        comments_of_post.remove(position);
+               int count=dataSnapshot.child("countComment").getValue(Integer.class);
+               dbRef4.child(postId).child("countComment").setValue(count-1);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        dbRef2.child( keyCoPost ).removeValue();
+
+
         mAdapter.notifyItemRemoved(position);
-        mAdapter.notifyItemRangeChanged(position,comments_of_post.size());
     }
 
     private  void UpdateComment() {
@@ -321,6 +361,7 @@ public class Create_Comment extends Activity {
     }
 
 
+
     class getComment extends AsyncTask<Void, Void, ArrayList<PostComments>> {
 
 
@@ -344,11 +385,11 @@ public class Create_Comment extends Activity {
                     comments_of_post.clear();
                     for (DataSnapshot commentSnapshot : dataSnapshot.getChildren()) {
                         PostComments postComments = commentSnapshot.getValue( PostComments.class );
-                        System.out.println("______________");
-                        System.out.println(postComments.getPostId()+"=="+postId);
-                        System.out.println("______________");
+
+                        if (postComments.getPostId()!=null){
                         if(postComments.getPostId().equals(postId)){
                         comments_of_post.add( postComments );
+                        }
                         }
                     }
 
@@ -377,13 +418,6 @@ public class Create_Comment extends Activity {
             return comments_of_post;
         }
 
-         @Override
-         protected void onPostExecute(ArrayList<PostComments> comments) {
-             super.onPostExecute( comments );
-
-
-
-         }
      }
 
 

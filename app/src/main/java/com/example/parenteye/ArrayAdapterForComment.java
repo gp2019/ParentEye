@@ -17,6 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -74,11 +76,20 @@ public class ArrayAdapterForComment extends RecyclerView.Adapter {
 
         @Override
         public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
-                //menuInfo is null
+
+            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+            if (CommentArrayList.get(position).getUserId().equals(currentUser.getUid())) {
+
                 contextMenu.add(Menu.NONE, R.id.Edit,
                         Menu.NONE, "Edit");
                 contextMenu.add(Menu.NONE, R.id.Delete,
                         Menu.NONE, "Delete");
+            }else {
+                contextMenu.add(Menu.NONE, R.id.Copy,
+                        Menu.NONE, "Copy");
+                contextMenu.add(Menu.NONE, R.id.cancel,
+                        Menu.NONE, "cancel");
+            }
         }
     }
 
@@ -321,5 +332,7 @@ public class ArrayAdapterForComment extends RecyclerView.Adapter {
     public void setPosition(int position) {
         this.position = position;
     }
+
+
 
 }

@@ -258,7 +258,7 @@ public class AccountActivity extends AppCompatActivity {
             final String userID = "cR6RdBeU5Lg7CEFLhEniBT16ZxM2";
            //if the user enter his own profile
             if(TextUtils.equals(mAuth.getCurrentUser().getUid(),userID)){
-                Addfriend.setImageResource(R.drawable.updateprofile);
+              //  Addfriend.setImageResource(R.drawable.updateprofile);
                 addfriendtext.setText("Update Profile");
                 GetProfileData(userID);
 
@@ -285,7 +285,7 @@ public class AccountActivity extends AppCompatActivity {
 
 
         final String username="aya";
-        final String profileId="cR6RdBeU5Lg7CEFLhEniBT16ZxM2";
+        final String profileId="djm6VqH1f1QlIW8FeEMGAjsRaVf2";
         postref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -296,7 +296,8 @@ public class AccountActivity extends AppCompatActivity {
                         custom_posts_returned custom =new custom_posts_returned();
                         custom.setPost_owner_name(newpost.getUserId());
                         custom.setpost_owner_ID(newpost.getUserId());
-                        custom.setPost_Id(postSnapshot.getKey());
+                        custom.setPost_Id(newpost.getPostId());
+                        custom.setCountComment(newpost.getCountComment());
                         if(newpost.getPostcontent()!=null){
                             custom.setPost_text(newpost.getPostcontent());
                         }
@@ -454,7 +455,7 @@ public class AccountActivity extends AppCompatActivity {
                        }
                    });
                } else {
-                   AccountCover.setImageResource(R.drawable.cover);
+           //        AccountCover.setImageResource(R.drawable.cover);
                }
 
 
