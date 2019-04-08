@@ -227,7 +227,6 @@ public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned>{
             @Override
             public void onClick(View view) {
 
-
                  FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
                 if (post_returnedd.get(position).getpost_owner_ID().equals(currentUser.getUid())) {
@@ -238,13 +237,16 @@ public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned>{
                         public boolean onMenuItemClick(MenuItem item) {
                             switch (item.getItemId()) {
                                 case R.id.Edit:
-                                    Toast.makeText(contextAdapter, "Edit " + position, Toast.LENGTH_LONG).show();
+                                    UpdatePost(post_returnedd.get(position).getPost_Id(),post_returnedd.get(position).getPost_text(),post_returnedd.get(position).getPost_image(),post_returnedd.get(position).getpost_owner_ID(),post_returnedd.get(position).haspostimage());
                                     break;
                                 case R.id.Delete:
                                     DeletPost(position, post_returnedd.get(position).getPost_Id());
                                     break;
+                                case R.id.Copy:
+                                    clipboard.setClipboard(contextAdapter,postDescription.getText().toString());
+                                    Toast.makeText(contextAdapter, "Copied to clipboard" , Toast.LENGTH_LONG).show();
+                                    break;
                                 case R.id.cancel:
-                                    //handle menu3 click
                                     break;
                             }
                             return false;
@@ -262,6 +264,8 @@ public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned>{
                                 case R.id.Copy:
                                     clipboard.setClipboard(contextAdapter,postDescription.getText().toString());
                                     Toast.makeText(contextAdapter, "Copied to clipboard" , Toast.LENGTH_LONG).show();
+                                    break;
+                                case R.id.cancel:
                                     break;
                             }
                             return false;
@@ -307,15 +311,16 @@ public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned>{
 
     }
 
-
-    public void setClipboard(Context context, String text) {
-        if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
-            android.text.ClipboardManager clipboard = (android.text.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-            clipboard.setText(text);
-        } else {
-            android.content.ClipboardManager clipboard = (android.content.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-            android.content.ClipData clip = android.content.ClipData.newPlainText("Copied Text", text);
-            clipboard.setPrimaryClip(clip);
-        }
+    private  void  UpdatePost(String postId, String postcontent, String imageId,String userId,boolean hasImage){
+        Intent intent = new Intent( contextAdapter, Create_Post.class );
+        intent.putExtra( "postId",postId );
+        intent.putExtra( "postcontent",postcontent );
+        intent.putExtra( "imageId",imageId );
+        intent.putExtra("userId",userId);
+        intent.putExtra("hasImage",hasImage);
+        contextAdapter.startActivity( intent );
+        contextAdapter.finish();
     }
+
+
 }

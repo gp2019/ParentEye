@@ -214,7 +214,7 @@ public class Create_Comment extends AppCompatActivity {
                 UpdateComment();
                 break;
             case R.id.Copy:
-                clipboard.setClipboard(this,postComments.getCommentcontent());
+                clipboard.setClipboard(Create_Comment.this,postComments.getCommentcontent());
                 Toast.makeText(this, "Copied to clipboard" , Toast.LENGTH_LONG).show();
                 break;
             case R.id.cancel:
@@ -249,7 +249,10 @@ public class Create_Comment extends AppCompatActivity {
         dbRef2.child( keyCoPost ).removeValue();
 
 
+        comments_of_post.remove(position);
         mAdapter.notifyItemRemoved(position);
+        mAdapter.notifyDataSetChanged();
+
     }
 
     private  void UpdateComment() {

@@ -7,6 +7,10 @@
         android:id="@+id/Delete"
         android:title="Delete"/>
     <item
+        android:id="@+id/Copy"
+        android:title="Copy"/>
+
+    <item
         android:id="@+id/cancel"
         android:title="cancel"/>
 </menu>

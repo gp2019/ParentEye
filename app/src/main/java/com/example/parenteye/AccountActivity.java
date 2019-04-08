@@ -127,7 +127,7 @@ public class AccountActivity extends AppCompatActivity {
         Edituseraddresse=(EditText) updateprofileDialoge.findViewById(R.id.Edituseraddresse);
         btnsubmitupdate=(Button) updateprofileDialoge. findViewById(R.id.btnsubmitupdate);
         btncancelupdate=(Button) updateprofileDialoge.findViewById(R.id.btncancelupdate);
-        gallery=(ImageView) findViewById(R.id.gallery);
+        //gallery=(ImageView) findViewById(R.id.gallery);
         Addfriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -244,7 +244,7 @@ public class AccountActivity extends AppCompatActivity {
                 updateprofileDialoge.dismiss();
             }
         });
-        gallery.setOnClickListener(new View.OnClickListener() {
+/*        gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
           Intent galleryIntent=new Intent(AccountActivity.this,GalleryActivity.class);
@@ -252,7 +252,7 @@ public class AccountActivity extends AppCompatActivity {
           finish();
             }
         });
-
+*/
     }
 
 
@@ -285,7 +285,7 @@ public class AccountActivity extends AppCompatActivity {
                 IssentRequest(userID);
                 GetProfileData(userID);
             }
-           // GetProfilePosts();
+            GetProfilePosts();
         }
     }
 
@@ -298,7 +298,7 @@ public class AccountActivity extends AppCompatActivity {
 
 
         final String username="aya";
-        final String profileId="cR6RdBeU5Lg7CEFLhEniBT16ZxM2";
+        final String profileId="djm6VqH1f1QlIW8FeEMGAjsRaVf2";
         postref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -467,7 +467,7 @@ public class AccountActivity extends AppCompatActivity {
                        }
                    });
                } else {
-                   AccountCover.setImageResource(R.drawable.cover);
+//                   AccountCover.setImageResource(R.drawable.cover);
                }
 
 

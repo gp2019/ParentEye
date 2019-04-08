@@ -84,6 +84,10 @@ public class ArrayAdapterForComment extends RecyclerView.Adapter {
                         Menu.NONE, "Edit");
                 contextMenu.add(Menu.NONE, R.id.Delete,
                         Menu.NONE, "Delete");
+                contextMenu.add(Menu.NONE, R.id.Copy,
+                        Menu.NONE, "Copy");
+                contextMenu.add(Menu.NONE, R.id.cancel,
+                        Menu.NONE, "cancel");
             }else {
                 contextMenu.add(Menu.NONE, R.id.Copy,
                         Menu.NONE, "Copy");

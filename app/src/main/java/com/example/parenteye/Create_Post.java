@@ -16,6 +16,8 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomSheetDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -45,27 +47,26 @@ import java.util.UUID;
 
 @TargetApi(Build.VERSION_CODES.O)
 @RequiresApi(api = Build.VERSION_CODES.O)
-public class Create_Post extends Activity implements View.OnClickListener {
+public class Create_Post extends AppCompatActivity implements View.OnClickListener {
 
 
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
 
-    private String imgDecodableString;
     private Uri filepath;
     private String imagekey;
     private BottomSheetDialog bottomSheetDialog;
     private RelativeLayout bottomSheet;
     private EditText writePost;
     private ImageView arrowBack,imageViewPost,remove,profileImage;
-    private TextView post,nameUser;
+    private TextView post,nameUser,CreatePost;
     DatabaseReference dbRef;
-    private String userId;
-    private String typePost;
+    private String userId,typePost;
+    private String postIdEdit,postcontentEdit,imageIdEdit,hasImageEdit;
     private  ProgressDialog progressdialogue;
     private String ImageId;
     private StorageReference mStorageRef,mStorageRef2;
     final long ONE_MEGABYTE = 1024 * 1024;
-   FirebaseDatabase database = FirebaseDatabase.getInstance();
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference galleryRef = database.getReference("Gallery");
 
 
@@ -82,7 +83,7 @@ public class Create_Post extends Activity implements View.OnClickListener {
         nameUser = findViewById(R.id.name_of_user);
         bottomSheet = findViewById(R.id.bottom_sheet);
         profileImage = findViewById(R.id.profile_image);
-
+        CreatePost = findViewById(R.id.create_post);
         remove = findViewById(R.id.remove);
         remove.setVisibility(View.INVISIBLE);
 
@@ -97,6 +98,7 @@ public class Create_Post extends Activity implements View.OnClickListener {
          userId= getIntent().getStringExtra("userId");
          typePost= getIntent().getStringExtra("typePost");
          ImageId = getIntent().getStringExtra("ImageId");
+
 
         mStorageRef2 = FirebaseStorage.getInstance().getReference("UserImages/");
 
@@ -216,6 +218,17 @@ public class Create_Post extends Activity implements View.OnClickListener {
 
             dbRef= FirebaseDatabase.getInstance().getReference().child("Posts");
 
+            if (postIdEdit!=null){
+                dbRef.child(postIdEdit).child("postcontent").setValue(writePost.getText().toString());
+                if (hasImage==true){
+                    dbRef.child(postIdEdit).child("imageId").setValue(imageIdEdit);
+                    dbRef.child(postIdEdit).child("hasimage").setValue(true);
+                }
+                dismissProgressDialog();
+                GoAcountActive();
+            }
+            else {
+
             String Post_ID= dbRef.push().getKey();
 
             Posts posts = new Posts(Post_ID,userId,new getCurrentTime().getDateTime(),typePost,typePost,writePost.getText().toString(),hasImage,imagekey,0);
@@ -235,6 +248,7 @@ public class Create_Post extends Activity implements View.OnClickListener {
                     }
                 }
             });
+          }
 
         }
 
@@ -332,6 +346,9 @@ public class Create_Post extends Activity implements View.OnClickListener {
 
     //arrow back
     private void arrowBack(){
+        if (postIdEdit!=null){
+            GoAcountActive();
+        }else{
         if (writePost.getText().toString().equals("")&&imageViewPost.getDrawable()==null)
     {
         //here will put intent from ""home page"" and exchange by ""Toast""
@@ -341,16 +358,22 @@ public class Create_Post extends Activity implements View.OnClickListener {
                 else {
         showAlertDialog();
                 }
+        }
     }
 
     @Override
     public void onBackPressed() {
-        if (writePost.getText().toString().equals("")&&imageViewPost.getDrawable()==null)
-        {
-            GoHome();
+        if (postIdEdit!=null){
+            GoAcountActive();
         }
         else {
-            showAlertDialog();
+            if (writePost.getText().toString().equals("")&&imageViewPost.getDrawable()==null)
+            {
+                GoHome();
+            }
+            else {
+                showAlertDialog();
+            }
         }
     }
 
@@ -387,12 +410,19 @@ public class Create_Post extends Activity implements View.OnClickListener {
         startActivity(home_main);
         finish();
     }
+    // intent for go the home main
+    private void GoAcountActive(){
+        Intent home_main=new Intent(Create_Post.this,AccountActivity.class);
+        startActivity(home_main);
+        finish();
+    }
 
 
     private void upload_post_pic(){
         if(filepath!=null){
 
-            imagekey = UUID.randomUUID().toString();
+            imageIdEdit=imagekey = UUID.randomUUID().toString();
+
             StorageReference ref = mStorageRef.child("PostImages/"+imagekey);
             ref.putFile(filepath)
 
@@ -432,4 +462,37 @@ public class Create_Post extends Activity implements View.OnClickListener {
         super.onDestroy();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        postIdEdit=getIntent().getStringExtra("postId");
+        postcontentEdit=getIntent().getStringExtra("postcontent");
+        imageIdEdit=getIntent().getStringExtra("imageId");
+        userId=getIntent().getStringExtra("userId");
+        hasImageEdit=getIntent().getStringExtra("hasImage");
+
+        System.out.println("-----------------------------------");
+        System.out.println("postId "+imageIdEdit);
+        System.out.println("-----------------------------------");
+        if (postIdEdit!=null){
+            CreatePost.setText("Edit");
+            post.setText("Save");
+            writePost.setText(postcontentEdit);
+            if (imageIdEdit!=null){
+                imageViewPost.setVisibility(View.VISIBLE);
+                mStorageRef2 = FirebaseStorage.getInstance().getReference("PostImages/");
+                mStorageRef2.child(imageIdEdit).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    @Override
+                    public void onSuccess(byte[] bytes) {
+                        final Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        imageViewPost.setImageBitmap(bm);
+                        remove.setVisibility(View.VISIBLE);
+                        if (postcontentEdit==null){
+                            writePost.setHint("say something about this photo...");
+                        }
+                    }
+                });
+            }
+        }
+    }
 }

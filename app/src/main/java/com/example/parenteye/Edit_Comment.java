@@ -15,13 +15,11 @@ import com.google.firebase.storage.StorageReference;
 public class Edit_Comment extends AppCompatActivity implements View.OnClickListener {
 
 
-    private int length;
+    private  int length;
     private EditText EditComment;
     private Button cancel,update;
- //   private ImageView profile_User;
- //   private DatabaseReference dbRef,dbRef2;
     private StorageReference msReference;
-    private String CommentId,ContentComment;//,UserId;
+    private String CommentId,ContentComment;
     private ImageView arrow_back;
     final long ONE_MEGABYTE = 1024 * 1024;
     @Override
@@ -32,16 +30,13 @@ public class Edit_Comment extends AppCompatActivity implements View.OnClickListe
         cancel = findViewById(R.id.cancelEdit);
         update = findViewById(R.id.UpdateEdit);
         arrow_back = findViewById(R.id.arrow_back);
-      //  profile_User= findViewById(R.id.imageUser);
 
         CommentId= getIntent().getStringExtra("CommentId");
         ContentComment = getIntent().getStringExtra("CommentContent");
-       // UserId = getIntent().getStringExtra("CommentUserId");
         EditComment.setText(ContentComment);
 
         length = EditComment.getText().toString().trim().length();
 
-        //     dbRef2= FirebaseDatabase.getInstance().getReferenceFromUrl("https://parenteye-1b448.firebaseio.com/").child("CommentsPost");
 
 
         EditComment.addTextChangedListener(new TextWatcher() {
@@ -82,11 +77,7 @@ public class Edit_Comment extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        GoComment();
-    }
+
 
     @Override
     public void onClick(View view) {
