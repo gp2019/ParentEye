@@ -30,6 +30,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 
 //import android.support.v7.app.AlertController.RecycleListView;
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference myRef = database.getReference("Users");
     DatabaseReference myRef2 = database.getReference("Posts");
     DatabaseReference myRef3 = database.getReference("Friends");
+    DatabaseReference memberRef = database.getReference("Members");
     private Integer userCompleteProfile = 0;
     private Button logout, show_comment;
     private ListView Post_listview;
@@ -57,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private Button addchild;
     private Button mychildren;
     private ImageView firendrequestid;
+    private ArrayList<Posts> myposts=new ArrayList<Posts>();
 
 
     Notifications notifi = new Notifications();
@@ -74,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         mStorageRef2 = FirebaseStorage.getInstance().getReference("PostsImages/");
         goprofile = (Button) findViewById(R.id.goprofile);
         firendrequestid=(ImageView) findViewById(R.id.firendrequestid);
+        Post_listview=(ListView) findViewById(R.id.Post_listview);
 
         floatingActionButton = findViewById(R.id.floatingButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -82,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
                 FirebaseUser currentUser = mAuth.getCurrentUser();
                 if (currentUser != null) {
                     CreatePost(currentUser.getUid());
-
                 }
 
             }
@@ -256,6 +260,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        GetMyHomePosts();
+
+
 
     }
 
@@ -315,6 +322,72 @@ public class MainActivity extends AppCompatActivity {
         Intent goAccount = new Intent(MainActivity.this, AccountActivity.class);
         startActivity(goAccount);
         finish();
+    }
+
+    private void GetMyHomePosts(){
+        if(mAuth.getCurrentUser()!=null){
+            final HomePostsAdapter postadapter=new HomePostsAdapter(MainActivity.this,myposts);
+            Post_listview.setAdapter(postadapter);
+           final ArrayList<String> communityIds=new ArrayList<String>();
+            final ArrayList<String> friendsList=new ArrayList<String>();
+
+            myRef3.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.getValue(Friends.class)!=null) {
+                        String myfriends = dataSnapshot.getValue(Friends.class).getUserFriends();
+                        final String[] myFriendsID = myfriends.split(",");
+                        for(String id:myFriendsID){
+                            friendsList.add(id);
+                        } }
+                    memberRef.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.getValue(Members.class)!=null) {
+                                for (DataSnapshot membersnapshot : dataSnapshot.getChildren()) {
+                                    Members member = membersnapshot.getValue(Members.class);
+                                    communityIds.add(member.getCommunityid());
+                                    //System.out.println(member.getCommunityid());
+                                }
+                            }
+                            myRef2.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    myposts.clear();
+                                    for (DataSnapshot postsnapshot : dataSnapshot.getChildren()) {
+                                        Posts post = postsnapshot.getValue(Posts.class);
+                                        if (friendsList.contains(post.getUserId())&&TextUtils.equals(post.getPlaceTypeId(),"1")|| communityIds.contains(post.getPlaceId())) {
+                                            myposts.add(post);
+                                        }
+                                    }
+                                    Collections.reverse(myposts);
+                                    postadapter.notifyDataSetChanged();
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+
+            });
+        }
     }
 
 
