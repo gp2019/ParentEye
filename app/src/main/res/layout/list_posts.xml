@@ -113,6 +113,7 @@
 
 
         <RelativeLayout
+            android:id="@+id/like_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -125,7 +126,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:textSize="16sp"
-                android:text="like"
                 android:textColor="@color/black"
                 android:layout_centerVertical="true"
              />
@@ -162,10 +162,10 @@
 
             <ImageView
                 android:id="@+id/btLike"
+                android:src="@drawable/heart"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_weight="1"
-                android:src="@drawable/heart"
                 android:layout_marginTop="2dp"
                 android:layout_alignParentStart="true" />
 

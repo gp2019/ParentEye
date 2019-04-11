@@ -12,9 +12,7 @@ public class PostComments {
     private int CountOfLike;
 
 
-    private boolean didLike;
-
-    public PostComments(String commentID, String commentcontent, String userId, String postId, boolean hasreply, boolean hasimage, String imageId, String commentDate, int countOfLike, boolean didLike) {
+    public PostComments(String commentID, String commentcontent, String userId, String postId, boolean hasreply, boolean hasimage, String imageId, String commentDate, int countOfLike) {
         this.commentID = commentID;
         this.commentcontent = commentcontent;
         this.userId = userId;
@@ -24,7 +22,6 @@ public class PostComments {
         this.imageId = imageId;
         this.commentDate = commentDate;
         this.CountOfLike = countOfLike;
-        this.didLike=didLike;
     }
 
     public PostComments() {
@@ -103,12 +100,5 @@ public class PostComments {
         CountOfLike = countOfLike;
     }
 
-    public boolean isDidLike() {
-        return didLike;
-    }
-
-    public void setDidLike(boolean didLike) {
-        this.didLike = didLike;
-    }
 
 }

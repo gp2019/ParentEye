@@ -1,5 +1,6 @@
 package com.example.parenteye;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -42,7 +43,7 @@ import java.util.Collections;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class AccountActivity extends AppCompatActivity {
+public class AccountActivity extends Activity {
     private FirebaseAuth mAuth;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference postref = database.getReference("Posts");
@@ -124,7 +125,7 @@ public class AccountActivity extends AppCompatActivity {
         edituseremail=(EditText) updateprofileDialoge.findViewById(R.id.EdituserEmail);
 
         editAccountname=(EditText) updateprofileDialoge.findViewById(R.id.editAccountname);
-        Edituseraddresse=(EditText) updateprofileDialoge.findViewById(R.id.Edituseraddresse);
+     //   Edituseraddresse=(EditText) updateprofileDialoge.findViewById(R.id.Edituseraddresse);
         btnsubmitupdate=(Button) updateprofileDialoge. findViewById(R.id.btnsubmitupdate);
         btncancelupdate=(Button) updateprofileDialoge.findViewById(R.id.btncancelupdate);
         gallery=(ImageView) findViewById(R.id.gallery);
@@ -285,7 +286,7 @@ public class AccountActivity extends AppCompatActivity {
                 IssentRequest(userID);
                 GetProfileData(userID);
             }
-           // GetProfilePosts();
+            GetProfilePosts();
         }
     }
 
@@ -298,7 +299,7 @@ public class AccountActivity extends AppCompatActivity {
 
 
         final String username="aya";
-        final String profileId="cR6RdBeU5Lg7CEFLhEniBT16ZxM2";
+        final String profileId="djm6VqH1f1QlIW8FeEMGAjsRaVf2";
         postref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -310,6 +311,8 @@ public class AccountActivity extends AppCompatActivity {
                         custom.setPost_owner_name(newpost.getUserId());
                         custom.setpost_owner_ID(newpost.getUserId());
                         custom.setPost_Id(postSnapshot.getKey());
+                        custom.setCountComment(newpost.getCountComment());
+                        custom.setCountLike(newpost.getCountLike());
                         if(newpost.getPostcontent()!=null){
                             custom.setPost_text(newpost.getPostcontent());
                         }

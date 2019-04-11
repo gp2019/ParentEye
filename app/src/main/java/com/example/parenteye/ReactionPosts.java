@@ -2,56 +2,51 @@ package com.example.parenteye;
 
 public class ReactionPosts {
 
+    private String reactionId;
     private String PostORCommentId;
     private String userid;
+    private String postorCommentId_userId;
 
-
-// private String Reactionid;
-
-
-    public ReactionPosts(){
-
-    }
-
-    public ReactionPosts( String PostORCommentId, String userid) {
-
-        this.PostORCommentId = PostORCommentId;
+    public ReactionPosts(String reactionId, String postORCommentId, String userid,String postorCommentId_userId) {
+        this.reactionId = reactionId;
+        PostORCommentId = postORCommentId;
         this.userid = userid;
+        this.postorCommentId_userId=postorCommentId_userId;
+    }
 
-       // Reactionid = reactionid;
+    public ReactionPosts() {
 
     }
 
-
-
-
-    public void setpostId(String PostORCommentId) {
-        this.PostORCommentId = PostORCommentId;
+    public String getReactionId() {
+        return reactionId;
     }
 
-    public void setUserid(String userid) {
-        this.userid = userid;
+    public void setReactionId(String reactionId) {
+        this.reactionId = reactionId;
     }
 
-    /*public void setReactionid(String reactionid) {
-        Reactionid = reactionid;
-    }
-    */
-
-    public String getpostId() {
+    public String getPostORCommentId() {
         return PostORCommentId;
+    }
+
+    public void setPostORCommentId(String postORCommentId) {
+        PostORCommentId = postORCommentId;
     }
 
     public String getUserid() {
         return userid;
     }
 
-
-/*
-    public String getReactionid() {
-        return Reactionid;
+    public void setUserid(String userid) {
+        this.userid = userid;
     }
-*/
 
+    public String getPostorCommentId_userId() {
+        return postorCommentId_userId;
+    }
+
+    public void setPostorCommentId_userId(String postorCommentId_userId) {
+        this.postorCommentId_userId = postorCommentId_userId;
+    }
 }
-

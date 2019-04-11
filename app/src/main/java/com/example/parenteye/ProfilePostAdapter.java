@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -41,9 +43,9 @@ import java.util.ArrayList;
 public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned>{
     int count=0;
     ArrayList<PostComments> comments_of_post=new ArrayList<>(  );
-
+    private FirebaseAuth mAuth;
     private Clipboard clipboard= new Clipboard();
-    private  DatabaseReference dbRef,dbRef2;
+    private  DatabaseReference dbRef,dbRef2,dbRef3;
     private  Activity contextAdapter;
     final long ONE_MEGABYTE = 1024 * 1024;
     private StorageReference userStorageRef= FirebaseStorage.getInstance().getReference("UserImages/");
@@ -207,17 +209,96 @@ public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned>{
 
         }
 
-        final ImageView btLike=postlist.findViewById(R.id.btLike);
+        final TextView countLike = postlist.findViewById(R.id.textLike);
 
+        if (post_returnedd.get(position).getCountLike()==0){
+            countLike.setVisibility(View.GONE);
+        }
+        else {
+
+            countLike.setVisibility(View.VISIBLE);
+            countLike.setText(post_returnedd.get(position).getCountLike()+" Like");
+
+        }
+
+        final RelativeLayout like_comment= postlist.findViewById(R.id.like_comment);
+
+        if (post_returnedd.get(position).getCountLike()==0&&post_returnedd.get(position).getCountComment()==0){
+            like_comment.setVisibility(View.GONE);
+        }
+        else{
+            like_comment.setVisibility(View.VISIBLE);
+        }
+        like_comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                go_create_post(position);
+            }
+        });
+
+        final ImageView btLike=postlist.findViewById(R.id.btLike);
+        dbRef3= FirebaseDatabase.getInstance().getReference().child("ReactionComment_Post");
+        dbRef2= FirebaseDatabase.getInstance().getReference().child("Posts");
+        mAuth = FirebaseAuth.getInstance();
+
+
+        Query queryToGetData = dbRef3.orderByChild("postorCommentId_userId").equalTo(post_returnedd.get(position).getPost_Id()+mAuth.getCurrentUser().getUid());
+        queryToGetData.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                   btLike.setBackgroundResource(R.drawable.heart);
+                } else {
+                    btLike.setBackgroundResource(R.drawable.heart_reaction);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+            btLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Query queryToGetData = dbRef3.orderByChild("postorCommentId_userId").equalTo(post_returnedd.get(position).getPost_Id()+mAuth.getCurrentUser().getUid());
+                queryToGetData.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (!dataSnapshot.exists()) {
+                            String ReactionID =post_returnedd.get(position).getPost_Id()+mAuth.getCurrentUser().getUid();
+                            ReactionPosts reactionComment = new ReactionPosts(ReactionID, post_returnedd.get(position).getPost_Id(), post_returnedd.get(position).getpost_owner_ID(), post_returnedd.get(position).getPost_Id() + post_returnedd.get(position).getpost_owner_ID());
+                            btLike.setBackgroundResource(R.drawable.heart_reaction);
+                            post_returnedd.get(position).setCountLike(post_returnedd.get(position).getCountLike() + 1);
+                            countLike.setText(post_returnedd.get(position).getCountLike() + " Like");
+                            dbRef3.child(ReactionID).setValue(reactionComment);
+                            dbRef2.child(post_returnedd.get(position).getPost_Id()).child("countLike").setValue(post_returnedd.get(position).getCountLike());
+
+                        } else {
+                            btLike.setBackgroundResource(R.drawable.heart);
+                            post_returnedd.get(position).setCountLike(post_returnedd.get(position).getCountLike() - 1);
+                            countLike.setText(post_returnedd.get(position).getCountLike() + " Like");
+                            dbRef2.child(post_returnedd.get(position).getPost_Id()).child("countLike").setValue(post_returnedd.get(position).getCountLike());
+                            dbRef3.child(post_returnedd.get(position).getPost_Id()+mAuth.getCurrentUser().getUid()).removeValue();
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+            }
+        } );
 
         final ImageView btComment=postlist.findViewById(R.id.btComment);
         btComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent( contextAdapter, Create_Comment.class );
-                intent.putExtra("postId",post_returnedd.get(position).getPost_Id());
-                contextAdapter.startActivity(intent);
-                contextAdapter.finish();
+              go_create_post(position);
             }
         });
 
@@ -284,7 +365,7 @@ public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned>{
     private  void DeletPost(final int position, final String postId) {
         dbRef= FirebaseDatabase.getInstance().getReference().child("Posts");
         dbRef2= FirebaseDatabase.getInstance().getReference().child("CommentsPost");
-
+        dbRef3= FirebaseDatabase.getInstance().getReference().child("ReactionComment_Post");
         dbRef2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -306,8 +387,15 @@ public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned>{
 
             }
         });
+        String keyRecId= post_returnedd.get(position ).getPost_Id()+post_returnedd.get( position ).getpost_owner_ID();
 
+        dbRef3.child(keyRecId).removeValue();
         dbRef.child( post_returnedd.get(position).getPost_Id() ).removeValue();
+
+        comments_of_post.removeAll(comments_of_post);
+        //notifyItemRangeChanged(position,comments_of_post.size());
+        //mAdapter.notifyItemRemoved(position);
+        //mAdapter.notifyDataSetChanged();
 
     }
 
@@ -322,5 +410,14 @@ public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned>{
         contextAdapter.finish();
     }
 
+    private  void  go_create_post(int position)
+    {
+        Intent intent = new Intent( contextAdapter, Create_Comment.class );
+        intent.putExtra("postId",post_returnedd.get(position).getPost_Id());
+        intent.putExtra("countOfLike",post_returnedd.get(position).getCountLike());
+        intent.putExtra("position",position);
+        contextAdapter.startActivity(intent);
+        contextAdapter.finish();
+    }
 
 }

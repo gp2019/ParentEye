@@ -5,6 +5,7 @@ import java.util.Date;
 public class custom_posts_returned {
     private String post_Id;
     private int countComment;
+    private int countLike;
     private String post_owner_name;
     private String post_text;
     private String post_owner_ID;
@@ -78,6 +79,15 @@ public class custom_posts_returned {
     public void setCountComment(int countComment) {
         this.countComment = countComment;
     }
+
+    public int getCountLike() {
+        return countLike;
+    }
+
+    public void setCountLike(int countLike) {
+        this.countLike = countLike;
+    }
+
     public Date getPost_date() {
         return post_date;
     }

@@ -104,7 +104,7 @@
     </RelativeLayout>
 
     <Button
-        android:id="@+id/btLike"
+        android:id="@+id/btLikeComment"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_centerVertical="true"

@@ -23,6 +23,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -32,10 +33,11 @@ import java.util.ArrayList;
 
 public class ArrayAdapterForComment extends RecyclerView.Adapter {
 
-
+    private FirebaseAuth mAuth;
     private DatabaseReference dbRef,dbRef2,dbRef3;
     private StorageReference mStorageRef,mStorageRef2;
     CreateTime calTime ;
+    ReactionPosts reactionPosts = new ReactionPosts();
     final long ONE_MEGABYTE = 1024 * 1024;
     public ArrayList<PostComments> CommentArrayList;
     public Context contextAdapter;
@@ -64,7 +66,7 @@ public class ArrayAdapterForComment extends RecyclerView.Adapter {
             timeOfComment = itemView.findViewById( R.id.TimeOfComment );
             countLikeOfComment = itemView.findViewById( R.id.countLikeOfComment );
             replyOfComment = itemView.findViewById( R.id.replyOfComment );
-            btLike = itemView.findViewById( R.id.btLike );
+            btLike = itemView.findViewById( R.id.btLikeComment );
             imageViewUser=itemView.findViewById( R.id.imageUserComment );
             textViewUserName=itemView.findViewById( R.id.name_of_user );
 
@@ -115,9 +117,10 @@ public class ArrayAdapterForComment extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
+        mAuth = FirebaseAuth.getInstance();
         dbRef= FirebaseDatabase.getInstance().getReference().child("Users");
         dbRef2= FirebaseDatabase.getInstance().getReference().child("CommentsPost");
-        dbRef3= FirebaseDatabase.getInstance().getReference().child("ReactionComment");
+        dbRef3= FirebaseDatabase.getInstance().getReference().child("ReactionComment_Post");
         mStorageRef = FirebaseStorage.getInstance().getReference("UserImages/");
         mStorageRef2 = FirebaseStorage.getInstance().getReference("CommentImages/");
 
@@ -181,40 +184,56 @@ public class ArrayAdapterForComment extends RecyclerView.Adapter {
         ((ViewHolder) holder).timeOfComment.setText( calTime.calculateTime() );
 
         ((ViewHolder) holder).countLikeOfComment.setText(  CommentArrayList.get( position ).getCountOfLike()+" Like" );
+        Query queryToGetData = dbRef3.orderByChild("postorCommentId_userId").equalTo(CommentArrayList.get(position).getCommentID()+mAuth.getCurrentUser().getUid());
+        queryToGetData.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    ((ViewHolder) holder).btLike.setBackgroundResource(R.drawable.heart);
+                } else {
+                    ((ViewHolder) holder).btLike.setBackgroundResource(R.drawable.heart_reaction);
+                      }
 
-        if (CommentArrayList.get( position ).isDidLike()){
-            ((ViewHolder)holder).btLike.setBackgroundResource( R.drawable.heart_reaction );
-        }
-        else {
-            ((ViewHolder)holder).btLike.setBackgroundResource( R.drawable.heart );
-        }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
         ((ViewHolder) holder).btLike.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ReactionPosts reactionComment= new ReactionPosts(CommentArrayList.get( position ).getPostId(),CommentArrayList.get( position ).getUserId());
-                if (CommentArrayList.get( position ).isDidLike()){
-                    ((ViewHolder)holder).btLike.setBackgroundResource( R.drawable.heart);
-                    CommentArrayList.get( position ).setCountOfLike( CommentArrayList.get( position ).getCountOfLike() - 1 );
-                    ((ViewHolder) holder).countLikeOfComment.setText( CommentArrayList.get( position ).getCountOfLike() +" Like" );
-                    String keyRecId= position +CommentArrayList.get( position ).getPostId()+CommentArrayList.get( position ).getUserId();
-                    dbRef3.child( keyRecId ).removeValue();
+                Query queryToGetData = dbRef3.orderByChild("postorCommentId_userId").equalTo(CommentArrayList.get(position).getCommentID()+mAuth.getCurrentUser().getUid());
+                queryToGetData.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (!dataSnapshot.exists()) {
+                                String ReactionID =CommentArrayList.get(position).getCommentID()+mAuth.getCurrentUser().getUid(); //dbRef.push().getKey();
+                                ReactionPosts reactionComment = new ReactionPosts(ReactionID, CommentArrayList.get(position).getCommentID(), CommentArrayList.get(position).getUserId(), CommentArrayList.get(position).getCommentID() + CommentArrayList.get(position).getUserId());
+                                ((ViewHolder) holder).btLike.setBackgroundResource(R.drawable.heart_reaction);
+                                CommentArrayList.get(position).setCountOfLike(CommentArrayList.get(position).getCountOfLike() + 1);
+                                ((ViewHolder) holder).countLikeOfComment.setText(CommentArrayList.get(position).getCountOfLike() + " Like");
+                                dbRef3.child(ReactionID).setValue(reactionComment);
+                                dbRef2.child(CommentArrayList.get(position).getCommentID()).child("countOfLike").setValue(CommentArrayList.get(position).getCountOfLike());
 
+                            } else {
+                                ((ViewHolder) holder).btLike.setBackgroundResource(R.drawable.heart);
+                                CommentArrayList.get(position).setCountOfLike(CommentArrayList.get(position).getCountOfLike() - 1);
+                                ((ViewHolder) holder).countLikeOfComment.setText(CommentArrayList.get(position).getCountOfLike() + " Like");
+                                dbRef2.child(CommentArrayList.get(position).getCommentID()).child("countOfLike").setValue(CommentArrayList.get(position).getCountOfLike());
+                                dbRef3.child(CommentArrayList.get(position).getCommentID()+mAuth.getCurrentUser().getUid()).removeValue();
+                            }
 
-                    dbRef2.child( CommentArrayList.get( position ).getCommentID() ).child( "didLike" ).setValue( false );
-                    dbRef2.child( CommentArrayList.get( position ).getCommentID() ).child( "countOfLike" ).setValue(  CommentArrayList.get( position ).getCountOfLike()  );
-                }
-                else {
-                    ((ViewHolder)holder).btLike.setBackgroundResource( R.drawable.heart_reaction);
-                    CommentArrayList.get( position ).setCountOfLike( CommentArrayList.get( position ).getCountOfLike() + 1 );
-                    ((ViewHolder) holder).countLikeOfComment.setText(  CommentArrayList.get( position ).getCountOfLike()+ " Like");
-                    String recID = position +CommentArrayList.get( position ).getPostId()+CommentArrayList.get( position ).getUserId();
-                    dbRef3.child( recID ).setValue( reactionComment );
+                    }
 
-                    dbRef2.child( CommentArrayList.get( position ).getCommentID() ).child( "countOfLike" ).setValue(  CommentArrayList.get( position ).getCountOfLike()  );
-                    dbRef2.child( CommentArrayList.get( position ).getCommentID() ).child( "didLike" ).setValue( true );
-                }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
+                    }
+                });
 
             }
         } );

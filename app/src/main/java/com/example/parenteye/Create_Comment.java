@@ -21,8 +21,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -33,6 +35,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -40,6 +43,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static android.support.constraint.Constraints.TAG;
@@ -49,16 +53,19 @@ public class Create_Comment extends AppCompatActivity {
     private FirebaseAuth mAuth;
     ProgressBar progressBar;
     DatabaseReference dbRef,dbRef2,dbRef3,dbRef4;
-    ArrayList<PostComments> comments_of_post=new ArrayList<>(  );
+     ArrayList<PostComments> comments_of_post;
     PostComments postComments;
     private RecyclerView recyclerView;
     private ArrayAdapterForComment mAdapter;
-    String postId=null;
+    private String postId=null;
+    private int countOfLike;
+    private LinearLayout Show_Like;
     ImageView noInernet;
+    private TextView postLikeDate;
     private String imagekey;
     private RelativeLayout cameraRelative,bottom_WriteComment;
     private EditText writeComment;
-    private  ImageView btCamare,Image_of_gallery,cancelImage;
+    private  ImageView btCamare,Image_of_gallery,cancelImage,btLike;
     private int SELECT_FILE = 1;
     private int CHECK_IMAGE=0;
     private StorageReference mStorageRef;
@@ -78,10 +85,13 @@ public class Create_Comment extends AppCompatActivity {
         setContentView( R.layout.activity_create_comment );
         recyclerView=findViewById( R.id.Post_recyclelistview);
         Image_of_gallery=findViewById( R.id.image_of_gallery );
+        btLike=findViewById(R.id.btLikePost);
         cameraRelative = findViewById( R.id.bottom_sheet_for_camera );
         bottom_WriteComment=findViewById( R.id.bottom_WriteComment );
         cameraRelative.setVisibility( View.GONE );
         progressBar = findViewById( R.id.progressBar );
+        Show_Like = findViewById(R.id.showLike);
+        postLikeDate = findViewById(R.id.postLikeDate);
         progressBar.setVisibility( View.GONE );
         writeComment=findViewById( R.id.writeComment );
         mStorageRef = FirebaseStorage.getInstance().getReference();
@@ -89,12 +99,12 @@ public class Create_Comment extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(Create_Comment.this));
         recyclerView.setHasFixedSize(true);
         dbRef2= FirebaseDatabase.getInstance().getReference().child("CommentsPost");
-        dbRef3= FirebaseDatabase.getInstance().getReference().child("ReactionComment");
+        dbRef3= FirebaseDatabase.getInstance().getReference().child("ReactionComment_Post");
         dbRef4=FirebaseDatabase.getInstance().getReference().child("Posts");
-
         final FirebaseUser currentUser = mAuth.getCurrentUser();
 
         postId=getIntent().getStringExtra("postId");
+        countOfLike=getIntent().getIntExtra("countOfLike",0);
 
         writeComment.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -113,7 +123,7 @@ public class Create_Comment extends AppCompatActivity {
                             }
 
 
-                            postComments=new PostComments(cID,writeComment.getText().toString(),currentUser.getUid(),postId,false,hasImage,imagekey,new getCurrentTime().getDateTime(),0,false);
+                            postComments=new PostComments(cID,writeComment.getText().toString(),currentUser.getUid(),postId,false,hasImage,imagekey,new getCurrentTime().getDateTime(),0);
                             dbRef.child( cID ).setValue( postComments );
 
                             dbRef4.child(postId).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -176,6 +186,69 @@ public class Create_Comment extends AppCompatActivity {
 
 */
 
+        Query queryToGetData = dbRef3.orderByChild("postorCommentId_userId").equalTo(postId+mAuth.getCurrentUser().getUid());
+        queryToGetData.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    btLike.setBackgroundResource(R.drawable.heart_reaction);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        btLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Query queryToGetData = dbRef3.orderByChild("postorCommentId_userId").equalTo(postId+mAuth.getCurrentUser().getUid());
+                queryToGetData.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (!dataSnapshot.exists()) {
+                            String ReactionID =postId+mAuth.getCurrentUser().getUid();
+                            ReactionPosts reactionComment = new ReactionPosts(ReactionID, postId, mAuth.getCurrentUser().getUid(), postId + mAuth.getCurrentUser().getUid());
+                            btLike.setBackgroundResource(R.drawable.heart_reaction);
+                            //comments_of_post.get(position).setCountOfLike(comments_of_post.get(position).getCountOfLike() + 1);
+                            postLikeDate.setText(++countOfLike+" Like");
+                            dbRef3.child(ReactionID).setValue(reactionComment);
+                            dbRef4.child(postId).child("countLike").setValue(countOfLike);
+
+                        } else {
+                            btLike.setBackgroundResource(R.drawable.heart);
+                            //comments_of_post.get(position).setCountOfLike(comments_of_post.get(position).getCountOfLike() - 1);
+                            postLikeDate.setText(--countOfLike+" Like");
+                            dbRef4.child(postId).child("countLike").setValue(countOfLike);
+                            dbRef3.child(postId+mAuth.getCurrentUser().getUid()).removeValue();
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+            }
+        } );
+
+        postLikeDate.setText(countOfLike+" Like");
+
+        Show_Like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent Go_Show_Did_Like = new Intent(Create_Comment.this, Show_Did_Like.class);
+                Go_Show_Did_Like.putExtra("PostId",postId);
+                startActivity(Go_Show_Did_Like);
+                finish();
+            }
+        });
+
     }
 
     @Override
@@ -183,6 +256,7 @@ public class Create_Comment extends AppCompatActivity {
         super.onStart();
         CommentId = getIntent().getStringExtra("CommentId");
         ContentComment = getIntent().getStringExtra("CommentContent");
+        position=getIntent().getIntExtra("position",0);
         if (!(CommentId==null&&ContentComment==null)) {
             dbRef2.child(CommentId).child("commentcontent").setValue(ContentComment);
         }
@@ -226,9 +300,9 @@ public class Create_Comment extends AppCompatActivity {
 
     private  void DeletComment() {
         dbRef2= FirebaseDatabase.getInstance().getReference().child("CommentsPost");
-        dbRef3= FirebaseDatabase.getInstance().getReference().child("ReactionComment");
+        dbRef3= FirebaseDatabase.getInstance().getReference().child("ReactionComment_Post");
         String keyCoPost= comments_of_post.get(position).getCommentID();
-        String keyRecId= position +comments_of_post.get(position ).getPostId()+comments_of_post.get( position ).getUserId();
+        String keyRecId= comments_of_post.get(position ).getCommentID()+comments_of_post.get( position ).getUserId();
 
 
 
@@ -246,10 +320,12 @@ public class Create_Comment extends AppCompatActivity {
             }
         });
 
+        dbRef3.child(keyRecId).removeValue();
         dbRef2.child( keyCoPost ).removeValue();
 
 
-        comments_of_post.remove(position);
+        comments_of_post.removeAll(comments_of_post);
+        mAdapter.notifyItemRangeChanged(position,comments_of_post.size());
         mAdapter.notifyItemRemoved(position);
         mAdapter.notifyDataSetChanged();
 
@@ -377,10 +453,9 @@ public class Create_Comment extends AppCompatActivity {
 
         @Override
         protected ArrayList<PostComments> doInBackground(Void... voids) {
-
+            comments_of_post = new ArrayList<>();
 
             dbRef = FirebaseDatabase.getInstance().getReference().child( "CommentsPost" );
-            comments_of_post = new ArrayList<>();
             //  Query query=dbRef.orderByChild("PostId").equalTo( "LaSrDr3I6cDE93j1hU1" );
             dbRef.addValueEventListener( new ValueEventListener() {
                 @Override

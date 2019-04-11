@@ -16,7 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".GalleryActivity"></activity>
+        <activity android:name=".Show_Did_Like"></activity>
+        <activity android:name=".GalleryActivity" />
         <activity android:name=".FriendRequestActivity" />
         <activity android:name=".MyChildrenActivity" />
         <activity android:name=".ViewImage" />
@@ -34,7 +35,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".SignupActivity" />
-        <activity android:name=".Create_Comment"/>
+        <activity android:name=".Create_Comment" />
         <activity android:name=".MakeGroupActivity" />
         <activity android:name=".NotificationPreview" />
     </application>
