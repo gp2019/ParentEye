@@ -252,17 +252,6 @@ public class Create_Comment extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        CommentId = getIntent().getStringExtra("CommentId");
-        ContentComment = getIntent().getStringExtra("CommentContent");
-        position=getIntent().getIntExtra("position",0);
-        if (!(CommentId==null&&ContentComment==null)) {
-            dbRef2.child(CommentId).child("commentcontent").setValue(ContentComment);
-        }
-    }
-
-    @Override
     public void onBackPressed() {
         super.onBackPressed();
         Intent goMain = new Intent(this,AccountActivity.class);
@@ -322,8 +311,6 @@ public class Create_Comment extends AppCompatActivity {
 
         dbRef3.child(keyRecId).removeValue();
         dbRef2.child( keyCoPost ).removeValue();
-
-
         comments_of_post.removeAll(comments_of_post);
         mAdapter.notifyItemRangeChanged(position,comments_of_post.size());
         mAdapter.notifyItemRemoved(position);
@@ -456,14 +443,12 @@ public class Create_Comment extends AppCompatActivity {
             comments_of_post = new ArrayList<>();
 
             dbRef = FirebaseDatabase.getInstance().getReference().child( "CommentsPost" );
-            //  Query query=dbRef.orderByChild("PostId").equalTo( "LaSrDr3I6cDE93j1hU1" );
             dbRef.addValueEventListener( new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     comments_of_post.clear();
                     for (DataSnapshot commentSnapshot : dataSnapshot.getChildren()) {
                         PostComments postComments = commentSnapshot.getValue( PostComments.class );
-
                         if (postComments.getPostId()!=null){
                         if(postComments.getPostId().equals(postId)){
                         comments_of_post.add( postComments );
@@ -482,7 +467,8 @@ public class Create_Comment extends AppCompatActivity {
 
 
                         } else {
-                            recyclerView.getAdapter().notifyDataSetChanged();
+                            mAdapter.notifyItemChanged(position);
+                            //mAdapter.notifyDataSetChanged();
                         }
                     }
                 }

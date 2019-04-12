@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.StorageReference;
 
 public class Edit_Comment extends AppCompatActivity implements View.OnClickListener {
@@ -18,6 +20,7 @@ public class Edit_Comment extends AppCompatActivity implements View.OnClickListe
     private  int length;
     private EditText EditComment;
     private Button cancel,update;
+    DatabaseReference dbRef2;
     private StorageReference msReference;
     private String CommentId,ContentComment;
     private ImageView arrow_back;
@@ -31,6 +34,7 @@ public class Edit_Comment extends AppCompatActivity implements View.OnClickListe
         update = findViewById(R.id.UpdateEdit);
         arrow_back = findViewById(R.id.arrow_back);
 
+        dbRef2= FirebaseDatabase.getInstance().getReference("CommentsPost");
         CommentId= getIntent().getStringExtra("CommentId");
         ContentComment = getIntent().getStringExtra("CommentContent");
         EditComment.setText(ContentComment);
@@ -95,11 +99,11 @@ public class Edit_Comment extends AppCompatActivity implements View.OnClickListe
 
     private void UpdateComment(){
         if (EditComment.getText().toString().trim().length()!=0) {
-            Intent go_create_comment = new Intent( Edit_Comment.this, Create_Comment.class );
-            go_create_comment.putExtra( "CommentId",CommentId );
-            go_create_comment.putExtra( "CommentContent",EditComment.getText().toString() );
-            startActivity( go_create_comment );
-            finish();
+            if (!(CommentId==null&&ContentComment==null)) {
+                dbRef2.child(CommentId).child("commentcontent").setValue(EditComment.getText().toString());
+             GoComment();
+            }
+
         }
 
     }
