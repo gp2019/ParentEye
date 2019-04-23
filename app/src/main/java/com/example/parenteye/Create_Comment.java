@@ -467,8 +467,8 @@ public class Create_Comment extends AppCompatActivity {
 
 
                         } else {
-                            mAdapter.notifyItemChanged(position);
-                            //mAdapter.notifyDataSetChanged();
+
+                            mAdapter.notifyDataSetChanged();
                         }
                     }
                 }
