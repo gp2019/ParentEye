@@ -27,7 +27,6 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private TextView login_register;
     private String Email,password;
-    private FirebaseHelper firebaseHelper=new FirebaseHelper();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
                     final ProgressDialog progressdialogue=new ProgressDialog(LoginActivity.this);
                     progressdialogue.setTitle("loading...");
                     progressdialogue.show();
-                    /*mAuth.signInWithEmailAndPassword(Email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    mAuth.signInWithEmailAndPassword(Email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                               if(task.isSuccessful()){
@@ -58,17 +57,8 @@ public class LoginActivity extends AppCompatActivity {
 
                               }
                         }
-                    });*/
-                    String result=firebaseHelper.LogIn(Email,password);
-                    if(TextUtils.equals(result,"1")){
-                        progressdialogue.dismiss();
-                        Toast.makeText(LoginActivity.this,"Login Successfully",Toast.LENGTH_LONG).show();
-                        GoHome();
-                    }
-                    else{
-                        progressdialogue.dismiss();
-                        Toast.makeText(LoginActivity.this,"Error "+result ,Toast.LENGTH_LONG).show();
-                    }
+                    });
+
 
                 }
 
