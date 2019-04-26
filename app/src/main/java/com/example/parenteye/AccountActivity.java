@@ -563,7 +563,13 @@ public class AccountActivity extends Activity {
                     addfriendtext.setText("cancel request");
                     IsExist = true;
                 }
-            }
+                else if(TextUtils.equals(friendRequest.getSenderid(),userID) && TextUtils.equals(friendRequest.getRecieverid(), mAuth.getCurrentUser().getUid()) && friendRequest.getState() == 1) {
+                    Addfriend.setImageResource(R.drawable.addfriendd);
+                    addfriendtext.setText("pending");
+                    Addfriend.setEnabled(false);
+                }
+
+                }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
