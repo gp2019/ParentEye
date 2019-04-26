@@ -18,10 +18,10 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
-public class ChildAdapter extends ArrayAdapter<custom_posts_returned> {
+public class ChildAdapter extends ArrayAdapter<Users> {
     private StorageReference userStorageRef= FirebaseStorage.getInstance().getReference("UserImages/");
     final long ONE_MEGABYTE = 1024 * 1024;
-    public ChildAdapter(Activity context, ArrayList<custom_posts_returned> childreturned){
+    public ChildAdapter(Activity context, ArrayList<Users> childreturned){
 
         super(context,0,childreturned);
     }
@@ -37,17 +37,26 @@ public class ChildAdapter extends ArrayAdapter<custom_posts_returned> {
 
         }
 
-        custom_posts_returned child= getItem(position);
-
+        Users child= getItem(position);
+        TextView Datetime=(TextView) childrenlist.findViewById(R.id.datetime);
         TextView childname=(TextView) childrenlist.findViewById(R.id.childname);
-        childname.setText(child.getPost_owner_name());
+        childname.setText(child.getUsername());
+        if(child.getRoleId()!=null){
+            Datetime.setVisibility(View.VISIBLE);
+            Datetime.setText(child.getRoleId());
+          //  System.out.println("date is "+child.getRoleId());
+        }
+        else{
+            Datetime.setVisibility(View.GONE);
+        }
+
 
 
 
        final  ImageView profileimage=(ImageView) childrenlist.findViewById(R.id.childphoto);
 
-        if(child.getpost_owner_ID()!=null) {
-            userStorageRef.child(child.getpost_owner_ID()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+        if(child.getProfile_pic_id()!=null) {
+            userStorageRef.child(child.getProfile_pic_id()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                 @Override
                 public void onSuccess(byte[] bytes) {
                     final Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);

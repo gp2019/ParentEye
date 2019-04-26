@@ -24,15 +24,30 @@
                 app:civ_border_color="#FF000000"
                 android:layout_marginBottom="15dp"
                 android:scaleType="centerCrop"/>
-            <TextView
-                android:id="@+id/childname"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="27dp"
-                android:textColor="#000"
-                android:text="child name" />
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/childname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="20dp"
+                    android:textColor="#000"
+                    android:text="child name" />
+                <TextView
+                    android:id="@+id/datetime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18dp"
+                    android:layout_marginLeft="20dp"
+                    android:textColor="#000" />
+
+            </LinearLayout>
+
 
         </LinearLayout>
     </LinearLayout>

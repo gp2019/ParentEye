@@ -16,7 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Show_Did_Like"></activity>
+        <activity android:name=".ChildLogActivity"></activity>
         <activity android:name=".GalleryActivity" />
         <activity android:name=".FriendRequestActivity" />
         <activity android:name=".MyChildrenActivity" />
