@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private Button makeGroup;
     private Button addchild;
     private Button mychildren;
+    private Button search;
     private ImageView firendrequestid;
     private ArrayList<Posts> myposts=new ArrayList<Posts>();
 
@@ -102,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         makePage = (Button) findViewById(R.id.makepage);
+        search=(Button) findViewById(R.id.search);
         logout = (Button) findViewById(R.id.logout);
         makeGroup = (Button) findViewById(R.id.makeGroup);
         logout.setOnClickListener(new View.OnClickListener() {
@@ -127,6 +129,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent makeGroup = new Intent(MainActivity.this, MakeGroupActivity.class);
                 startActivity(makeGroup);
+                //finish();
+            }
+        });
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent search=new Intent(MainActivity.this,SearchActivity.class);
+                startActivity(search);
                 //finish();
             }
         });
