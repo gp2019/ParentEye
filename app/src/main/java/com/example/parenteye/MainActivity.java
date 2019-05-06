@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     private Button mychildren;
     private ImageView firendrequestid;
     private ArrayList<Posts> myposts=new ArrayList<Posts>();
+    private Button viewMyFriends;
 
 
     Notifications notifi = new Notifications();
@@ -78,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         mStorageRef2 = FirebaseStorage.getInstance().getReference("PostsImages/");
         goprofile = (Button) findViewById(R.id.goprofile);
         firendrequestid=(ImageView) findViewById(R.id.firendrequestid);
+        viewMyFriends=(Button)findViewById(R.id.viewFriends);
         Post_listview=(ListView) findViewById(R.id.Post_listview);
 
         floatingActionButton = findViewById(R.id.floatingButton);
@@ -163,6 +165,17 @@ public class MainActivity extends AppCompatActivity {
          Intent friendrequest=new Intent(MainActivity.this,FriendRequestActivity.class);
          startActivity(friendrequest);
          finish();
+            }
+        });
+
+        viewMyFriends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent userfriendsIntent=new Intent(MainActivity.this,UserFriendsActivity.class);
+                startActivity(userfriendsIntent);
+                finish();
+
+
             }
         });
 
