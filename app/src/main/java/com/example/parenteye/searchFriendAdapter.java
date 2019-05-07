@@ -64,11 +64,11 @@ public class searchFriendAdapter extends ArrayAdapter<Users> {
         } else if(user.isGender()==true) {
             userPic.setImageResource(R.drawable.profile_boys);
 
-             }
-             else {
+        }
+        else {
             userPic.setImageResource(R.drawable.profile_giles);
         }
 
-            return listView;
-        }
+        return listView;
     }
+}
