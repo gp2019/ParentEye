@@ -9,8 +9,10 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,7 +30,9 @@ public class Show_Did_Like extends AppCompatActivity implements View.OnClickList
     private DatabaseReference dbRef;
     private ImageView arrow_back;
     private RecyclerView recyclerView;
+    private TextView nameofactionbar,noFriends;
     private ArrayAdapterForShowDidLike mAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,11 +40,15 @@ public class Show_Did_Like extends AppCompatActivity implements View.OnClickList
         progressBar = findViewById( R.id.progressBar );
         progressBar.setVisibility( View.GONE );
         arrow_back=findViewById(R.id.arrow_back);
+        nameofactionbar=findViewById(R.id.create_post);
         recyclerView=findViewById( R.id.User_recyclelistview);
+
+        noFriends=findViewById(R.id.noFriends);
+        noFriends.setVisibility(View.GONE);
         recyclerView.setLayoutManager(new LinearLayoutManager(Show_Did_Like.this));
         recyclerView.setHasFixedSize(true);
         PostId = getIntent().getStringExtra("PostId");
-
+        nameofactionbar.setText("People who reacted");
         arrow_back.setOnClickListener(this);
         new getReaction().execute(  );
     }
@@ -99,6 +107,8 @@ public class Show_Did_Like extends AppCompatActivity implements View.OnClickList
 
                     if (reaction.size()==0) {
                         progressBar.setVisibility( View.GONE );
+                        noFriends.setText("No React");
+                        noFriends.setVisibility(View.VISIBLE);
                     }
                     else {
                         progressBar.setVisibility( View.GONE );

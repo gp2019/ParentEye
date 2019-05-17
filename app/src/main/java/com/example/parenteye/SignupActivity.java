@@ -192,7 +192,7 @@ public class SignupActivity extends AppCompatActivity {
                     newuser.setDateofbirth(newdate);
                     newuser.setGender(isMale);
                     newuser.setRoleId("1");
-                    newuser.setActiveStatus(true);
+                    newuser.setCloseAccount(false);
                     newuser.setProfile_pic_id(imagekey);
                    // newuser.setCover_pic_id("");
 
@@ -200,6 +200,7 @@ public class SignupActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
+                                newuser.setUserId(mAuth.getCurrentUser().getUid());
                   UserRef.child(mAuth.getCurrentUser().getUid()).setValue(newuser).addOnCompleteListener(new OnCompleteListener<Void>() {
                       @Override
                       public void onComplete(@NonNull Task<Void> task) {

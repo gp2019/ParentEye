@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="10dp">
+    android:orientation="vertical"
+    android:padding="10dp">
+
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/listChild"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <de.hdodenhof.circleimageview.CircleImageView
@@ -24,32 +22,70 @@
                 app:civ_border_color="#FF000000"
                 android:layout_marginBottom="15dp"
                 android:scaleType="centerCrop"/>
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/childname"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/childname"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
-                    android:layout_marginLeft="10dp"
+                android:textSize="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="27dp"
+                android:textColor="#000"
+                android:text="child name" />
+
+            <RelativeLayout
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:id="@+id/btPlus"
+                    android:layout_width="25dp"
+                    android:layout_height="20dp"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:background="@android:drawable/arrow_up_float"/>
+
+
+                <EditText
+                    android:id="@+id/counter"
+                    android:inputType="number"
+                    android:ems="1"
+                   android:gravity="center"
+                    android:layout_centerInParent="true"
                     android:layout_marginTop="20dp"
-                    android:textColor="#000"
-                    android:text="child name" />
-                <TextView
-                    android:id="@+id/datetime"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18dp"
-                    android:layout_marginLeft="20dp"
-                    android:textColor="#000" />
+                    android:background="@android:color/transparent"
+                    android:text="0"/>
 
-            </LinearLayout>
+                <ImageButton
+                    android:id="@+id/btMins"
+                    android:layout_width="25dp"
+                    android:layout_height="20dp"
+                    android:layout_below="@id/counter"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:background="@android:drawable/arrow_down_float"/>
 
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="hr"
+                android:layout_marginStart="10dp"
+                android:textSize="22sp"
+                android:layout_toEndOf="@id/counter"
+                android:layout_gravity="center"/>
 
         </LinearLayout>
-    </LinearLayout>
 
-</LinearLayout>
+    <Switch
+        android:id="@+id/btCloseAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="30dp"
+        android:background="@color/colorPrimary"
+        />
+
+</RelativeLayout>

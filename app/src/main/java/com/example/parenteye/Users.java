@@ -13,12 +13,12 @@ public class Users {
     private String location;
     private boolean gender;
     private String RoleId;
-    private boolean ActiveStatus;
     private String profile_pic_id;
     private String cover_pic_id;
+    private boolean CloseAccount;
+    private String TimeCloseAccount;
 
-
-    public Users(String userId, String username, String userEmail, String userPassword, Date dateofbirth, String location, boolean gender, String roleId, boolean activeStatus, String profile_pic_id, String cover_pic_id) {
+    public Users(String userId, String username, String userEmail, String userPassword, Date dateofbirth, String location, boolean gender, String roleId, String profile_pic_id, String cover_pic_id, boolean closeAccount, String timeCloseAccount) {
         this.userId = userId;
         Username = username;
         this.userEmail = userEmail;
@@ -27,7 +27,21 @@ public class Users {
         this.location = location;
         this.gender = gender;
         RoleId = roleId;
-        ActiveStatus = activeStatus;
+        this.profile_pic_id = profile_pic_id;
+        this.cover_pic_id = cover_pic_id;
+        CloseAccount = closeAccount;
+        TimeCloseAccount = timeCloseAccount;
+    }
+
+    public Users(String userId, String username, String userEmail, String userPassword, Date dateofbirth, String location, boolean gender, String roleId, String profile_pic_id, String cover_pic_id) {
+        this.userId = userId;
+        Username = username;
+        this.userEmail = userEmail;
+        this.userPassword = userPassword;
+        this.dateofbirth = dateofbirth;
+        this.location = location;
+        this.gender = gender;
+        RoleId = roleId;
         this.profile_pic_id = profile_pic_id;
         this.cover_pic_id = cover_pic_id;
     }
@@ -84,10 +98,6 @@ public class Users {
         RoleId = roleId;
     }
 
-    public void setActiveStatus(boolean activeStatus) {
-        ActiveStatus = activeStatus;
-    }
-
     public String getUserId() {
         return userId;
     }
@@ -114,15 +124,27 @@ public class Users {
         return RoleId;
     }
 
-    public boolean isActiveStatus() {
-        return ActiveStatus;
-    }
-
     public String getProfile_pic_id() {
         return profile_pic_id;
     }
 
     public void setProfile_pic_id(String profile_pic_id) {
         this.profile_pic_id = profile_pic_id;
+    }
+
+    public boolean isCloseAccount() {
+        return CloseAccount;
+    }
+
+    public void setCloseAccount(boolean closeAccount) {
+        CloseAccount = closeAccount;
+    }
+
+    public String getTimeCloseAccount() {
+        return TimeCloseAccount;
+    }
+
+    public void setTimeCloseAccount(String timeCloseAccount) {
+        TimeCloseAccount = timeCloseAccount;
     }
 }

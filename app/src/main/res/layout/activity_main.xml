@@ -40,6 +40,13 @@
             android:layout_height="wrap_content"
             android:id="@+id/ShowComments"
             android:text="Show comments"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/ShowMyFriend"
+            android:text="Show Friend"/>
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
