@@ -67,6 +67,18 @@
             android:layout_height="wrap_content"
             android:id="@+id/mychildren"
             android:text="View MyChildren"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/viewFriends"
+            android:text="View My Friend"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/search"
+            android:text="Search"/>
+
 
         <LinearLayout
             android:layout_width="match_parent"

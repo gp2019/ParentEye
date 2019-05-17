@@ -69,27 +69,27 @@
             android:orientation="horizontal"
             android:layout_marginTop="15dp">
 
-        <ImageButton
-            android:id="@+id/search_friend_buttom"
-            android:layout_width="0dp"
-            android:layout_height="100dp"
-            android:layout_weight="1"
+            <ImageButton
+                android:id="@+id/search_friend_buttom"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
 
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="15dp"
-            android:src="@drawable/search_friend_icon"
-            />
-        <ImageButton
-            android:id="@+id/search_community_buttom"
-            android:layout_width="0dp"
-            android:layout_height="100dp"
-            android:layout_weight="1"
-            android:layout_toEndOf="@+id/search_friend_buttom"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="20dp"
-            android:src="@drawable/search_community"
-            />
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/search_friend_icon"
+                />
+            <ImageButton
+                android:id="@+id/search_community_buttom"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_toEndOf="@+id/search_friend_buttom"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="20dp"
+                android:src="@drawable/search_community"
+                />
 
 
 
