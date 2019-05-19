@@ -1,9 +1,12 @@
 package com.example.parenteye;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -24,9 +27,10 @@ public class MyChildrenActivity extends AppCompatActivity {
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference parentChildrenRef = database.getReference("ParentChildren");
     DatabaseReference userRef = database.getReference("Users");
-    private ArrayList<custom_posts_returned> children=new ArrayList<custom_posts_returned>();
+    private ArrayList<Users> children=new ArrayList<Users>();
     private ListView childrenList;
-
+    public static final String child_Id="ChildId";
+    public static final String Child_Name="CHildName";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +38,19 @@ public class MyChildrenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_my_children);
         mAuth = FirebaseAuth.getInstance();
         childrenList=(ListView) findViewById(R.id.childrenList);
- //System.out.println("on create "+mAuth.getCurrentUser().getUid());
-       // mAuth.getCurrentUser();
 
+
+
+        childrenList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Users child=children.get(position);
+                Intent childIntent=new Intent(getApplicationContext(),ChildLogActivity.class);
+                childIntent.putExtra(child_Id,child.getUserId());
+                childIntent.putExtra(Child_Name,child.getUsername());
+                startActivity(childIntent);
+            }
+        });
 
     }
 
@@ -66,12 +80,13 @@ public class MyChildrenActivity extends AppCompatActivity {
                                     for (DataSnapshot usersnapshot : dataSnapshot.getChildren()) {
                                         Users user = usersnapshot.getValue(Users.class);
                                         if (TextUtils.equals(usersnapshot.getKey(), childId)) {
-                                            custom_posts_returned custom = new custom_posts_returned();
-                                            custom.setPost_owner_name(user.getUsername());
+                                            Users mychild = new Users();
+                                            mychild.setUserId(usersnapshot.getKey());
+                                            mychild.setUsername(user.getUsername());
                                             if (user.getProfile_pic_id() != null) {
-                                                custom.setpost_owner_ID(user.getProfile_pic_id());
+                                                mychild.setProfile_pic_id(user.getProfile_pic_id());
                                             }
-                                            children.add(custom);
+                                            children.add(mychild);
 
                                         }
                                     }

@@ -37,7 +37,6 @@ public class ArrayAdapterForComment extends RecyclerView.Adapter {
     private DatabaseReference dbRef,dbRef2,dbRef3;
     private StorageReference mStorageRef,mStorageRef2;
     CreateTime calTime ;
-    ReactionPosts reactionPosts = new ReactionPosts();
     final long ONE_MEGABYTE = 1024 * 1024;
     public ArrayList<PostComments> CommentArrayList;
     public Context contextAdapter;

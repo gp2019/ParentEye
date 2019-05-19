@@ -206,14 +206,16 @@ public class AddChildActivity extends AppCompatActivity {
                         newuser.setDateofbirth(newdate);
                         newuser.setGender(isMale);
                         newuser.setRoleId("2");
-                        newuser.setActiveStatus(true);
                         newuser.setProfile_pic_id(imagekey);
+                        newuser.setCloseAccount(false);
+                        newuser.setTimeCloseAccount("");
                         // newuser.setCover_pic_id("");
 
                         mAuth.createUserWithEmailAndPassword(Email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
+                                    newuser.setUserId(mAuth.getCurrentUser().getUid());
                                     UserRef.child(mAuth.getCurrentUser().getUid()).setValue(newuser).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {

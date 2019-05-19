@@ -1,55 +1,47 @@
 package com.example.parenteye;
 
 import java.sql.Time;
+import java.util.Date;
 
 public class Chat {
 
-    private String ChatId;
-    private String senderId;
-    private String RecieverId;
-    private Time time;
+    private String messageText;
+    private String messageUser;
+    private long messageTime;
 
 
-    public Chat(){
+    public Chat(String messageText, String messageUser) {
+        this.messageText = messageText;
+        this.messageUser = messageUser;
+        messageTime= new Date().getTime();
+    }
+
+    public  Chat()
+    {
 
     }
 
-    public Chat(String chatId, String senderId, String recieverId, Time time) {
-        ChatId = chatId;
-        this.senderId = senderId;
-        RecieverId = recieverId;
-        this.time = time;
+    public String getMessageText() {
+        return messageText;
     }
 
-    public void setChatId(String chatId) {
-        ChatId = chatId;
+    public void setMessageText(String messageText) {
+        this.messageText = messageText;
     }
 
-    public void setSenderId(String senderId) {
-        this.senderId = senderId;
+    public String getMessageUser() {
+        return messageUser;
     }
 
-    public void setRecieverId(String recieverId) {
-        RecieverId = recieverId;
+    public void setMessageUser(String messageUser) {
+        this.messageUser = messageUser;
     }
 
-    public void setTime(Time time) {
-        this.time = time;
+    public long getMessageTime() {
+        return messageTime;
     }
 
-    public String getChatId() {
-        return ChatId;
-    }
-
-    public String getSenderId() {
-        return senderId;
-    }
-
-    public String getRecieverId() {
-        return RecieverId;
-    }
-
-    public Time getTime() {
-        return time;
+    public void setMessageTime(long messageTime) {
+        this.messageTime = messageTime;
     }
 }

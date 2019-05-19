@@ -273,7 +273,7 @@ public class NotificationFragment extends Fragment {
 
   /*                              /// function to push notification
 
-    //user id <who commented >  , publisher Id < who publish the post>
+    //user id <who_did_like commented >  , publisher Id < who_did_like publish the post>
 
     // add notification on likes
     private  void addNotificationsOfLikes(String userid,String postid)
@@ -299,8 +299,8 @@ public class NotificationFragment extends Fragment {
     //*************************************
 
     // add notification on Comments
-        // needs to comment content and <who commented > and < who publish the post>
-    // parameter can be comment text , user id <who commented >  , publisher Id < who publish the post>
+        // needs to comment content and <who_did_like commented > and < who_did_like publish the post>
+    // parameter can be comment text , user id <who_did_like commented >  , publisher Id < who_did_like publish the post>
 
     private  void addNotificationsOfComments()
     {

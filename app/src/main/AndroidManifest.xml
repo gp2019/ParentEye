@@ -16,7 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Show_Did_Like"></activity>
+        <activity android:name=".ViewPager_myFriends"></activity>
+        <activity android:name=".ChildLogActivity" />
         <activity android:name=".GalleryActivity" />
         <activity android:name=".FriendRequestActivity" />
         <activity android:name=".MyChildrenActivity" />
@@ -24,9 +25,12 @@
         <activity android:name=".Edit_Comment" />
         <activity android:name=".AddChildActivity" />
         <activity android:name=".LoginActivity" />
+        <activity android:name=".Show_Did_Like" />
         <activity android:name=".Create_Post" />
         <activity android:name=".AccountActivity" />
         <activity android:name=".AddPageActivity" />
+        <activity android:name=".UserFriendsActivity" />
+        <activity android:name=".ChatActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

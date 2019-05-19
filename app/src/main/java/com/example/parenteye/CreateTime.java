@@ -38,7 +38,6 @@ public class CreateTime {
     }
 
 
-
     // calculate time
     public String calculateTime(){
 

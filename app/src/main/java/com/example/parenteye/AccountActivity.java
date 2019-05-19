@@ -16,10 +16,13 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,23 +76,27 @@ public class AccountActivity extends Activity {
     ArrayList<custom_posts_returned> Group_posts=new ArrayList<custom_posts_returned>();
     ArrayList<custom_posts_returned> Page_posts=new ArrayList<custom_posts_returned>();
 
-   private Dialog myDialog;
-   private Dialog updateprofileDialoge;
-   private  TextView txtclose;
-   private Button btnsubmitpass;
-   private EditText submitpassword;
-   private EditText edituseremail;
-   private EditText editAccountname;
-   private EditText Edituseraddresse;
-   private Button btnsubmitupdate;
-   private Button btncancelupdate;
+    private Dialog myDialog;
+    private Dialog updateprofileDialoge;
+    private  TextView txtclose;
+    private Button btnsubmitpass;
+    private EditText submitpassword;
+    private EditText edituseremail;
+    private EditText editAccountname;
+    private EditText Edituseraddresse;
+    private Button btnsubmitupdate;
+    private Button btncancelupdate;
     private  String name;
     private  String email;
     private String addresse;
     private ImageView gallery;
     private TextView updatetextclose;
-
-
+    private Spinner spinner1;
+    String[] cities = new String[]{"Cairo", "Alexandria", "Giza","Port Said","Suez","Luxor","al-Mansura","El-Mahalla El-Kubra","Tanta","Asyut",
+            "tIsmailia","Fayyum","Zagazig"," Aswan","Damietta","Damanhur","al-Minya","Beni Suef"," Qena","Sohag","Hurghada","6th of October City","Shibin El Kom",
+            "Banha"," Kafr el-Sheikh","Arish","Mallawi","10th of Ramadan City","Bilbais","Marsa Matruh","Idfu","Mit Ghamr","Al-Hamidiyya","Desouk",
+            "Qalyub","Abu Kabir","Kafr el-Dawwar","Girga","Akhmim","Matareya"};
+    private  ProgressDialog progressdialogue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,115 +132,133 @@ public class AccountActivity extends Activity {
         edituseremail=(EditText) updateprofileDialoge.findViewById(R.id.EdituserEmail);
 
         editAccountname=(EditText) updateprofileDialoge.findViewById(R.id.editAccountname);
-     //   Edituseraddresse=(EditText) updateprofileDialoge.findViewById(R.id.Edituseraddresse);
+
         btnsubmitupdate=(Button) updateprofileDialoge. findViewById(R.id.btnsubmitupdate);
         btncancelupdate=(Button) updateprofileDialoge.findViewById(R.id.btncancelupdate);
         gallery=(ImageView) findViewById(R.id.gallery);
+        spinner1=(Spinner)  updateprofileDialoge.findViewById(R.id.spinner1);
+
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, cities);
+        spinner1.setAdapter(adapter);
+        spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String city=(String)parent.getItemAtPosition(position);
+                addresse="Egypt/"+city;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                addresse="Egypt";
+            }
+        });
         Addfriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             final String userId="cR6RdBeU5Lg7CEFLhEniBT16ZxM2";
-             if(TextUtils.equals(mAuth.getCurrentUser().getUid(),userId)){
-                 //here go updating profile
+                final String userId="cR6RdBeU5Lg7CEFLhEniBT16ZxM2";
+                if(TextUtils.equals(mAuth.getCurrentUser().getUid(),userId)){
+                    //here go updating profile
 
 
-                 txtclose.setOnClickListener(new View.OnClickListener() {
-                     @Override
-                     public void onClick(View v) {
-                         myDialog.dismiss();
-                     }
-                 });
-                 updatetextclose.setOnClickListener(new View.OnClickListener() {
-                     @Override
-                     public void onClick(View v) {
-                         updateprofileDialoge.dismiss();
-                     }
-                 });
+                    txtclose.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dismissProgressDialog();
+                            myDialog.dismiss();
+                        }
+                    });
+                    updatetextclose.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            updateprofileDialoge.dismiss();
+                        }
+                    });
 
-                 btnsubmitpass.setOnClickListener(new View.OnClickListener() {
-                     @Override
-                     public void onClick(View v) {
-                  final String userpass=submitpassword.getText().toString().trim();
-                   if(userpass.isEmpty()){
-                       submitpassword.setError("you must enter the password");
-                   }
-                   else{
-                       userRef.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
-                           @Override
-                           public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                               if(TextUtils.equals(dataSnapshot.getValue(Users.class).getUserPassword(),userpass)){
-                                   myDialog.dismiss();
-                                   submitpassword.setText("");
-                                   putuserdatainupdateform();
-                                   updateprofileDialoge.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                                   updateprofileDialoge.show();
+                    btnsubmitpass.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            final String userpass=submitpassword.getText().toString().trim();
+                            if(userpass.isEmpty()){
+                                submitpassword.setError("you must enter the password");
+                            }
+                            else{
+                                userRef.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        if(TextUtils.equals(dataSnapshot.getValue(Users.class).getUserPassword(),userpass)){
+                                            myDialog.dismiss();
+                                            submitpassword.setText("");
+                                            putuserdatainupdateform();
+                                            updateprofileDialoge.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                            updateprofileDialoge.show();
 
-                               }
-                               else{
-                                   submitpassword.setError("Wrong password!");
-                               }
-                           }
+                                        }
+                                        else{
+                                            submitpassword.setError("Wrong password!");
+                                        }
+                                    }
 
-                           @Override
-                           public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                           }
-                       });
-                   }
+                                    }
+                                });
+                            }
 
-                     }
-                 });
-                 myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                 myDialog.show();
+                        }
+                    });
+                    myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    myDialog.show();
 
 
-             }
-               else{
-                 if (IsExist == true) {
-                     FriendRequestRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                         @Override
-                         public void onDataChange(DataSnapshot dataSnapshot) {
-                             for (DataSnapshot friendtSnapshot : dataSnapshot.getChildren()) {
-                                 FriendRequest fr = friendtSnapshot.getValue(FriendRequest.class);
-                                 if (TextUtils.equals(fr.getSenderid(), mAuth.getCurrentUser().getUid()) && TextUtils.equals(fr.getRecieverid(), userId)) {
-                                     FriendRequestRef.child(friendtSnapshot.getKey()).removeValue();
-                                     Addfriend.setImageResource(R.drawable.addfriendd);
-                                     addfriendtext.setText("Add Friend");
-                                     IsExist = false;
+                }
+                else{
+                    if (IsExist == true) {
+                        FriendRequestRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot friendtSnapshot : dataSnapshot.getChildren()) {
+                                    FriendRequest fr = friendtSnapshot.getValue(FriendRequest.class);
+                                    if (TextUtils.equals(fr.getSenderid(), mAuth.getCurrentUser().getUid()) && TextUtils.equals(fr.getRecieverid(), userId)) {
+                                        FriendRequestRef.child(friendtSnapshot.getKey()).removeValue();
+                                        Addfriend.setImageResource(R.drawable.addfriendd);
+                                        addfriendtext.setText("Add Friend");
+                                        IsExist = false;
 
-                                 }
+                                    }
 
-                             }
-                         }
+                                }
+                            }
 
-                         @Override
-                         public void onCancelled(DatabaseError databaseError) {
-                             // ...
-                         }
-                     });
-                 }
-                 if(IsExist!=true){
-                     FriendRequest friend=new FriendRequest();
-                     friend.setSenderid(mAuth.getCurrentUser().getUid());
-                     friend.setRecieverid(userId);
-                     friend.setState(1);
-                     FriendRequestRef.push().setValue(friend);
-                     Addfriend.setImageResource(R.drawable.addfriendd);
-                     addfriendtext.setText("cancel request");
-                    Notifications notifi =new Notifications();
-                    notifi.addNotificationsOfFriendRequest(userId);
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                // ...
+                            }
+                        });
+                    }
+                    if(IsExist!=true){
+                        FriendRequest friend=new FriendRequest();
+                        friend.setSenderid(mAuth.getCurrentUser().getUid());
+                        friend.setRecieverid(userId);
+                        friend.setState(1);
+                        FriendRequestRef.push().setValue(friend);
+                        Addfriend.setImageResource(R.drawable.addfriendd);
+                        addfriendtext.setText("cancel request");
+                        Notifications notifi =new Notifications();
+                        notifi.addNotificationsOfFriendRequest(userId);
 
-                     IsExist=true;
-                 }
+                        IsExist=true;
+                    }
 
-             }
+                }
             }});
         btnsubmitupdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(validate()){
+                    showDialogue();
                     updateInfo();
-                    updateprofileDialoge.dismiss();
                 }
 
             }
@@ -242,15 +267,16 @@ public class AccountActivity extends Activity {
         btncancelupdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dismissProgressDialog();
                 updateprofileDialoge.dismiss();
             }
         });
         gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-          Intent galleryIntent=new Intent(AccountActivity.this,GalleryActivity.class);
-          startActivity(galleryIntent);
-          finish();
+                Intent galleryIntent=new Intent(AccountActivity.this,GalleryActivity.class);
+                startActivity(galleryIntent);
+                finish();
             }
         });
 
@@ -261,8 +287,8 @@ public class AccountActivity extends Activity {
     @Override
     protected void onStart() {
         ViewUserProfile();
-       // GetPagePosts();
-       // GetGroupPosts();
+        // GetPagePosts();
+        // GetGroupPosts();
 
         super.onStart();
     }
@@ -270,7 +296,7 @@ public class AccountActivity extends Activity {
     private void ViewUserProfile(){
         if(mAuth.getCurrentUser()!=null) {
             final String userID = "cR6RdBeU5Lg7CEFLhEniBT16ZxM2";
-           //if the user enter his own profile
+            //if the user enter his own profile
             if(TextUtils.equals(mAuth.getCurrentUser().getUid(),userID)){
                 Addfriend.setImageResource(R.drawable.updateprofile);
                 addfriendtext.setText("Update Profile");
@@ -278,7 +304,7 @@ public class AccountActivity extends Activity {
 
             }
 
-        //if the user enter another user profile
+            //if the user enter another user profile
             else {
                 // check if they are friends
                 IsFriend(userID);
@@ -286,7 +312,11 @@ public class AccountActivity extends Activity {
                 IssentRequest(userID);
                 GetProfileData(userID);
             }
+
             GetProfilePosts();
+
+            // GetProfilePosts();
+
         }
     }
 
@@ -351,7 +381,7 @@ public class AccountActivity extends Activity {
     private void GetPagePosts(){
         final String PageId="-La0sXFPy2dXzxX-Xws6";
         final String PageName="aya page";
-       final PagePostAdapter pageAdapter=new PagePostAdapter(AccountActivity.this,Page_posts);
+        final PagePostAdapter pageAdapter=new PagePostAdapter(AccountActivity.this,Page_posts);
         Post_listview.setAdapter(pageAdapter);
         postref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -359,21 +389,21 @@ public class AccountActivity extends Activity {
                 Page_posts.clear();
                 for(DataSnapshot pagepostsnapshot:dataSnapshot.getChildren()){
                     Posts pagepost=pagepostsnapshot.getValue(Posts.class);
-  if(TextUtils.equals(pagepost.getPlaceTypeId(),"2")&&TextUtils.equals(pagepost.getPlaceId(),PageId)){
-           custom_posts_returned custom=new custom_posts_returned();
-           custom.setPost_owner_name(PageName);
-           custom.setpost_owner_ID(pagepost.getPlaceId());
-           custom.setPost_Id(pagepostsnapshot.getKey());
-           if(pagepost.getPostcontent()!=null){
-               custom.setPost_text(pagepost.getPostcontent());
-              // System.out.println("content "+ custom.getPost_text());
-           }
-           if(pagepost.isHasimage()==true){
-               custom.setPost_image(pagepost.getImageId());
-           }
-                    Page_posts.add(custom);
-                   //   System.out.println("added "+ custom.getpost_owner_ID());
-             }
+                    if(TextUtils.equals(pagepost.getPlaceTypeId(),"2")&&TextUtils.equals(pagepost.getPlaceId(),PageId)){
+                        custom_posts_returned custom=new custom_posts_returned();
+                        custom.setPost_owner_name(PageName);
+                        custom.setpost_owner_ID(pagepost.getPlaceId());
+                        custom.setPost_Id(pagepostsnapshot.getKey());
+                        if(pagepost.getPostcontent()!=null){
+                            custom.setPost_text(pagepost.getPostcontent());
+                            // System.out.println("content "+ custom.getPost_text());
+                        }
+                        if(pagepost.isHasimage()==true){
+                            custom.setPost_image(pagepost.getImageId());
+                        }
+                        Page_posts.add(custom);
+                        //   System.out.println("added "+ custom.getpost_owner_ID());
+                    }
                 }
 
                 Collections.reverse(Page_posts);
@@ -392,29 +422,29 @@ public class AccountActivity extends Activity {
     private void GetGroupPosts(){
         final String GropuId="-LaD606SB3PE0sWfy6Pc";
         final String GroupName="group1 test";
- final ProfilePostAdapter groupAdapter=new ProfilePostAdapter(AccountActivity.this,Group_posts);
+        final ProfilePostAdapter groupAdapter=new ProfilePostAdapter(AccountActivity.this,Group_posts);
         Post_listview.setAdapter(groupAdapter);
         postref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Group_posts.clear();
-           for(DataSnapshot grouppostsnapshot:dataSnapshot.getChildren()){
-            Posts post=grouppostsnapshot.getValue(Posts.class);
-   if(TextUtils.equals(post.getPlaceTypeId(),"3")&&TextUtils.equals(post.getPlaceId(),GropuId)){
-         custom_posts_returned custom=new custom_posts_returned();
-           custom.setPost_owner_name(post.getUserId());
-         custom.setpost_owner_ID(post.getUserId());
-         custom.setPost_Id(grouppostsnapshot.getKey());
-       if(post.getPostcontent()!=null){
-           custom.setPost_text(post.getPostcontent());
-       }
-       if(post.isHasimage()==true){
-           custom.setPost_image(post.getImageId());
-       }
-       Group_posts.add(custom);
-  }
-           }
-           Collections.reverse(Group_posts);
+                for(DataSnapshot grouppostsnapshot:dataSnapshot.getChildren()){
+                    Posts post=grouppostsnapshot.getValue(Posts.class);
+                    if(TextUtils.equals(post.getPlaceTypeId(),"3")&&TextUtils.equals(post.getPlaceId(),GropuId)){
+                        custom_posts_returned custom=new custom_posts_returned();
+                        custom.setPost_owner_name(post.getUserId());
+                        custom.setpost_owner_ID(post.getUserId());
+                        custom.setPost_Id(grouppostsnapshot.getKey());
+                        if(post.getPostcontent()!=null){
+                            custom.setPost_text(post.getPostcontent());
+                        }
+                        if(post.isHasimage()==true){
+                            custom.setPost_image(post.getImageId());
+                        }
+                        Group_posts.add(custom);
+                    }
+                }
+                Collections.reverse(Group_posts);
                 groupAdapter.notifyDataSetInvalidated();
             }
 
@@ -427,140 +457,146 @@ public class AccountActivity extends Activity {
 
     }
 
-   private void GetProfileData(String userID){
-       userRef.child(userID).addValueEventListener(new ValueEventListener() {
-           @Override
-           public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-               Users user=dataSnapshot.getValue(Users.class);
-               Accountname.setText(user.getUsername());
-               userEmail.setText(user.getUserEmail());
-               useraddresse.setText(user.getLocation());
-               userdate.setText(user.getDateofbirth().getDay()+"/"+user.getDateofbirth().getMonth()+"/"+user.getDateofbirth().getYear());
+    private void GetProfileData(String userID){
+        userRef.child(userID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Users user=dataSnapshot.getValue(Users.class);
+                Accountname.setText(user.getUsername());
+                userEmail.setText(user.getUserEmail());
+                useraddresse.setText(user.getLocation());
+                userdate.setText(user.getDateofbirth().getDay()+"/"+user.getDateofbirth().getMonth()+"/"+user.getDateofbirth().getYear());
 
-               // userdate.setText(user.getDateofbirth());
-               if(user.isGender()==true){
-                   usergender.setText("Male");
-               }
-               else{
-                   usergender.setText("Female");
-               }
-               if(user.getProfile_pic_id()!=null){
-                   mStorageRef.child(user.getProfile_pic_id()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                       @Override
-                       public void onSuccess(byte[] bytes) {
-                           final Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                           DisplayMetrics dm = new DisplayMetrics();
-                           getWindowManager().getDefaultDisplay().getMetrics(dm);
-                           Accountprofile.setImageBitmap(bm);
+                // userdate.setText(user.getDateofbirth());
+                if(user.isGender()==true){
+                    usergender.setText("Male");
+                }
+                else{
+                    usergender.setText("Female");
+                }
+                if(user.getProfile_pic_id()!=null){
+                    mStorageRef.child(user.getProfile_pic_id()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                        @Override
+                        public void onSuccess(byte[] bytes) {
+                            final Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                            DisplayMetrics dm = new DisplayMetrics();
+                            getWindowManager().getDefaultDisplay().getMetrics(dm);
+                            Accountprofile.setImageBitmap(bm);
 
-                       }
-                   });
-               } else {
-                   Accountprofile.setImageResource(R.drawable.defaultprofile);
-               }
-               if(user.getCover_pic_id()!=null){
-                   mStorageRef.child(user.getCover_pic_id()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                       @Override
-                       public void onSuccess(byte[] bytes) {
-                           final Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                           DisplayMetrics dm = new DisplayMetrics();
-                           getWindowManager().getDefaultDisplay().getMetrics(dm);
-                           AccountCover.setImageBitmap(bm);
+                        }
+                    });
+                } else {
+                    Accountprofile.setImageResource(R.drawable.defaultprofile);
+                }
+                if(user.getCover_pic_id()!=null){
+                    mStorageRef.child(user.getCover_pic_id()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                        @Override
+                        public void onSuccess(byte[] bytes) {
+                            final Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                            DisplayMetrics dm = new DisplayMetrics();
+                            getWindowManager().getDefaultDisplay().getMetrics(dm);
+                            AccountCover.setImageBitmap(bm);
 
-                       }
-                   });
-               } else {
-                   AccountCover.setImageResource(R.drawable.cover);
-               }
-
-
-
-           }
-
-           @Override
-           public void onCancelled(@NonNull DatabaseError databaseError) {
-
-           }
-       });
-   }
-   private void IsFriend(final String userID){
-       friendsRef.addChildEventListener(new ChildEventListener() {
-           @Override
-           public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-               Friends fr = dataSnapshot.getValue(Friends.class);
-               if (TextUtils.equals(fr.getUserId(), userID)) {
-                   String[] friends = fr.getUserFriends().split(",");
-                   for (String friend : friends) {
-                       if (TextUtils.equals(friend, mAuth.getCurrentUser().getUid())) {
-                           Addfriend.setImageResource(R.drawable.friends);
-                           addfriendtext.setText("  Friends");
-                           Addfriend.setEnabled(false);
-                       }
-                   }
+                        }
+                    });
+                } else {
+                    AccountCover.setImageResource(R.drawable.cover);
+                }
 
 
-               }
-           }
 
-           @Override
-           public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
 
-           }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-           @Override
-           public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            }
+        });
+    }
+    private void IsFriend(final String userID){
+        friendsRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Friends fr = dataSnapshot.getValue(Friends.class);
+                if (TextUtils.equals(fr.getUserId(), userID)) {
+                    String[] friends = fr.getUserFriends().split(",");
+                    for (String friend : friends) {
+                        if (TextUtils.equals(friend, mAuth.getCurrentUser().getUid())) {
+                            Addfriend.setImageResource(R.drawable.friends);
+                            addfriendtext.setText("  Friends");
+                            Addfriend.setEnabled(false);
+                        }
+                    }
 
-           }
 
-           @Override
-           public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                }
+            }
 
-           }
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-           @Override
-           public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
 
-           }
-       });
-   }
-   private void IssentRequest(final String userID){
-       FriendRequestRef.addChildEventListener(new ChildEventListener() {
-           @Override
-           public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-               FriendRequest friendRequest = dataSnapshot.getValue(FriendRequest.class);
-               if (TextUtils.equals(friendRequest.getSenderid(), mAuth.getCurrentUser().getUid()) && TextUtils.equals(friendRequest.getRecieverid(), userID) && friendRequest.getState() == 1) {
-                   Addfriend.setImageResource(R.drawable.addfriendd);
-                   addfriendtext.setText("cancel request");
-                   IsExist = true;
-               }
-           }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
-           @Override
-           public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
 
-           }
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-           @Override
-           public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            }
 
-           }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-           @Override
-           public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            }
+        });
+    }
+    private void IssentRequest(final String userID){
+        FriendRequestRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                FriendRequest friendRequest = dataSnapshot.getValue(FriendRequest.class);
+                if (TextUtils.equals(friendRequest.getSenderid(), mAuth.getCurrentUser().getUid()) && TextUtils.equals(friendRequest.getRecieverid(), userID) && friendRequest.getState() == 1) {
+                    Addfriend.setImageResource(R.drawable.addfriendd);
+                    addfriendtext.setText("cancel request");
+                    IsExist = true;
+                }
+                else if(TextUtils.equals(friendRequest.getSenderid(),userID) && TextUtils.equals(friendRequest.getRecieverid(), mAuth.getCurrentUser().getUid()) && friendRequest.getState() == 1) {
+                    Addfriend.setImageResource(R.drawable.addfriendd);
+                    addfriendtext.setText("pending");
+                    Addfriend.setEnabled(false);
+                }
 
-           }
+                }
 
-           @Override
-           public void onCancelled(@NonNull DatabaseError databaseError) {
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-           }
-       });
-   }
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
     private boolean validate(){
         boolean valid=true;
         name=editAccountname.getText().toString().trim();
         email=edituseremail.getText().toString().trim();
-        addresse=Edituseraddresse.getText().toString().trim();
+        //  addresse=Edituseraddresse.getText().toString().trim();
         if(name.isEmpty()){
             editAccountname.setError("name is required");
             valid=false;
@@ -580,9 +616,13 @@ public class AccountActivity extends Activity {
         if(email.contains(" ")){
             email = email.replaceAll("\\s","");
         }
-        if(addresse.isEmpty()){
+
+       /* if(addresse.isEmpty()){
             Edituseraddresse.setError("address is required");
             valid=false;
+        }*/
+        if(addresse==null){
+            Toast.makeText(AccountActivity.this,"address is required",Toast.LENGTH_LONG).show();
         }
         if(userdate.getText().toString().trim().isEmpty()){
             userdate.setError("Date of birth is required");
@@ -591,7 +631,7 @@ public class AccountActivity extends Activity {
         return valid;
 
     }
- private void updateInfo(){
+    private void updateInfo(){
 
         if(mAuth.getCurrentUser()!=null) {
             String currentuserId=mAuth.getCurrentUser().getUid();
@@ -616,11 +656,13 @@ public class AccountActivity extends Activity {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if (task.isSuccessful()) {
+                                                        dismissProgressDialog();
                                                         updateprofileDialoge.dismiss();
                                                         Toast.makeText(AccountActivity.this, "  your info update successfully", Toast.LENGTH_LONG).show();
 
 
                                                     } else {
+                                                        dismissProgressDialog();
                                                         Toast.makeText(AccountActivity.this, "Error !! "+task.getException(), Toast.LENGTH_LONG).show();
                                                         updateprofileDialoge.dismiss();
 
@@ -630,6 +672,7 @@ public class AccountActivity extends Activity {
 
                                         }
                                         else{
+                                            dismissProgressDialog();
                                             Toast.makeText(AccountActivity.this, "Error "+task.getException(), Toast.LENGTH_LONG).show();
 
                                             System.out.println("Error "+task.getException());
@@ -639,6 +682,7 @@ public class AccountActivity extends Activity {
 
                             }
                             else{
+                                dismissProgressDialog();
                                 Toast.makeText(AccountActivity.this, "not sign in !! "+task.getException(), Toast.LENGTH_LONG).show();
 
                             }
@@ -654,12 +698,31 @@ public class AccountActivity extends Activity {
                 }
             });
         }
- }
- private void putuserdatainupdateform(){
-     editAccountname.setText(Accountname.getText().toString());
-     edituseremail.setText(userEmail.getText().toString());
-     Edituseraddresse.setText(useraddresse.getText().toString());
- }
+    }
+    private void putuserdatainupdateform(){
+        editAccountname.setText(Accountname.getText().toString());
+        edituseremail.setText(userEmail.getText().toString());
+        //  Edituseraddresse.setText(useraddresse.getText().toString());
+    }
+    private void showDialogue(){
+        if(progressdialogue==null){
+            progressdialogue=new ProgressDialog(this);
+            progressdialogue.setTitle("loading...");
+            progressdialogue.setMessage("please wait...");
+
+        }
+        progressdialogue.show();
+    }
+    private void dismissProgressDialog() {
+        if (progressdialogue != null && progressdialogue.isShowing()) {
+            progressdialogue.dismiss();
+        }
+    }
+    @Override
+    protected void onDestroy() {
+        dismissProgressDialog();
+        super.onDestroy();
+    }
 
 
 

@@ -1,14 +1,18 @@
 package com.example.parenteye;
 
-import java.util.List;
 
 public class Friends {
     private String userId;
     private String userFriends;
+    private String blockFriends;
 
+    public String getBlockFriends() {
+        return blockFriends;
+    }
 
-
-
+    public void setBlockFriends(String blockFriends) {
+        this.blockFriends = blockFriends;
+    }
 
 
     public Friends(){
