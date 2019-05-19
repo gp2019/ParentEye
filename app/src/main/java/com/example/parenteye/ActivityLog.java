@@ -20,7 +20,7 @@ import static com.example.parenteye.NotificationFragment.activityLogAdapter;
 import static com.example.parenteye.NotificationFragment.notificationAdapter;
 
 /*
-Activity log adapter
+Activity log
 clever
  */
 public class ActivityLog {
