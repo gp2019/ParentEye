@@ -1,6 +1,7 @@
 package com.example.parenteye;
 
 
+import android.graphics.Path;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,13 +30,21 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
+ * fragment resposible of notifications and activity log
+ * clever
  */
 public class NotificationFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private NotificationAdapter notificationAdapter;
-    private List<Notifications> notificationsList;
-    public boolean HAVE_NOTIFICATIONS;
+
+    //public Notifications notifications =new Notifications() ;
+
+    public static NotificationAdapter notificationAdapter  ;
+
+    public static ActivityLogAdapter activityLogAdapter;
+
+    public List<Notifications> notificationsList  = new ArrayList<>();
+
 
 
     public NotificationFragment() {
@@ -56,13 +66,25 @@ public class NotificationFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        notificationsList = new ArrayList<>();
+        MainActivity mainActivity = new MainActivity();
 
-        notificationAdapter = new NotificationAdapter(getContext(), notificationsList);
 
-        recyclerView.setAdapter(notificationAdapter);
 
-        readNotifications();
+
+        if(mainActivity.isActivityLog)
+            {
+
+                setActivityLogList();
+            }else{
+
+            setNotifiList();
+
+            }
+
+
+
+
+
 
 
         //Toast.makeText(getActivity(), "you have no notifications yet", Toast.LENGTH_LONG).show();
@@ -73,20 +95,62 @@ public class NotificationFragment extends Fragment {
     }
 
 
+    public void setNotifiList()
+    {
+
+         Notifications notifi =new Notifications() ;
+
+        notifi.readNotifications();
+
+        notificationAdapter = new NotificationAdapter(getContext(), notifi.notificationsList);
+
+        recyclerView.setAdapter(notificationAdapter);
+        //notifiList= notifications;
+
+
+       // notificationAdapter.notifyDataSetChanged();
+
+
+    }
+
+    public void setActivityLogList()
+    {
+        ActivityLog activityLog =new ActivityLog() ;
+
+        activityLog.readLogs();
+
+        activityLogAdapter = new ActivityLogAdapter(getContext(), activityLog.logActivityList);
+
+        recyclerView.setAdapter(activityLogAdapter);
+        //notifiList= notifications;
+
+
+        // notificationAdapter.notifyDataSetChanged();
+
+
+    }
+
 
     //********************* read notifications current user from fire base and but in notification list
     //********************* put it in adapter
 
+
+
     private void readNotifications() {
         //FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+
+
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        //FirebaseHelper firebaseHelper = new FirebaseHelper();
 
 
         //String userId = "EzH9MI0WJ7N0AwZNUidC45e2wiP2";
 
 
         DatabaseReference notification_reference = database.getReference("notifications").child(user.getUid());
+
 
 
         notification_reference.addValueEventListener(new ValueEventListener() {
@@ -111,7 +175,38 @@ public class NotificationFragment extends Fragment {
 
             }
         });
-/*
+
+
+
+
+
+
+        /*
+           String userId= firebaseHelper.getCurrentUser().getUid();
+
+           String notifireferce ="notifications";
+
+           String   totalReference =notifireferce+"/"+userId;
+
+
+        objectList = firebaseHelper.DBselectAll(totalReference);
+        for (int i=0;i<objectList.size();i++){
+
+            notificationsList.add((Notifications) objectList.get(i));
+
+        }
+
+
+
+        Collections.reverse(notificationsList);
+        notificationAdapter.notifyDataSetChanged();
+        */
+
+
+
+
+        /*
+
 
 
 
@@ -167,7 +262,6 @@ public class NotificationFragment extends Fragment {
         // }*/
     }
 }
-
 
 
 

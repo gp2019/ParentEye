@@ -1,26 +1,21 @@
 package com.example.parenteye;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,9 +25,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 
 //import android.support.v7.app.AlertController.RecycleListView;
 //import android.support.v7.app.AlertController;
@@ -59,14 +52,22 @@ public class MainActivity extends AppCompatActivity {
     private Button makeGroup;
     private Button addchild;
     private Button mychildren;
+
+
     private ImageView firendrequestid;
     private ArrayList<Posts> myposts=new ArrayList<Posts>();
 
 
     Notifications notifi = new Notifications();
+    ActivityLog activityLog = new ActivityLog();
     private ImageButton notification_icon,likeNotify,disLikeNotifi,addFriendNotifi,removeFrindNotify;
+    private Button ActivitylogBtn;
 
     private Button commentNotify;
+
+
+
+    public static boolean isActivityLog;
 
 
     @Override
@@ -176,13 +177,37 @@ public class MainActivity extends AppCompatActivity {
         disLikeNotifi=findViewById(R.id.dislike_icon);
         addFriendNotifi = findViewById(R.id.addfriend_icon);
         removeFrindNotify = findViewById(R.id.removeFriend_icon);
-
+        ActivitylogBtn= findViewById(R.id.Activity_log);
         //commentNotify=findViewById(R.id.commentNotify);
+
+
 
         notification_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent makepage = new Intent(MainActivity.this, NotificationPreview.class);
+
+                isActivityLog=false;
+
+
+                Intent makepage = new Intent(MainActivity.this, FragmentPreview.class);
+                startActivity(makepage);
+
+                /*NotificationFragment fragment = new NotificationFragment();
+                FragmentTransaction fragmentTransaction =getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.notification_fragment_container ,fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();*/
+
+            }
+        });
+
+        ActivitylogBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                isActivityLog=true;
+
+                Intent makepage = new Intent(MainActivity.this, FragmentPreview.class);
                 startActivity(makepage);
 
                 /*NotificationFragment fragment = new NotificationFragment();
@@ -203,8 +228,8 @@ public class MainActivity extends AppCompatActivity {
                 /*Intent makepage=new Intent(MainActivity.this,NotificationFragment.class);
                 startActivity(makepage);*/
                 // L7zI36Be0qS2pwLic4Jd8RDdWjD2
-                //String postid1 = "-LbU2g1M1oso-oW9qOPB";
-                String postid2 = "-LbU7gdO1Mkx4ZhulHxA";
+                String postid1 = "-LcCMOBCnOomGRFyCwfL";
+                String postid2 = "-LcCMP9H7kmcuYwvfdZC";
                 //String myuserId="currentUser";
                 String Aya = "cR6RdBeU5Lg7CEFLhEniBT16ZxM2";
 
@@ -213,12 +238,19 @@ public class MainActivity extends AppCompatActivity {
 
                 //addNotificationsOfLikes(postid1, post_publisher_Id);
                 String post_publisher_Id =Eman;
-                notifi.addNotificationsOfLikes(postid2, post_publisher_Id);
-
-
+                notifi.addNotificationsOfLikes(postid2, "L7zI36Be0qS2pwLic4Jd8RDdWjD2");
+                notifi.addNotificationsOfLikes(postid1, "L7zI36Be0qS2pwLic4Jd8RDdWjD2");
 
                 //addNotificationsOfComments(postid1, LikeridAya);
-                notifi.addNotificationsOfComments(postid2, post_publisher_Id);
+                notifi.addNotificationsOfComments(postid2, "L7zI36Be0qS2pwLic4Jd8RDdWjD2");
+                notifi.addNotificationsOfComments(postid1, "L7zI36Be0qS2pwLic4Jd8RDdWjD2");
+
+                //Add activitylog on likes , comments
+                activityLog.addActivityLogOfLikes(postid2);
+                activityLog.addActivityLogOfComments(postid1);
+
+
+
 
                 /*Add friend request notification header
                    parm Friend Want To Request Id
@@ -226,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
 
                 String FriendWantToRequest_Id= Aya;
 
-                notifi.addNotificationsOfFriendRequest(FriendWantToRequest_Id);
+               // notifi.addNotificationsOfFriendRequest(FriendWantToRequest_Id);
 
 
             }
@@ -237,10 +269,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String Aya = "cR6RdBeU5Lg7CEFLhEniBT16ZxM2";
-                String FriendWantToRequest_Id= Aya;
+                String ibrahem ="djm6VqH1f1QlIW8FeEMGAjsRaVf2";
+                String FriendWantToRequest_Id= ibrahem;
 
-                //notifi.addNotificationsOfFriendRequest(FriendWantToRequest_Id);
+                notifi.addNotificationsOfFriendRequest(FriendWantToRequest_Id);
+
+                /// son sends a friend request to
+                activityLog.addActivityLogOfSendFriendRequest(FriendWantToRequest_Id);
+
+
+                //son recieve a friend request from
+               // activityLog.addLogReceiveFriendRequest(FriendWantToRequest_Id);
 
             }
         });
@@ -256,7 +295,17 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                notifi.DeleteNotificationOfFriendRequest(Aya);
+                notifi.DeleteNotificationOfFriendRequest(FriendWantToRequest_Id);
+            }
+        });
+
+
+        disLikeNotifi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String postid2 = "-LcCMOBCnOomGRFyCwfL";
+
+                notifi.DeleteNotificationOfLike(postid2, "L7zI36Be0qS2pwLic4Jd8RDdWjD2");
             }
         });
 

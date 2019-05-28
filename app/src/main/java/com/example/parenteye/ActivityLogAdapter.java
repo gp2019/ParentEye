@@ -2,14 +2,9 @@ package com.example.parenteye;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,14 +23,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.Collections;
 import java.util.List;
 
 /*
-Notification Adapter
+Activity log adapter
 clever
  */
-public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.ViewHolder> {
+public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.ViewHolder> {
 
 
     final long ONE_MEGABYTE = 1024 * 1024;
@@ -48,7 +41,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     private Context mContext;
 
     // initialize list of Notifications
-    private List<Notifications> mNotification;
+    private List<ActivityLog> mActivityLog;
 
 
     private StorageReference UStorageRef;
@@ -56,9 +49,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
 
     //NotificationAdapter constructor
-    public NotificationAdapter(Context mContext, List<Notifications> mNotification) {
+    public ActivityLogAdapter(Context mContext, List<ActivityLog> mActivityLog) {
         this.mContext = mContext;
-        this.mNotification = mNotification;
+        this.mActivityLog = mActivityLog;
     }
 
 
@@ -66,10 +59,10 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     // the  return type is the sub class (ViewHolder) which take and hold the layout of (notification_item Activity)
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ActivityLogAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View notification_root_view = LayoutInflater.from(mContext).inflate(R.layout.notification_item, parent, false);
 
-        return new NotificationAdapter.ViewHolder(notification_root_view);
+        return new ActivityLogAdapter.ViewHolder(notification_root_view);
     }
 
 
@@ -80,25 +73,25 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
          get data from notification database after pushed by the number of notification in the BD and put it into the layout
    */
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(@NonNull ActivityLogAdapter.ViewHolder viewHolder, int position) {
 
 
         //initialize and get notification
-        final Notifications notification = mNotification.get(position);
+        final ActivityLog activityLog = mActivityLog.get(position);
 
-        viewHolder.Holder_notification_content_text.setText(notification.getNotificationMessage());
+        viewHolder.Holder_notification_content_text.setText(activityLog.getActivityLogMessage());
         //put the notification text into the content holder
-        String whoMakeAction = notification.getUserId();
+        String whoMakeAction = activityLog.getChildId();
         //call getuserInfo func to get the user name and profile pic of him
         getuserInfo(viewHolder.Holder_notification_profile_image, viewHolder.Holder_notification_user_name, whoMakeAction);
 
-        String PostId = notification.getPostId();
+        String PostId = activityLog.getPostId();
 
         //getPostImage(viewHolder.Holder_notification_post_content ,viewHolder.Holder_notification_post_image, PostId);
 
 
         //check if the notification is a post
-        if (notification.getIsPost()) {
+        if (activityLog.getIsPost()) {
             //if ispost is true photo will visible
             viewHolder.Holder_notification_post_image.setVisibility(View.VISIBLE);
 
@@ -106,16 +99,18 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             viewHolder.Holder_Friend_request_notifi_layout.setVisibility(View.GONE);
 
             //call  getPostImage func to get the post pic
-            getPostImage(viewHolder.Holder_notification_post_content, viewHolder.Holder_notification_post_image, notification.getPostId());
+            getPostImage(viewHolder.Holder_notification_post_content, viewHolder.Holder_notification_post_image, activityLog.getPostId());
 
 
-        } else if(notification.getisFriendRequest()){
-            //if ispost is false photo will gone
-            viewHolder.Holder_notification_post_image.setVisibility(View.GONE);
-            viewHolder.Holder_notification_post_content.setVisibility(View.GONE);
+        } else if(activityLog.getisFriendRequest()){
+            // accept and reject lay out will gone
+            viewHolder.Holder_Friend_request_notifi_layout.setVisibility(View.GONE);
 
+            String friendID = activityLog.getfriendId();
+            //if ispost is false photo of post and content will replace with photo of riend and the name of him
 
-            viewHolder.Holder_Friend_request_notifi_layout.setVisibility(View.VISIBLE);
+            getuserInfo(viewHolder.Holder_notification_post_image, viewHolder.Holder_notification_post_content,friendID);
+
 
 
 
@@ -198,7 +193,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     @Override
     public int getItemCount() {
-        return mNotification.size();
+        return mActivityLog.size();
     }
 
 
