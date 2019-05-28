@@ -17,7 +17,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ViewPager_myFriends"></activity>
-        <activity android:name=".ChildLogActivity" />
         <activity android:name=".GalleryActivity" />
         <activity android:name=".FriendRequestActivity" />
         <activity android:name=".MyChildrenActivity" />
