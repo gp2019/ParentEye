@@ -86,6 +86,12 @@
             android:id="@+id/Activity_log"
             android:text="Children Activity Log"/>
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/view_page"
+            android:text="view page"/>
+
 
         <LinearLayout
             android:layout_width="match_parent"

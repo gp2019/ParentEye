@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private Button addchild;
     private Button mychildren;
     private Button viewMyFriends;
+    private Button view_page;
 
 
     private ImageView firendrequestid;
@@ -179,6 +180,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
+        view_page=(Button)findViewById(R.id.view_page);
+        view_page.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent pageActv=new Intent(MainActivity.this,PageActivity.class);
+                startActivity(pageActv);
+                finish();
+            }
+        });
 /*****************************************************/
 
 

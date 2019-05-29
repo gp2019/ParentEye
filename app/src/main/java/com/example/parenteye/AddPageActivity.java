@@ -40,14 +40,15 @@ public class AddPageActivity extends AppCompatActivity {
     private EditText pagename;
     private EditText pageAbout;
     private Button AddPage;
-    private Integer PICK_IMAGE_REQUEST=100;
-    private Integer PICK_IMAGE=101;
+    //private Integer PICK_IMAGE_REQUEST=100;
+   // private Integer PICK_IMAGE=101;
+    private Integer PICK_IMAGE_REQUEST=71;
     private Uri filepath;
-    private Uri filepath2;
+   // private Uri filepath2;
     private StorageReference mStorageRef;
     private FirebaseAuth mAuth;
     private String profilekey=null;
-    private String coverkey=null;
+   // private String coverkey=null;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("Community");
 
@@ -59,13 +60,13 @@ public class AddPageActivity extends AppCompatActivity {
 
         mAuth=FirebaseAuth.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
-        coverphoto=(ImageView) findViewById(R.id.coverpage);
+       // coverphoto=(ImageView) findViewById(R.id.coverpage);
         profilephoto=(CircleImageView) findViewById(R.id.profilepage);
         pagename=(EditText)findViewById(R.id.pagename);
         pageAbout=(EditText)findViewById(R.id.pageAbout);
         AddPage=(Button)findViewById(R.id.Addpage);
 
-        coverphoto.setOnClickListener(new View.OnClickListener() {
+     /*   coverphoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent();
@@ -74,7 +75,7 @@ public class AddPageActivity extends AppCompatActivity {
                 startActivityForResult(Intent.createChooser(intent,"select image"),PICK_IMAGE_REQUEST);
             }
         });
-
+*/
 
         profilephoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +83,7 @@ public class AddPageActivity extends AppCompatActivity {
                 Intent intent=new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent,"select image"),PICK_IMAGE);
+                startActivityForResult(Intent.createChooser(intent,"select image"),PICK_IMAGE_REQUEST);
             }
         });
 
@@ -99,13 +100,10 @@ public class AddPageActivity extends AppCompatActivity {
                         page.setTypeid("2");
                         page.setAdminId(mAuth.getCurrentUser().getUid());
                         upload_profile_pic();
-                        upload_cover_pic();
                         if(profilekey!=null){
                             page.setPhotoId(profilekey);
                         }
-                        if(coverkey!=null){
-                            page.setCoverPhotoId(coverkey);
-                        }
+
                         myRef.push().setValue(page).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
@@ -141,7 +139,7 @@ public class AddPageActivity extends AppCompatActivity {
                 filepath=data.getData();
                 try{
                     Bitmap bitmap= MediaStore.Images.Media.getBitmap(getContentResolver(),filepath);
-                    coverphoto.setImageBitmap(bitmap);
+                    profilephoto.setImageBitmap(bitmap);
 
 
                 }
@@ -150,33 +148,21 @@ public class AddPageActivity extends AppCompatActivity {
 
                 }
             }
-            else if(requestCode==PICK_IMAGE){
-                filepath2=data.getData();
-                try{
-                    Bitmap bitmap2= MediaStore.Images.Media.getBitmap(getContentResolver(),filepath2);
-                    profilephoto.setImageBitmap(bitmap2);
-
-                }
-                catch (IOException e){
-                    e.printStackTrace();
-
-                }
-
-            }}
+         }
 
 
     }
 
 
     private void upload_profile_pic(){
-        if(filepath2!=null){
+        if(filepath!=null){
             // final ProgressDialog progressdialogue=new ProgressDialog(this);
             //  progressdialogue.setTitle("loading...");
             //  progressdialogue.show();
 
             profilekey = UUID.randomUUID().toString();
             StorageReference ref = mStorageRef.child("PageImages/"+profilekey);
-            ref.putFile(filepath2)
+            ref.putFile(filepath)
 
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -195,7 +181,7 @@ public class AddPageActivity extends AppCompatActivity {
                     });
         }
     }
-    private void upload_cover_pic(){
+    /*private void upload_cover_pic(){
         if(filepath!=null){
             // final ProgressDialog progressdialogue=new ProgressDialog(this);
             //  progressdialogue.setTitle("loading...");
@@ -221,10 +207,11 @@ public class AddPageActivity extends AppCompatActivity {
                         }
                     });
         }
+        */
     }
 
 
 
 
 
-}
+
