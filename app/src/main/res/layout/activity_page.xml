@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".PageActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:background="#bcd6d8">
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/pageImg"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            app:civ_border_width="2dp"
+            app:civ_border_color="#FF000000"
+            android:src="@drawable/user"
+            android:layout_marginTop="10dp"
+            android:scaleType="centerCrop"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <TextView
+            android:id="@+id/pagename_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"
+            android:textColor="#000"/>
+        </LinearLayout>
+        <Button
+            android:id="@+id/LikeUnLike_ID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Like page"
+            android:textSize="17sp"/>
+    </LinearLayout>
+    <ListView
+        android:id="@+id/pageList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </ListView>
+
+</LinearLayout>

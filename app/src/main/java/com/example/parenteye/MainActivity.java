@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private Button addchild;
     private Button mychildren;
     private Button viewMyFriends;
-    private Button search;
+    private Button view_page;
 
 
     private ImageView firendrequestid;
@@ -83,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
         firendrequestid=(ImageView) findViewById(R.id.firendrequestid);
         viewMyFriends=(Button)findViewById(R.id.viewFriends);
         Post_listview=(ListView) findViewById(R.id.Post_listview);
-        search=(Button) findViewById(R.id.search);
 
         floatingActionButton = findViewById(R.id.floatingButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -136,17 +135,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent search=new Intent(MainActivity.this,SearchActivity.class);
-                startActivity(search);
-                //finish();
-            }
-        });
-
-
-
         goprofile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -192,6 +180,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
+        view_page=(Button)findViewById(R.id.view_page);
+        view_page.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent pageActv=new Intent(MainActivity.this,PageActivity.class);
+                startActivity(pageActv);
+                finish();
+            }
+        });
 /*****************************************************/
 
 

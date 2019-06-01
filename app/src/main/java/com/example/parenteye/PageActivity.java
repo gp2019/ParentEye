@@ -1,0 +1,243 @@
+package com.example.parenteye;
+
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.DisplayMetrics;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class PageActivity extends AppCompatActivity {
+    private FirebaseAuth mAuth;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference CommunityRef = database.getReference("Community");
+    DatabaseReference membersRef = database.getReference("Members");
+    DatabaseReference userRef = database.getReference("Users");
+    DatabaseReference postref = database.getReference("Posts");
+    private TextView pagename;
+    private ImageView pagePhoto;
+    final long ONE_MEGABYTE = 1024 * 1024;
+    private StorageReference pagephotoRef;
+    private Button Like_unLike;
+    private boolean IsExist=false;
+    ArrayList<custom_posts_returned> Page_posts=new ArrayList<custom_posts_returned>();
+    private ListView Page_Post_listview;
+    public static final String pageID="pageID";
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_page);
+        IntializeVariables();
+        Like_unLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mAuth.getCurrentUser() != null) {
+                    final String PageId = "-Lg1OLwvGrf5AJFx6-jK"; //will be get automatic later
+                    if (IsExist == true) {
+                        membersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                for (DataSnapshot membersnapshot : dataSnapshot.getChildren()) {
+                                    Members member = membersnapshot.getValue(Members.class);
+                                    if (TextUtils.equals(mAuth.getCurrentUser().getUid(), member.getUserId()) && TextUtils.equals(member.getTyptId(), "2") && TextUtils.equals(member.getCommunityid(), PageId)) {
+                                        membersRef.child(membersnapshot.getKey()).removeValue();
+                                        Like_unLike.setText("Like Page");
+                                        IsExist = false;
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
+                    }
+                    if (IsExist == false) {
+                        Members new_member = new Members();
+                        new_member.setTyptId("2");
+                        new_member.setUserId(mAuth.getCurrentUser().getUid());
+                        new_member.setCommunityid(PageId);
+                        membersRef.push().setValue(new_member);
+                        Like_unLike.setText("UnLike Page");
+                        IsExist = true;
+                    }
+
+                }
+            }
+        });
+        pagename.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+          final String PageId="-Lg1OLwvGrf5AJFx6-jK"; //will be get automatic later
+                Intent aboutIntent=new Intent(getApplicationContext(),CommunityAboutandmembersActivity.class);
+                aboutIntent.putExtra(pageID,PageId);
+                startActivity(aboutIntent);
+            }
+        });
+
+    }
+
+
+    private void IntializeVariables(){
+        mAuth=FirebaseAuth.getInstance();
+        pagename=(TextView)findViewById(R.id.pagename_id);
+        pagePhoto=(ImageView)findViewById(R.id.pageImg);
+        pagephotoRef = FirebaseStorage.getInstance().getReference("PageImages/");
+        Like_unLike=(Button)findViewById(R.id.LikeUnLike_ID);
+        Page_Post_listview=(ListView)findViewById(R.id.pageList);
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getPageInfo();
+
+    }
+
+  /*  @Override
+    protected void onRestart() {
+        super.onRestart();
+        getPageInfo();
+    }
+
+   /* @Override
+    protected void onPostResume() {
+
+        super.onPostResume();
+        getPageInfo();
+    }
+    */
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        getPageInfo();
+    }
+
+    public  void getPageInfo(){
+        if(mAuth.getCurrentUser()!=null){
+          final String PageId="-Lg1OLwvGrf5AJFx6-jK"; //will be get automatic later
+            CommunityRef.child(PageId).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                       Community page=dataSnapshot.getValue(Community.class);
+                    pagename.setText(page.getCommunityname());
+                    if(page.getPhotoId()!=null){
+                        pagephotoRef.child(page.getPhotoId()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                            @Override
+                            public void onSuccess(byte[] bytes) {
+                                final Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                DisplayMetrics dm = new DisplayMetrics();
+                                getWindowManager().getDefaultDisplay().getMetrics(dm);
+                                pagePhoto.setImageBitmap(bm);
+
+                            }
+                        });
+
+                    }
+                    if(TextUtils.equals(page.getAdminId(),mAuth.getCurrentUser().getUid())){
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+            membersRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for(DataSnapshot membersnapshot:dataSnapshot.getChildren()){
+                        Members member=membersnapshot.getValue(Members.class);
+         if(TextUtils.equals(mAuth.getCurrentUser().getUid(),member.getUserId())&&TextUtils.equals(member.getTyptId(),"2")&&TextUtils.equals(member.getCommunityid(),PageId)){
+          Like_unLike.setText("UnLike Page");
+          IsExist=true;
+
+         }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+            GetPagePosts();
+        }
+        }
+
+
+    public  void GetPagePosts(){
+        final String PageId="-Lg1OLwvGrf5AJFx6-jK"; //will be get automatic later
+        final String PageName="page 2";//will be get automatic later
+        final PagePostAdapter pageAdapter=new PagePostAdapter(PageActivity.this,Page_posts);
+        Page_Post_listview.setAdapter(pageAdapter);
+        postref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Page_posts.clear();
+                for(DataSnapshot pagepostsnapshot:dataSnapshot.getChildren()){
+                    Posts pagepost=pagepostsnapshot.getValue(Posts.class);
+                    if(TextUtils.equals(pagepost.getPlaceTypeId(),"2")&&TextUtils.equals(pagepost.getPlaceId(),PageId)){
+                        custom_posts_returned custom=new custom_posts_returned();
+                        custom.setPost_owner_name(PageName);
+                        custom.setpost_owner_ID(pagepost.getPlaceId());
+                        custom.setPost_Id(pagepostsnapshot.getKey());
+                        if(pagepost.getPostcontent()!=null){
+                            custom.setPost_text(pagepost.getPostcontent());
+                            // System.out.println("content "+ custom.getPost_text());
+                        }
+                        if(pagepost.isHasimage()==true){
+                            custom.setPost_image(pagepost.getImageId());
+                        }
+                        Page_posts.add(custom);
+                        //   System.out.println("added "+ custom.getpost_owner_ID());
+                    }
+                }
+
+                Collections.reverse(Page_posts);
+                pageAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
+
+}
