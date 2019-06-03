@@ -211,11 +211,11 @@ public class Notifications {
     //************************  add notification func on Friend request ***************
 
     public void addNotificationsOfFriendRequest( String FriendWantToRequest_Id) {
-        DatabaseReference notification_reference = database.getReference("notifications").child(currentUser.getUid());
+        DatabaseReference notification_reference = database.getReference("notifications").child(FriendWantToRequest_Id);
 
 
         HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("userId", FriendWantToRequest_Id); // or hashMap.put("userid ", firebaseUser.getUid());
+        hashMap.put("userId", currentUser.getUid()); // or hashMap.put("userid ", firebaseUser.getUid());
         hashMap.put("NotificationMessage", "send to you a Friend Request ");
         hashMap.put("postId", " ");
         hashMap.put("isPost", false);
@@ -279,11 +279,11 @@ public class Notifications {
             }
         });
     }
-    //***************************************  Delete notification of Friend Request ******************************
+    //***************************************  Delete notification  cancel of Friend Request ******************************
 
-    public void DeleteNotificationOfFriendRequest(final String FriendWantToRequest_Id)
+    public void DeleteNotificationOfCancelFriendRequest(final String FriendWantToRequest_Id)
     {
-        final DatabaseReference notification_reference = database.getReference("notifications").child(currentUser.getUid());
+        final DatabaseReference notification_reference = database.getReference("notifications").child(FriendWantToRequest_Id);
          //final List<Notifications> notificationsList = new ArrayList<>();
          //String name="ahmed";
         notification_reference.addValueEventListener(new ValueEventListener() {
@@ -294,7 +294,7 @@ public class Notifications {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         Notifications notification = snapshot.getValue(Notifications.class);
                         //notificationsList.add(notification);
-                        if ( notification.getisFriendRequest() && notification.getUserId().equalsIgnoreCase(FriendWantToRequest_Id)  ) {
+                        if ( notification.getisFriendRequest() && notification.getUserId().equalsIgnoreCase(currentUser.getUid())  ) {
 
                             notification_reference.child(snapshot.getKey()).removeValue();
                         }
@@ -326,6 +326,51 @@ public class Notifications {
     }
 
 
+    //***************************************  Delete notification  cancel of Friend Request ******************************
+
+    public void DeleteNotificationOfRejectFriendRequest(final String FriendWantToRejectRequest_Id)
+    {
+        final DatabaseReference notification_reference = database.getReference("notifications").child(currentUser.getUid());
+        //final List<Notifications> notificationsList = new ArrayList<>();
+        //String name="ahmed";
+        notification_reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists())
+                {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Notifications notification = snapshot.getValue(Notifications.class);
+                        //notificationsList.add(notification);
+                        if ( notification.getisFriendRequest() && notification.getUserId().equalsIgnoreCase(FriendWantToRejectRequest_Id)  ) {
+
+                            notification_reference.child(snapshot.getKey()).removeValue();
+                        }
+
+                        // notification_reference.child(notificationsList.get(0).).removeValue();
+                        /*if(notification.getUserId() ==FriendWantToRequest_Id)
+                        {
+                             //record = snapshot.getKey();
+                             //snapshot.getRef().removeValue();
+                            //notification_reference.orderByChild("userId").equalTo(FriendWantToRequest_Id).removeEventListener();
+
+                        }*/
+                    }
+                }
+                /*Notifications notifi = notificationsList.get(0);
+                if(notificationsList.get(0).isFriendRequest()) {
+                    notification_reference.child(notificationsList.get(0).id).removeValue();
+                    //notification_reference.child("-LbdvUQb4wAHEtWjsqoN").removeValue();
+                }*/
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+//            notification_reference.child(record).removeValue();
+
+    }
 
     //********************* read notifications current user from fire base and but in notification list
     //********************* put it in adapter

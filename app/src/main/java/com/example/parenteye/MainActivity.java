@@ -293,7 +293,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String ibrahem ="djm6VqH1f1QlIW8FeEMGAjsRaVf2";
+                String ibrahem ="OjEqHKzicMOZkAzjl5OLxBcIpai2";
                 String FriendWantToRequest_Id= ibrahem;
 
                 notifi.addNotificationsOfFriendRequest(FriendWantToRequest_Id);
@@ -314,12 +314,12 @@ public class MainActivity extends AppCompatActivity {
         removeFrindNotify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String Aya = "cR6RdBeU5Lg7CEFLhEniBT16ZxM2";
+                String Aya = "OjEqHKzicMOZkAzjl5OLxBcIpai2";
                 String FriendWantToRequest_Id= Aya;
 
 
 
-                notifi.DeleteNotificationOfFriendRequest(FriendWantToRequest_Id);
+                notifi.DeleteNotificationOfCancelFriendRequest(FriendWantToRequest_Id);
             }
         });
 
