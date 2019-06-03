@@ -33,6 +33,7 @@
                 android:text="child name" />
 
             <RelativeLayout
+                android:id="@+id/RelativelayoutID"
                 android:layout_gravity="center"
                 android:layout_marginStart="10dp"
                 android:layout_width="wrap_content"

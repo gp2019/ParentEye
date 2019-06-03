@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
                                       @Override
                                       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                                          if (dataSnapshot.child("CloseAccount").getValue(boolean.class)==false){
+                                          if (dataSnapshot.child("closeAccount").getValue(boolean.class)==false){
                                               progressdialogue.dismiss();
                                               Toast.makeText(LoginActivity.this,"Login Successfully",Toast.LENGTH_LONG).show();
                                               GoHome();
@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                                    if (CheckTime==true){
                                                        progressdialogue.dismiss();
-                                                       myRefUsers.child(UserId).child("CloseAccount").setValue(false);
+                                                       myRefUsers.child(UserId).child("closeAccount").setValue(false);
                                                        Toast.makeText(LoginActivity.this,"Login Successfully",Toast.LENGTH_LONG).show();
                                                        GoHome();
                                                    }

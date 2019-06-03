@@ -156,7 +156,7 @@ public class AccountActivity extends Activity {
         Addfriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String userId="cR6RdBeU5Lg7CEFLhEniBT16ZxM2";
+                final String userId="OjEqHKzicMOZkAzjl5OLxBcIpai2";
                 if(TextUtils.equals(mAuth.getCurrentUser().getUid(),userId)){
                     //here go updating profile
 
@@ -295,7 +295,7 @@ public class AccountActivity extends Activity {
 
     private void ViewUserProfile(){
         if(mAuth.getCurrentUser()!=null) {
-            final String userID = "cR6RdBeU5Lg7CEFLhEniBT16ZxM2";
+            final String userID = "OjEqHKzicMOZkAzjl5OLxBcIpai2";
             //if the user enter his own profile
             if(TextUtils.equals(mAuth.getCurrentUser().getUid(),userID)){
                 Addfriend.setImageResource(R.drawable.updateprofile);
@@ -329,7 +329,7 @@ public class AccountActivity extends Activity {
 
 
         final String username="aya";
-        final String profileId="djm6VqH1f1QlIW8FeEMGAjsRaVf2";
+        final String profileId="OjEqHKzicMOZkAzjl5OLxBcIpai2";
         postref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

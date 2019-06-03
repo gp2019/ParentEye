@@ -27,7 +27,7 @@ public class searchFriendAdapter extends ArrayAdapter<Users> {
 
 
     public searchFriendAdapter(Activity context, List<Users> userslist) {
-        super(context, R.layout.despliay_search_result, userslist);
+        super(context, R.layout.display_search_result, userslist);
         this.context = context;
         this.userslist = userslist;
 
@@ -37,7 +37,7 @@ public class searchFriendAdapter extends ArrayAdapter<Users> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
-        View listView = inflater.inflate(R.layout.despliay_search_result, null, true);
+        View listView = inflater.inflate(R.layout.display_search_result, null, true);
 
         TextView user_name = (TextView) listView.findViewById(R.id.user_name);
         TextView location = (TextView) listView.findViewById(R.id.location);
