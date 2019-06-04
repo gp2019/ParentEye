@@ -328,6 +328,7 @@ public class Notifications {
 
     //***************************************  Delete notification  cancel of Friend Request ******************************
 
+
     public void DeleteNotificationOfRejectOrAcceptFriendRequest(final String FriendWantToRejectRequest_Id)
     {
         final DatabaseReference notification_reference = database.getReference("notifications").child(currentUser.getUid());

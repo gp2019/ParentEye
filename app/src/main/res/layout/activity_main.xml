@@ -105,6 +105,16 @@
             android:layout_height="wrap_content"
             android:id="@+id/view_page"
             android:text="view page"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/view_group"
+            android:text="view group"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/show_group_request"
+            android:text="show my group request"/>
 
 
         <LinearLayout

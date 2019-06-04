@@ -514,7 +514,7 @@ public class AccountActivity extends Activity {
         });
     }
     private void IsFriend(final String userID){
-        friendsRef.addChildEventListener(new ChildEventListener() {
+      /*  friendsRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Friends fr = dataSnapshot.getValue(Friends.class);
@@ -551,7 +551,28 @@ public class AccountActivity extends Activity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
+      friendsRef.child(userID).child("userFriends").addValueEventListener(new ValueEventListener() {
+          @Override
+          public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+              if(dataSnapshot.getValue(String.class)!=null){
+                  String friends=dataSnapshot.getValue(String.class);
+                  String[] arrayfriends = friends.split(",");
+                  for (String friend : arrayfriends) {
+                      if (TextUtils.equals(friend, mAuth.getCurrentUser().getUid())) {
+                          Addfriend.setImageResource(R.drawable.friends);
+                          addfriendtext.setText("  Friends");
+                          Addfriend.setEnabled(false);
+                      }
+                  }
+              }
+          }
+
+          @Override
+          public void onCancelled(@NonNull DatabaseError databaseError) {
+
+          }
+      });
     }
     private void IssentRequest(final String userID){
         FriendRequestRef.addChildEventListener(new ChildEventListener() {
@@ -723,25 +744,6 @@ public class AccountActivity extends Activity {
         dismissProgressDialog();
         super.onDestroy();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -48,6 +48,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     // initialize firebase connection
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference FriendRequestRef = database.getReference("FriendRequest");
+    DatabaseReference friendsRef = database.getReference("Friends");
 
 
     //initialize pure  context
@@ -150,9 +151,70 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         viewHolder.Holder_Accept_notifi_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FriendRequestRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for(DataSnapshot reqsnapshot:dataSnapshot.getChildren())
+                        {
+                            if (TextUtils.equals(whoMakeAction,reqsnapshot.getValue(FriendRequest.class).getSenderid())&&TextUtils.equals(reqsnapshot.getValue(FriendRequest.class).getRecieverid(),mAuth.getCurrentUser().getUid()))
+                            {
+                                FriendRequestRef.child(reqsnapshot.getKey()).removeValue();
+                                Notifications n=new Notifications();
+                                n.DeleteNotificationOfRejectOrAcceptFriendRequest(whoMakeAction);
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+              friendsRef.child(mAuth.getCurrentUser().getUid()).child("userFriends").addListenerForSingleValueEvent(new ValueEventListener() {
+                  @Override
+                  public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                      if(dataSnapshot.getValue(String.class)!=null){
+                          String Recieverfriends=dataSnapshot.getValue(String.class).concat(","+whoMakeAction);
+                          friendsRef.child(mAuth.getCurrentUser().getUid()).child("userFriends").setValue(Recieverfriends);
+
+                      }
+                      else{
+                          friendsRef.child(mAuth.getCurrentUser().getUid()).child("userFriends").setValue(whoMakeAction);
+
+                      }
+                  }
+
+                  @Override
+                  public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                  }
+              });
+                friendsRef.child(whoMakeAction).child("userFriends").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.getValue(String.class)!=null){
+                            String senderfriends=dataSnapshot.getValue(String.class).concat(","+mAuth.getCurrentUser().getUid());
+                            friendsRef.child(whoMakeAction).child("userFriends").setValue(senderfriends);
+
+                        }
+                        else{
+                            friendsRef.child(whoMakeAction).child("userFriends").setValue(mAuth.getCurrentUser().getUid());
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
 
             }
         });
+
 
 
         /*************************************** action on Reject btn**************************
@@ -175,7 +237,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                             {
                                 FriendRequestRef.child(reqsnapshot.getKey()).removeValue();
                                 Notifications n=new Notifications();
-                                n.DeleteNotificationOfRejectOrAcceptFriendRequest(whoMakeAction);
+                               n.DeleteNotificationOfRejectOrAcceptFriendRequest(whoMakeAction);
                             }
 
                         }

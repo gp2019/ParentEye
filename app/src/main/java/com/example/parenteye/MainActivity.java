@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     private Button mychildren;
     private Button viewMyFriends;
     private Button view_page;
+    private Button view_group;
+    private Button showGroupRequest;
 
 
     private ImageView firendrequestid;
@@ -188,6 +190,24 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent pageActv=new Intent(MainActivity.this,PageActivity.class);
                 startActivity(pageActv);
+                finish();
+            }
+        });
+        view_group=(Button)findViewById(R.id.view_group);
+        view_group.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent groupActv=new Intent(MainActivity.this,GroupActivity.class);
+                startActivity(groupActv);
+                finish();
+            }
+        });
+        showGroupRequest=(Button) findViewById(R.id.show_group_request) ;
+        showGroupRequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent admingroupreq=new Intent(MainActivity.this,AdminGroupRequestActivity.class);
+                startActivity(admingroupreq);
                 finish();
             }
         });
@@ -404,11 +424,11 @@ public class MainActivity extends AppCompatActivity {
            final ArrayList<String> communityIds=new ArrayList<String>();
             final ArrayList<String> friendsList=new ArrayList<String>();
 
-            myRef3.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+            myRef3.child(mAuth.getCurrentUser().getUid()).child("userFriends").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.getValue(Friends.class)!=null) {
-                        String myfriends = dataSnapshot.getValue(Friends.class).getUserFriends();
+                    if(dataSnapshot.getValue(String.class)!=null) {
+                        String myfriends = dataSnapshot.getValue(String.class);
                         final String[] myFriendsID = myfriends.split(",");
                         for(String id:myFriendsID){
                             friendsList.add(id);
