@@ -75,7 +75,7 @@ public class GroupRequestAdapter extends ArrayAdapter<Users> {
         AcceptRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                groupReqRef.addValueEventListener(new ValueEventListener() {
+                groupReqRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for(DataSnapshot resnapshot:dataSnapshot.getChildren()){
@@ -103,7 +103,7 @@ public class GroupRequestAdapter extends ArrayAdapter<Users> {
         RejectRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                groupReqRef.addValueEventListener(new ValueEventListener() {
+                groupReqRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for(DataSnapshot resnapshot:dataSnapshot.getChildren()){
