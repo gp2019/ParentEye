@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,11 +40,15 @@ clever
  */
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.ViewHolder> {
 
+    private FirebaseAuth mAuth=FirebaseAuth.getInstance();
+
 
     final long ONE_MEGABYTE = 1024 * 1024;
 
     // initialize firebase connection
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference FriendRequestRef = database.getReference("FriendRequest");
+
 
     //initialize pure  context
     private Context mContext;
@@ -88,7 +94,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
         viewHolder.Holder_notification_content_text.setText(notification.getNotificationMessage());
         //put the notification text into the content holder
-        String whoMakeAction = notification.getUserId();
+        final String whoMakeAction = notification.getUserId();
         //call getuserInfo func to get the user name and profile pic of him
         getuserInfo(viewHolder.Holder_notification_profile_image, viewHolder.Holder_notification_user_name, whoMakeAction);
 
@@ -141,7 +147,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         /*************************************** action on Accept btn**************************
          *
          */
-        viewHolder.Holder_reject_notifi_btn.setOnClickListener(new View.OnClickListener() {
+        viewHolder.Holder_Accept_notifi_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -157,7 +163,31 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             @Override
             public void onClick(View v) {
 
+                System.out.println("reject");
+                System.out.println(whoMakeAction);
+                System.out.println(mAuth.getCurrentUser().getUid());
+                FriendRequestRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for(DataSnapshot reqsnapshot:dataSnapshot.getChildren())
+                        {
+                            if (TextUtils.equals(whoMakeAction,reqsnapshot.getValue(FriendRequest.class).getSenderid())&&TextUtils.equals(reqsnapshot.getValue(FriendRequest.class).getRecieverid(),mAuth.getCurrentUser().getUid()))
+                            {
+                                FriendRequestRef.child(reqsnapshot.getKey()).removeValue();
+                                Notifications n=new Notifications();
+                                n.DeleteNotificationOfRejectOrAcceptFriendRequest(whoMakeAction);
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
             }
+
         });
 
 
