@@ -27,7 +27,9 @@
         <activity android:name=".ViewImage" />
         <activity android:name=".Edit_Comment" />
         <activity android:name=".AddChildActivity" />
-        <activity android:name=".LoginActivity" />
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/AppTheme.FullScreen"/>
         <activity android:name=".Show_Did_Like" />
         <activity android:name=".Create_Post" />
         <activity android:name=".AccountActivity" />
@@ -41,7 +43,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SignupActivity" />
+        <activity
+            android:name=".SignupActivity"
+            android:theme="@style/AppTheme.FullScreen"/>
         <activity android:name=".Create_Comment" />
         <activity android:name=".MakeGroupActivity" />
         <activity android:name=".FragmentPreview" />
