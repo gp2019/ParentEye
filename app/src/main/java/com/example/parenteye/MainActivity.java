@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabItem;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -50,13 +54,22 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton floatingActionButton;
     private Button goprofile;
     private Button makeGroup;
+    private Button search;
     private Button addchild;
     private Button mychildren;
     private Button viewMyFriends;
     private Button view_page;
     private Button view_group;
     private Button showGroupRequest;
+    //design
 
+     Toolbar toolbar;
+    private TabLayout tabLayout;
+    private TabItem home;
+    private TabItem notification;
+    private TabItem friendRequest;
+    private TabItem sideMenu;
+    private ViewPager viewPager;
 
     private ImageView firendrequestid;
     private ArrayList<Posts> myposts=new ArrayList<Posts>();
@@ -78,6 +91,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        //////////////////////////////design
+        tabLayout=findViewById(R.id.tablayout);
+        home=findViewById(R.id.Home);
+        notification=findViewById(R.id.notification);
+        friendRequest=findViewById(R.id.friendRequests);
+        sideMenu=findViewById(R.id.sideMenu);
+        viewPager=findViewById(R.id.viewpager);
+
+
         mAuth = FirebaseAuth.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference("UserImages/");
         mStorageRef2 = FirebaseStorage.getInstance().getReference("PostsImages/");
@@ -110,6 +134,8 @@ public class MainActivity extends AppCompatActivity {
         makePage = (Button) findViewById(R.id.makepage);
         logout = (Button) findViewById(R.id.logout);
         makeGroup = (Button) findViewById(R.id.makeGroup);
+        search = (Button) findViewById(R.id.tvSearchBar);
+
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,6 +159,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent makeGroup = new Intent(MainActivity.this, MakeGroupActivity.class);
                 startActivity(makeGroup);
+                //finish();
+            }
+        });
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent search=new Intent(MainActivity.this,SearchActivity.class);
+                startActivity(search);
                 //finish();
             }
         });

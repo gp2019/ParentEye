@@ -92,7 +92,6 @@ public class SearchActivity extends AppCompatActivity {
                         String  search_input_text =search_box_input.getText().toString();
                         if(! search_input_text.isEmpty()) {
 
-
                             for (DataSnapshot ds:dataSnapshot.getChildren()){
 
                                 Community comunity=ds.getValue(Community.class);
@@ -106,21 +105,15 @@ public class SearchActivity extends AppCompatActivity {
 
                         }
                         else {
-
                             Toast.makeText(getApplicationContext(),"You Must Enter The Right Community Name",Toast.LENGTH_SHORT).show();
-
+                            communityList.clear();
                         }
 
                         if(! communityList.isEmpty()){
                             searchCommunityAdapter searchCommunityAdapter = new searchCommunityAdapter(SearchActivity.this, communityList);
                             listview.setAdapter(searchCommunityAdapter);
-
                         }
-                        else{
-
-                            communityList.clear();
-                            searchCommunityAdapter searchCommunityAdapter = new searchCommunityAdapter(SearchActivity.this, communityList);
-                            listview.setAdapter(searchCommunityAdapter);
+                        else {
                             Toast.makeText(getApplicationContext(),"You Must Enter The Right Community Name",Toast.LENGTH_SHORT).show();
                         }
 
@@ -150,11 +143,9 @@ public class SearchActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-
                         String  search_input_text =search_box_input.getText().toString();
                         if(! search_input_text.isEmpty()) {
 
-                            userlist.clear();
                             for (DataSnapshot ds:dataSnapshot.getChildren()){
 
                                 Users users=ds.getValue(Users.class);
@@ -168,20 +159,15 @@ public class SearchActivity extends AppCompatActivity {
 
                         }
                         else {
-
                             Toast.makeText(getApplicationContext(),"You Must Enter The Right User Name",Toast.LENGTH_SHORT).show();
 
-                          //  userlist.clear();
+                            userlist.clear();
                         }
                         if (! userlist.isEmpty()){
                             searchFriendAdapter searchFriendAdapter=new searchFriendAdapter(SearchActivity.this,userlist);
                             listview.setAdapter(searchFriendAdapter);
-
                         }
-                        else{
-                            userlist.clear();
-                            searchFriendAdapter searchFriendAdapter=new searchFriendAdapter(SearchActivity.this,userlist);
-                            listview.setAdapter(searchFriendAdapter);
+                        else {
                             Toast.makeText(getApplicationContext(),"You Must Enter The Right User Name",Toast.LENGTH_SHORT).show();
                         }
 

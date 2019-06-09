@@ -16,7 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AdminGroupRequestActivity"></activity>
+        <activity android:name=".SearchActivity"></activity>
+        <activity android:name=".AdminGroupRequestActivity" />
         <activity android:name=".GroupActivity" />
         <activity android:name=".CommunityAboutandmembersActivity" />
         <activity android:name=".PageActivity" />
@@ -29,7 +30,7 @@
         <activity android:name=".AddChildActivity" />
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/AppTheme.FullScreen"/>
+            android:theme="@style/AppTheme.FullScreen" />
         <activity android:name=".Show_Did_Like" />
         <activity android:name=".Create_Post" />
         <activity android:name=".AccountActivity" />
@@ -45,7 +46,7 @@
         </activity>
         <activity
             android:name=".SignupActivity"
-            android:theme="@style/AppTheme.FullScreen"/>
+            android:theme="@style/AppTheme.FullScreen" />
         <activity android:name=".Create_Comment" />
         <activity android:name=".MakeGroupActivity" />
         <activity android:name=".FragmentPreview" />
