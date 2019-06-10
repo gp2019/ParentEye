@@ -2,6 +2,7 @@ package com.example.parenteye;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,7 +32,7 @@ import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
 
-    private ImageButton search_friend_buttom,search_community_buttom,arrow_back;
+    private FloatingActionButton search_friend_buttom,search_community_buttom;
 
     //declaring variables
     private ListView listview;
@@ -55,9 +56,9 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        arrow_back=(ImageButton)findViewById(R.id.arrow_back);
-        search_friend_buttom= (ImageButton) findViewById(R.id.search_friend_buttom);
-        search_community_buttom= (ImageButton) findViewById(R.id.search_community_buttom);
+
+        search_friend_buttom= (FloatingActionButton) findViewById(R.id.search_friend_buttom);
+        search_community_buttom= (FloatingActionButton) findViewById(R.id.search_community_buttom);
         listview=(ListView)findViewById(R.id.search_listview);
         search_box_input= (EditText) findViewById(R.id.search_box_input);
 
@@ -68,14 +69,7 @@ public class SearchActivity extends AppCompatActivity {
         userlist=new ArrayList<>();
         communityList=new ArrayList<>();
 
-        arrow_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent back=new Intent(SearchActivity.this,MainActivity.class);
-                startActivity(back);
-                //finish();
-            }
-        });
+
 
 
 //When search on friend
