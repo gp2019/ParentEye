@@ -57,7 +57,9 @@ public class PageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (mAuth.getCurrentUser() != null) {
-                    final String PageId = "-Lg1OLwvGrf5AJFx6-jK"; //will be get automatic later
+                    Intent intent = getIntent();
+                    final   String PageId = intent.getStringExtra("searched_page_Id");
+                   // final String PageId = "-Lg1OLwvGrf5AJFx6-jK"; //will be get automatic later
                     if (IsExist == true) {
                         membersRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
@@ -95,7 +97,9 @@ public class PageActivity extends AppCompatActivity {
         pagename.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-          final String PageId="-Lg1OLwvGrf5AJFx6-jK"; //will be get automatic later
+                Intent intent = getIntent();
+                final   String PageId = intent.getStringExtra("searched_page_Id");
+         // final String PageId="-Lg1OLwvGrf5AJFx6-jK"; //will be get automatic later
                 Intent aboutIntent=new Intent(getApplicationContext(),CommunityAboutandmembersActivity.class);
                 aboutIntent.putExtra(pageID,PageId);
                 startActivity(aboutIntent);
@@ -145,7 +149,9 @@ public class PageActivity extends AppCompatActivity {
 
     public  void getPageInfo(){
         if(mAuth.getCurrentUser()!=null){
-          final String PageId="-Lg1OLwvGrf5AJFx6-jK"; //will be get automatic later
+            Intent intent = getIntent();
+            final   String PageId = intent.getStringExtra("searched_page_Id");
+         // final String PageId="-Lg1OLwvGrf5AJFx6-jK"; //will be get automatic later
             CommunityRef.child(PageId).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -199,8 +205,11 @@ public class PageActivity extends AppCompatActivity {
 
 
     public  void GetPagePosts(){
-        final String PageId="-Lg1OLwvGrf5AJFx6-jK"; //will be get automatic later
-        final String PageName="page 2";//will be get automatic later
+        Intent intent = getIntent();
+        final   String PageId = intent.getStringExtra("searched_page_Id");
+        final   String PageName = intent.getStringExtra("searched_Item_name");
+       // final String PageId="-Lg1OLwvGrf5AJFx6-jK"; //will be get automatic later
+       // final String PageName="page 2";//will be get automatic later
         final PagePostAdapter pageAdapter=new PagePostAdapter(PageActivity.this,Page_posts);
         Page_Post_listview.setAdapter(pageAdapter);
         postref.addValueEventListener(new ValueEventListener() {

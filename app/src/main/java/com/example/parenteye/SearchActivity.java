@@ -7,7 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -48,6 +50,11 @@ public class SearchActivity extends AppCompatActivity {
     private ArrayList<Community> listcom;
     private  ArrayAdapter<Community> adapterCommunity;
     List<Community>communityList;
+    public static final String searched_user_Id="searched_user_Id";
+    public static final String searched_page_Id="searched_page_Id";
+    public static final String searched_group_Id="searched_group_Id";
+    public static final String searched_Item_name="searched_Item_name";
+
 
 
 
@@ -90,10 +97,12 @@ public class SearchActivity extends AppCompatActivity {
 
                                 Community comunity=ds.getValue(Community.class);
                                 String communityName=comunity.getCommunityname();
+                               // comunity.setCommunityId(ds.getKey()); //getting the key from firebase and set to the id
                                 if (communityName.toLowerCase().contains(search_input_text.toLowerCase())) {
                                     communityList.add(comunity);
 
                                 }
+
 
                             }
 
@@ -144,10 +153,12 @@ public class SearchActivity extends AppCompatActivity {
 
                                 Users users=ds.getValue(Users.class);
                                 String username=users.getUsername();
+                                users.setUserId(ds.getKey()); //getting the key from firebase and set to the id
                                 if (username.toLowerCase().contains(search_input_text.toLowerCase())) {
                                     userlist.add(users);
 
                                 }
+
 
                             }
 
@@ -182,6 +193,55 @@ public class SearchActivity extends AppCompatActivity {
 
         //////When search on group or page
 
+
+
+
+
+
+
+
+        //making the Intent to transfer to another activity
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                System.out.println("clicked "+id);
+            if(userlist.get(position)!=null){
+                  Users searched_user=userlist.get(position);
+                  Intent searched_intent=new Intent(getApplicationContext(),AccountActivity.class);
+                  searched_intent.putExtra(searched_user_Id,searched_user.getUserId());
+                  startActivity(searched_intent);
+                }
+
+
+
+
+               /*   else{
+                  System.out.println("enter  community only ");
+              }
+                  else if(communityList.get(position)!=null){
+
+                 Community searched_comm=communityList.get(position);
+                  System.out.println("enter  community "+searched_comm.getCommunityId());
+                  if(TextUtils.equals(searched_comm.getTypeid(),"1")){
+                      Intent searched_intent=new Intent(getApplicationContext(),GroupActivity.class);
+                      searched_intent.putExtra(searched_group_Id,searched_comm.getCommunityId());
+                      searched_intent.putExtra(searched_Item_name,searched_comm.getCommunityname());
+                      System.out.println("group id "+searched_comm.getCommunityId());
+                      startActivity(searched_intent);
+                  }
+                  else if(TextUtils.equals(searched_comm.getTypeid(),"2")){
+                      Intent searched_intent=new Intent(getApplicationContext(),PageActivity.class);
+                      searched_intent.putExtra(searched_page_Id,searched_comm.getCommunityId());
+                      System.out.println("page id "+searched_comm.getCommunityId());
+                      searched_intent.putExtra(searched_Item_name,searched_comm.getCommunityname());
+                      startActivity(searched_intent);
+                  }
+
+              }
+              */
+            }
+        });
 
 
     }

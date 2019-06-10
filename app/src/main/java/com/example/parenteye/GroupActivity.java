@@ -52,8 +52,10 @@ public class GroupActivity extends AppCompatActivity {
         join_unjoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("Is Exist"+IsExist);
-                final String groupId="-Lg1Gggi2Xo1Qx2-rLG4"; //will be get automatic later
+               // System.out.println("Is Exist"+IsExist);
+                Intent intent = getIntent();
+                final   String groupId = intent.getStringExtra("searched_group_Id");
+              //  final String groupId="-Lg1Gggi2Xo1Qx2-rLG4"; //will be get automatic later
                 if (mAuth.getCurrentUser() != null) {
                     if (IsExist == 0) {
                         GroupRequests request=new GroupRequests();
@@ -115,7 +117,9 @@ public class GroupActivity extends AppCompatActivity {
         groupname.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String groupId="-Lg1Gggi2Xo1Qx2-rLG4"; //will be get automatic later
+                Intent intent = getIntent();
+                final   String groupId = intent.getStringExtra("searched_group_Id");
+               // final String groupId="-Lg1Gggi2Xo1Qx2-rLG4"; //will be get automatic later
                 Intent aboutIntent=new Intent(getApplicationContext(),CommunityAboutandmembersActivity.class);
                 aboutIntent.putExtra(pageID,groupId);
                 startActivity(aboutIntent);
@@ -140,7 +144,9 @@ public class GroupActivity extends AppCompatActivity {
 
     public  void getgroupInfo(){
         if(mAuth.getCurrentUser()!=null){
-            final String groupId="-Lg1Gggi2Xo1Qx2-rLG4"; //will be get automatic later
+            Intent intent = getIntent();
+            final   String groupId = intent.getStringExtra("searched_group_Id");
+           // final String groupId="-Lg1Gggi2Xo1Qx2-rLG4"; //will be get automatic later
             CommunityRef.child(groupId).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -207,7 +213,7 @@ public class GroupActivity extends AppCompatActivity {
                 }
             });
 
-           // GetPagePosts();
+
         }
     }
 
