@@ -8,197 +8,306 @@
     android:layout_height="match_parent"
 
      >
-
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
-
-        <RelativeLayout
-            android:id="@+id/main_layout"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-             >
-
-        <android.support.design.widget.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/floatingButton"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="20dp"
-        android:layout_marginRight="20dp"
-        android:src="@drawable/feather"
-        tools:ignore="MissingConstraints" />
-
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/Header"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@drawable/header_register"
+        android:elevation="5dp" />
 
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:id="@+id/header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:elevation="10dp"
+        android:transitionName="tvLogin"
+       >
 
 
         <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/logout"
-            android:text="logout"/>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/makepage"
-            android:text="create page"/>
+            android:id="@+id/tvSearchBar"
+            android:layout_width="230dp"
+            android:layout_height="45dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/searchbarbuttom"
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/ShowComments"
-            android:text="Show comments"/>
+            android:textAllCaps="false"
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/ShowMyFriend"
-            android:text="Show Friend"/>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/goprofile"
-            android:text="Go profile"/>
-      <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/makeGroup"
-            android:text="Create Group"/>
-        <Button
-            android:id="@+id/addchild"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="add new child" />
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/mychildren"
-            android:text="View MyChildren"/>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/viewFriends"
-            android:text="View My Friend"/>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/search"
-            android:text="Search"/>
+            android:layout_marginBottom="10dp"/>
 
 
-        <Button
-            android:id="@+id/Activity_log"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Children Activity Log" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/view_page"
-            android:text="view page"/>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/view_group"
-            android:text="view group"/>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/show_group_request"
-            android:text="show my group request"/>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-
-            <ImageButton
-
-                android:id="@+id/like_icon"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/notification_round_button"
-                android:background="@drawable/like_round_button"
-                android:textColor="#fff"
-                android:layout_marginTop="25dp"
-                android:layout_marginRight="35dp"
-                />
-
-            <ImageButton
-
-                android:id="@+id/dislike_icon"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/dis_like"
-                android:textColor="#fff"
-                android:layout_marginTop="25dp"
-                android:layout_marginRight="35dp"
-
-                />
-            <ImageButton
-                android:id="@+id/notification_icon"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/notification_round_button"
-                android:src="@drawable/notification_icon"
-                android:textColor="#fff"
-                android:layout_marginTop="25dp"
-                android:layout_marginRight="35dp"
-                />
-            <ImageButton
-
-                android:id="@+id/addfriend_icon"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/addfriend_round_btn"
-                android:textColor="#fff"
-                android:layout_marginTop="25dp"
-                android:layout_marginRight="35dp"
-                />
-
-            <ImageButton
-
-                android:id="@+id/removeFriend_icon"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/remove_friend_round_btn"
-                android:textColor="#fff"
-                android:layout_marginTop="25dp"
-                android:layout_marginRight="35dp"
-                />
-
-        </LinearLayout>
-
-
-
-
+            />
 
         <ImageView
-            android:id="@+id/firendrequestid"
+            android:id="@+id/tvchatIcon"
             android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/friendrequest"/>
-        <ListView
-            android:id="@+id/Post_listview"
-            android:layout_width="match_parent"
-            android:padding="5dp"
-            android:layout_height="match_parent">
+            android:layout_height="45dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="15dp"
 
-        </ListView>
+            android:src="@drawable/chat_icon"
 
 
+            />
 
     </LinearLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/profile_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/header"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:elevation="10dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/defaultprofile"
+        app:civ_border_color="@color/colorPurple"
+        app:civ_border_width="2dp" />
+
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tablayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/profile_image"
+        android:layout_alignBottom="@+id/profile_image"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="-64dp"
+        android:background="@drawable/background_tabs">
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/Home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/home_icon" />
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/notification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/notification_icon_tab"/>
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/friendRequests"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/requests_icon"/>
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/sideMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/side_mnue"/>
+    </android.support.design.widget.TabLayout>
+    
+    <android.support.v4.view.ViewPager
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/viewpager"></android.support.v4.view.ViewPager>
+
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="532dp"
+        android:layout_below="@+id/profile_image"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="69dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp">
+
+        <RelativeLayout
+            android:id="@+id/rlayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/floatingButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="20dp"
+                android:src="@drawable/feather"
+                tools:ignore="MissingConstraints" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <Button
+                    android:id="@+id/logout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="logout" />
+
+                <Button
+                    android:id="@+id/makepage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="create page" />
+
+                <Button
+                    android:id="@+id/ShowComments"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Show comments" />
+
+                <Button
+                    android:id="@+id/ShowMyFriend"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Show Friend" />
+
+                <Button
+                    android:id="@+id/goprofile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Go profile" />
+
+                <Button
+                    android:id="@+id/makeGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Create Group" />
+
+                <Button
+                    android:id="@+id/addchild"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="add new child" />
+
+                <Button
+                    android:id="@+id/mychildren"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="View MyChildren" />
+
+                <Button
+                    android:id="@+id/viewFriends"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="View My Friend" />
+
+                <Button
+                    android:id="@+id/search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Search" />
+
+
+                <Button
+                    android:id="@+id/Activity_log"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Children Activity Log" />
+
+                <Button
+                    android:id="@+id/view_page"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="view page" />
+
+                <Button
+                    android:id="@+id/view_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="view group" />
+
+                <Button
+                    android:id="@+id/show_group_request"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="show my group request" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <ImageButton
+
+                        android:id="@+id/like_icon"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginRight="35dp"
+                        android:background="@drawable/like_round_button"
+                        android:src="@drawable/notification_round_button"
+                        android:textColor="#fff" />
+
+                    <ImageButton
+
+                        android:id="@+id/dislike_icon"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginRight="35dp"
+                        android:background="@drawable/dis_like"
+                        android:textColor="#fff"
+
+                        />
+
+                    <ImageButton
+                        android:id="@+id/notification_icon"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginRight="35dp"
+                        android:background="@drawable/notification_round_button"
+                        android:src="@drawable/notification_icon"
+                        android:textColor="#fff" />
+
+                    <ImageButton
+
+                        android:id="@+id/addfriend_icon"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginRight="35dp"
+                        android:background="@drawable/addfriend_round_btn"
+                        android:textColor="#fff" />
+
+                    <ImageButton
+
+                        android:id="@+id/removeFriend_icon"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginRight="35dp"
+                        android:background="@drawable/remove_friend_round_btn"
+                        android:textColor="#fff" />
+
+                </LinearLayout>
+
+
+                <ImageView
+                    android:id="@+id/firendrequestid"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/friendrequest" />
+
+                <ListView
+                    android:id="@+id/Post_listview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="5dp">
+
+                </ListView>
+
+
+            </LinearLayout>
 
         </RelativeLayout>
 
