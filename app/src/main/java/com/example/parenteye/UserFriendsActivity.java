@@ -57,7 +57,7 @@ public class UserFriendsActivity extends AppCompatActivity {
 
     private void GetMyFriends(){
         final ArrayList<String> friends_arraylist=new ArrayList<String>();
-        final ChildAdapter adapter=new ChildAdapter(UserFriendsActivity.this,curremtuserfriends);
+        final User_Chat_Adapter adapter=new User_Chat_Adapter(UserFriendsActivity.this,curremtuserfriends);
         friendsList.setAdapter(adapter);
 
         if(mAuth.getCurrentUser()!=null){

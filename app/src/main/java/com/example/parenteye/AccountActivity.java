@@ -97,7 +97,9 @@ public class AccountActivity extends Activity {
             "Banha"," Kafr el-Sheikh","Arish","Mallawi","10th of Ramadan City","Bilbais","Marsa Matruh","Idfu","Mit Ghamr","Al-Hamidiyya","Desouk",
             "Qalyub","Abu Kabir","Kafr el-Dawwar","Girga","Akhmim","Matareya"};
     private  ProgressDialog progressdialogue;
-
+    private ImageView friends_chat;
+    ArrayList<Users> AccountFriends=new ArrayList<Users>();
+    public static final String Account_ID="Account_ID";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,6 +139,7 @@ public class AccountActivity extends Activity {
         btncancelupdate=(Button) updateprofileDialoge.findViewById(R.id.btncancelupdate);
         gallery=(ImageView) findViewById(R.id.gallery);
         spinner1=(Spinner)  updateprofileDialoge.findViewById(R.id.spinner1);
+        friends_chat=(ImageView)findViewById(R.id.friends_chat);
 
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, cities);
@@ -276,12 +279,22 @@ public class AccountActivity extends Activity {
         gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = getIntent();
+                  final   String userID = intent.getStringExtra("searched_user_Id");
                 Intent galleryIntent=new Intent(AccountActivity.this,GalleryActivity.class);
+                galleryIntent.putExtra(Account_ID,userID);
                 startActivity(galleryIntent);
                 finish();
             }
         });
 
+        friends_chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              //  Intent intent = getIntent();
+              //  final   String userID = intent.getStringExtra("searched_user_Id");
+            }
+        });
     }
 
 
@@ -709,6 +722,10 @@ public class AccountActivity extends Activity {
     protected void onDestroy() {
         dismissProgressDialog();
         super.onDestroy();
+    }
+    private void showAccountFriends(String Account_Owner_ID){
+   User_Chat_Adapter friendsAdapter=new User_Chat_Adapter(AccountActivity.this,AccountFriends);
+
     }
 
 

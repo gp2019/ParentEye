@@ -1,5 +1,6 @@
 package com.example.parenteye;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -39,7 +40,9 @@ public class GalleryActivity extends AppCompatActivity {
        final GalleryAdapter galleryadapter=new GalleryAdapter(GalleryActivity.this,photos);
         gallery_list.setAdapter(galleryadapter);
 
-        final String userId="cR6RdBeU5Lg7CEFLhEniBT16ZxM2";
+       // final String userId="cR6RdBeU5Lg7CEFLhEniBT16ZxM2";
+        Intent intent = getIntent();
+        final   String userId = intent.getStringExtra("Account_ID");
         if(mAuth.getCurrentUser()!=null){
 
                     postref.addValueEventListener(new ValueEventListener() {

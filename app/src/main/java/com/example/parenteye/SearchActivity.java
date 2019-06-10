@@ -213,6 +213,7 @@ public class SearchActivity extends AppCompatActivity {
                   Intent searched_intent=new Intent(getApplicationContext(),AccountActivity.class);
                   searched_intent.putExtra(searched_user_Id,searched_user.getUserId());
                   startActivity(searched_intent);
+
                 }
 
 
