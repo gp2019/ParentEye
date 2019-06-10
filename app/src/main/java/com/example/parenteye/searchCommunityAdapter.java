@@ -48,7 +48,7 @@ public class searchCommunityAdapter extends ArrayAdapter<Community>{
         community_name.setText(community.getCommunityname());
 
 
-        String typeName  =community.getTypeid().toString();
+        String typeName  =community.getCommunityType().toString();
         String group= "group";
         if(! typeName.equals(group)){
             type.setText("Page Community");

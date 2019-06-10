@@ -13,6 +13,7 @@ public class Community {
     private String coverPhotoId;
     private String PhotoId;
     private String AdminId;
+    private  String communityType;
 
 
 
@@ -22,11 +23,12 @@ public class Community {
 
     }
 
-    public Community(String communityId, String communityname, String communityAbout, String typeid, LocalDate createdDate, String coverPhotoId, String photoId, String adminId) {
+    public Community(String communityId, String communityname, String communityAbout, String typeid, LocalDate createdDate, String coverPhotoId, String photoId, String adminId,String communityType) {
         CommunityId = communityId;
         Communityname = communityname;
         CommunityAbout = communityAbout;
         this.typeid = typeid;
+        this.communityType= communityType;
         this.createdDate = createdDate;
         this.coverPhotoId = coverPhotoId;
         PhotoId = photoId;
@@ -66,6 +68,10 @@ public class Community {
         AdminId = adminId;
     }
 
+    public void setCommunityType(String communityType) {
+        this.communityType = communityType;
+    }
+
 
 
 
@@ -99,6 +105,9 @@ public class Community {
 
     public String getAdminId() {
         return AdminId;
+    }
+    public String getCommunityType() {
+        return communityType;
     }
 
 

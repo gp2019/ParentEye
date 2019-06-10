@@ -25,7 +25,6 @@ public class searchFriendAdapter extends ArrayAdapter<Users> {
     private List<Users> userslist;
     private StorageReference userStorageRef = FirebaseStorage.getInstance().getReference("UserImages/");
 
-
     public searchFriendAdapter(Activity context, List<Users> userslist) {
         super(context, R.layout.display_search_result, userslist);
         this.context = context;
@@ -71,4 +70,7 @@ public class searchFriendAdapter extends ArrayAdapter<Users> {
 
         return listView;
     }
+
+
+
 }

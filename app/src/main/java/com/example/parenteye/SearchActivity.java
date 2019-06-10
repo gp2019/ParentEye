@@ -79,6 +79,8 @@ public class SearchActivity extends AppCompatActivity {
 
 
 
+
+
 //When search on friend
 
         search_community_buttom.setOnClickListener(new View.OnClickListener() {
