@@ -12,7 +12,7 @@ public class Users {
     private Date dateofbirth;
     private String location;
     private boolean gender;
-    private String RoleId;
+    private String RoleId; //1 is  user and 2  is child
     private String profile_pic_id;
     private String cover_pic_id;
     private boolean CloseAccount;
