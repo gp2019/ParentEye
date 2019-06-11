@@ -99,6 +99,7 @@ public class AddPageActivity extends AppCompatActivity {
                         page.setCommunityAbout(page_about);
                         page.setTypeid("2");
                         page.setAdminId(mAuth.getCurrentUser().getUid());
+                        page.setCommunityType("page");
                         upload_profile_pic();
                         if(profilekey!=null){
                             page.setPhotoId(profilekey);

@@ -88,6 +88,7 @@ public class SearchActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 communityList.clear();
+                userlist.clear(); //test
                 communityRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -99,7 +100,7 @@ public class SearchActivity extends AppCompatActivity {
 
                                 Community comunity=ds.getValue(Community.class);
                                 String communityName=comunity.getCommunityname();
-                               // comunity.setCommunityId(ds.getKey()); //getting the key from firebase and set to the id
+                                comunity.setCommunityId(ds.getKey()); //getting the key from firebase and set to the id
                                 if (communityName.toLowerCase().contains(search_input_text.toLowerCase())) {
                                     communityList.add(comunity);
 
@@ -142,7 +143,7 @@ public class SearchActivity extends AppCompatActivity {
         search_friend_buttom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                communityList.clear(); //testing
                 userlist.clear();
                 userRef.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -208,7 +209,8 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 System.out.println("clicked "+id);
-            if(userlist.get(position)!=null){
+
+           if(userlist.get(position)!=null){
                   Users searched_user=userlist.get(position);
                   Intent searched_intent=new Intent(getApplicationContext(),AccountActivity.class);
                   searched_intent.putExtra(searched_user_Id,searched_user.getUserId());
@@ -219,10 +221,7 @@ public class SearchActivity extends AppCompatActivity {
 
 
 
-               /*   else{
-                  System.out.println("enter  community only ");
-              }
-                  else if(communityList.get(position)!=null){
+                /*  else {
 
                  Community searched_comm=communityList.get(position);
                   System.out.println("enter  community "+searched_comm.getCommunityId());
@@ -242,7 +241,7 @@ public class SearchActivity extends AppCompatActivity {
                   }
 
               }
-              */
+*/
             }
         });
 

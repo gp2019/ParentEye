@@ -64,11 +64,11 @@ public class UserFriendsActivity extends AppCompatActivity {
 
 
 
-            Friendsref.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+            Friendsref.child(mAuth.getCurrentUser().getUid()).child("userFriends").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.getValue(Friends.class)!=null) {
-                        String userfriends = dataSnapshot.getValue(Friends.class).getUserFriends();
+                    if(dataSnapshot.getValue(String.class)!=null) {
+                        String userfriends = dataSnapshot.getValue(String.class);
                         String[] friends = userfriends.split(",");
                         for (String id : friends) {
                             friends_arraylist.add(id);

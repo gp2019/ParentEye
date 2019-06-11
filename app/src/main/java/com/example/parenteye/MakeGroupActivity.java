@@ -94,6 +94,7 @@ public class MakeGroupActivity extends AppCompatActivity {
                         group.setCommunityAbout(group_about);
                         group.setTypeid("1");
                         group.setAdminId(mAuth.getCurrentUser().getUid());
+                        group.setCommunityType("group");
                         upload_profile_pic();
                         upload_cover_pic();
                         if (profilekey != null) {
