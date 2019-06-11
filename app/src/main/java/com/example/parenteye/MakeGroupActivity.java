@@ -52,7 +52,7 @@ public class MakeGroupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_makegroup);
+        setContentView(R.layout.activity_make_group);
         mAuth = FirebaseAuth.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
         coverphoto = (ImageView) findViewById(R.id.groupCover);
