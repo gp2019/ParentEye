@@ -60,7 +60,7 @@ public class Create_Post extends AppCompatActivity implements View.OnClickListen
     private ImageView arrowBack,imageViewPost,remove,profileImage;
     private TextView post,nameUser,CreatePost;
     DatabaseReference dbRef;
-    private String userId,typePost;
+    private String userId,placeTypeId,placeId;
     private String postIdEdit,postcontentEdit,imageIdEdit,hasImageEdit;
     private  ProgressDialog progressdialogue;
     private String ImageId;
@@ -96,7 +96,8 @@ public class Create_Post extends AppCompatActivity implements View.OnClickListen
 
 
          userId= getIntent().getStringExtra("userId");
-         typePost= getIntent().getStringExtra("typePost");
+        placeTypeId= getIntent().getStringExtra("placeTypeId");
+        placeId= getIntent().getStringExtra("placeId");
          ImageId = getIntent().getStringExtra("ImageId");
 
 
@@ -138,13 +139,11 @@ public class Create_Post extends AppCompatActivity implements View.OnClickListen
 
         View photo_gallery = bottomSheetDialogView.findViewById(R.id.gallery);
         View camera = bottomSheetDialogView.findViewById(R.id.camera);
-        View tagFriend = bottomSheetDialogView.findViewById(R.id.tagFriend);
 
         //click listener function
 
         photo_gallery.setOnClickListener(this);
         camera.setOnClickListener(this);
-        tagFriend.setOnClickListener(this);
         bottomSheet.setOnClickListener(this);
         remove.setOnClickListener(this);
         post.setOnClickListener(this);
@@ -169,10 +168,6 @@ public class Create_Post extends AppCompatActivity implements View.OnClickListen
                 bottomSheetDialog.dismiss();
                 break;
 
-                case R.id.tagFriend:
-                Toast.makeText(Create_Post.this, "tagfriend", Toast.LENGTH_SHORT).show();
-                bottomSheetDialog.dismiss();
-                break;
 
                 case R.id.camera:
                 cameraIntent();
@@ -231,7 +226,7 @@ public class Create_Post extends AppCompatActivity implements View.OnClickListen
 
             String Post_ID= dbRef.push().getKey();
 
-            Posts posts = new Posts(Post_ID,userId,new getCurrentTime().getDateTime(),typePost,typePost,writePost.getText().toString(),hasImage,imagekey,0,0);
+            Posts posts = new Posts(Post_ID,userId,new getCurrentTime().getDateTime(),placeTypeId,placeId,writePost.getText().toString(),hasImage,imagekey,0,0);
 
             dbRef.child(Post_ID).setValue(posts).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -46,6 +48,9 @@ public class GroupActivity extends AppCompatActivity {
     public static final String pageID="pageID";
     private ListView Post_listview;
     ArrayList<custom_posts_returned> Group_posts=new ArrayList<custom_posts_returned>();
+    private FloatingActionButton floatingActionButton;
+    private String CommunityId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,7 +133,33 @@ public class GroupActivity extends AppCompatActivity {
             }
         });
 
+        floatingActionButton = findViewById(R.id.floatingButton);
+        CommunityId = "Lh2x7ArurH4Yu4-XZPW";
+
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+                if (currentUser != null) {
+                    CreatePost(currentUser.getUid());
+                }
+
+            }
+        });
+
+
     }
+
+    private void CreatePost(String Uid) {
+        Intent login_main = new Intent(GroupActivity.this, Create_Post.class);
+        login_main.putExtra("userId", Uid);
+        login_main.putExtra("placeTypeId", "3");
+        login_main.putExtra("placeId", CommunityId);
+        startActivity(login_main);
+        finish();
+    }
+
     private void Intialize_variables(){
         mAuth=FirebaseAuth.getInstance();
         groupname=(TextView)findViewById(R.id.group_name);
@@ -143,6 +174,29 @@ public class GroupActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         getgroupInfo();
+
+        membersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot membersnapshot:dataSnapshot.getChildren()){
+                    Members members = membersnapshot.getValue(Members.class);
+                    if (members.getUserId()==mAuth.getCurrentUser().getUid()&&members.getCommunityid()==CommunityId){
+                        floatingActionButton.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        floatingActionButton.setVisibility(View.GONE);
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     public  void getgroupInfo(){

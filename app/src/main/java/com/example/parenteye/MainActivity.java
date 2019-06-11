@@ -151,8 +151,8 @@ public class MainActivity extends AppCompatActivity {
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent makepage = new Intent(MainActivity.this,SearchActivity.class);
-                startActivity(makepage);
+             //   Intent makepage = new Intent(MainActivity.this,SearchActivity.class);
+               // startActivity(makepage);
                 //finish();
             }
         });
@@ -462,10 +462,12 @@ public class MainActivity extends AppCompatActivity {
     private void CreatePost(String Uid) {
         Intent login_main = new Intent(MainActivity.this, Create_Post.class);
         login_main.putExtra("userId", Uid);
-        login_main.putExtra("typePost", "1");
+        login_main.putExtra("placeTypeId", "1");
+        login_main.putExtra("placeId", "");
         startActivity(login_main);
         finish();
     }
+
 
     private void CreateComment(String Uid) {
         Intent login_main = new Intent(MainActivity.this, Create_Comment.class);

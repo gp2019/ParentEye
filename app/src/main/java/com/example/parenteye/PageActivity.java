@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -19,6 +20,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -45,6 +47,9 @@ public class PageActivity extends AppCompatActivity {
     private boolean IsExist=false;
     ArrayList<custom_posts_returned> Page_posts=new ArrayList<custom_posts_returned>();
     private ListView Page_Post_listview;
+    private FloatingActionButton floatingActionButton;
+    private String CommunityId;
+
     public static final String pageID="pageID";
 
 
@@ -106,8 +111,31 @@ public class PageActivity extends AppCompatActivity {
             }
         });
 
-    }
+        floatingActionButton = findViewById(R.id.floatingButton);
+        CommunityId = "Lh2x7ArurH4Yu4-XZPW";
 
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+                if (currentUser != null) {
+                    CreatePost(currentUser.getUid());
+                }
+
+            }
+        });
+
+
+    }
+    private void CreatePost(String Uid) {
+        Intent login_main = new Intent(PageActivity.this, Create_Post.class);
+        login_main.putExtra("userId", Uid);
+        login_main.putExtra("placeTypeId", "2");
+        login_main.putExtra("placeId", CommunityId);
+        startActivity(login_main);
+        finish();
+    }
 
     private void IntializeVariables(){
         mAuth=FirebaseAuth.getInstance();
@@ -124,6 +152,24 @@ public class PageActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         getPageInfo();
+
+        CommunityRef.child(CommunityId).child("adminId").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue()==mAuth.getCurrentUser().getUid()){
+                    floatingActionButton.setVisibility(View.VISIBLE);
+                }
+                else {
+                    floatingActionButton.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
     }
 
