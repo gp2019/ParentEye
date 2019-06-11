@@ -41,6 +41,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -95,6 +96,7 @@ public class AccountActivity extends Activity {
     private Dialog AccountfriendsDialog;
     private  TextView AccountfriendsDialogtxtclose;
     private  ListView AccountfriendsDialogList;
+    private CreateTime createTime;
     String[] cities = new String[]{"Cairo", "Alexandria", "Giza","Port Said","Suez","Luxor","al-Mansura","El-Mahalla El-Kubra","Tanta","Asyut",
             "tIsmailia","Fayyum","Zagazig"," Aswan","Damietta","Damanhur","al-Minya","Beni Suef"," Qena","Sohag","Hurghada","6th of October City","Shibin El Kom",
             "Banha"," Kafr el-Sheikh","Arish","Mallawi","10th of Ramadan City","Bilbais","Marsa Matruh","Idfu","Mit Ghamr","Al-Hamidiyya","Desouk",
@@ -148,7 +150,9 @@ public class AccountActivity extends Activity {
         AccountfriendsDialogtxtclose =(TextView) AccountfriendsDialog.findViewById(R.id.txtclose);
         AccountfriendsDialogList=(ListView) AccountfriendsDialog.findViewById(R.id.accout_friends);
 
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, cities);
+
         spinner1.setAdapter(adapter);
         spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -374,6 +378,14 @@ public class AccountActivity extends Activity {
                         custom.setPost_Id(postSnapshot.getKey());
                         custom.setCountComment(newpost.getCountComment());
                         custom.setCountLike(newpost.getCountLike());
+                        String timePuplisher =newpost.getPostdate();
+                        createTime =new CreateTime(timePuplisher);
+                        try {
+                            createTime.sdf();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        custom.setPost_date(createTime.calculateTime());
                         if(newpost.getPostcontent()!=null){
                             custom.setPost_text(newpost.getPostcontent());
                         }

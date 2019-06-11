@@ -175,7 +175,13 @@ public class MainActivity extends AppCompatActivity {
                 //finish();
             }
         });
-
+search.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        Intent searchintent=new Intent(MainActivity.this,SearchActivity.class);
+        startActivity(searchintent);
+    }
+});
 
         goprofile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -261,6 +267,7 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+
 /*****************************************************/
 
 
@@ -502,16 +509,21 @@ public class MainActivity extends AppCompatActivity {
                         for(String id:myFriendsID){
                             friendsList.add(id);
                         } }
-                    memberRef.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+                    memberRef.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.getValue(Members.class)!=null) {
+                            for(DataSnapshot membersnaphot:dataSnapshot.getChildren()){
+                                if(TextUtils.equals(membersnaphot.getValue(Members.class).getUserId(),mAuth.getCurrentUser().getUid())){
+                                    communityIds.add(membersnaphot.getValue(Members.class).getCommunityid());
+                                }
+                            }
+                          /*  if (dataSnapshot.getValue(Members.class)!=null) {
                                 for (DataSnapshot membersnapshot : dataSnapshot.getChildren()) {
                                     Members member = membersnapshot.getValue(Members.class);
                                     communityIds.add(member.getCommunityid());
                                     //System.out.println(member.getCommunityid());
                                 }
-                            }
+                            }*/
                             myRef2.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

@@ -58,8 +58,8 @@ public class searchCommunityAdapter extends ArrayAdapter<Community>{
         community_name.setText(community.getCommunityname());
 
 
-        String typeName  =community.getCommunityType().toString();
-        String group= "group";
+        String typeName  =community.getTypeid();
+        String group= "1";
         if(! typeName.equals(group)){
             type.setText("Page Community");
         }else {
@@ -108,7 +108,7 @@ public class searchCommunityAdapter extends ArrayAdapter<Community>{
                 Community searched_comm=communityList.get(position);
                 System.out.println("enter  community "+searched_comm.getCommunityId());
                 if(TextUtils.equals(searched_comm.getTypeid(),"1")){
-                    Intent searched_intent=new Intent(getApplicationContext(),GroupActivity.class);
+                    Intent searched_intent=new Intent(context,GroupActivity.class);
                     searched_intent.putExtra(searched_group_Id,searched_comm.getCommunityId());
                     searched_intent.putExtra(searched_Item_name,searched_comm.getCommunityname());
                     System.out.println("group id "+searched_comm.getCommunityId());

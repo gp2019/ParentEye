@@ -7,13 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-<<<<<<< HEAD
+
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
-=======
+
 import android.view.View;
->>>>>>> origin/master
+
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -54,14 +54,13 @@ public class SearchActivity extends AppCompatActivity {
     private ArrayList<Community> listcom;
     private  ArrayAdapter<Community> adapterCommunity;
     List<Community>communityList;
-<<<<<<< HEAD
+
     public static final String searched_user_Id="searched_user_Id";
     public static final String searched_page_Id="searched_page_Id";
     public static final String searched_group_Id="searched_group_Id";
     public static final String searched_Item_name="searched_Item_name";
 
-=======
->>>>>>> origin/master
+
 
 
 
@@ -86,11 +85,7 @@ public class SearchActivity extends AppCompatActivity {
 
 
 
-<<<<<<< HEAD
 
-
-=======
->>>>>>> origin/master
 //When search on friend
 
         search_community_buttom.setOnClickListener(new View.OnClickListener() {
@@ -98,10 +93,9 @@ public class SearchActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 communityList.clear();
-<<<<<<< HEAD
+
                 userlist.clear(); //test
-=======
->>>>>>> origin/master
+
                 communityRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -113,19 +107,15 @@ public class SearchActivity extends AppCompatActivity {
 
                                 Community comunity=ds.getValue(Community.class);
                                 String communityName=comunity.getCommunityname();
-<<<<<<< HEAD
+
                                 comunity.setCommunityId(ds.getKey()); //getting the key from firebase and set to the id
-=======
->>>>>>> origin/master
+
                                 if (communityName.toLowerCase().contains(search_input_text.toLowerCase())) {
                                     communityList.add(comunity);
 
                                 }
 
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/master
                             }
 
                         }
@@ -162,11 +152,9 @@ public class SearchActivity extends AppCompatActivity {
         search_friend_buttom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-<<<<<<< HEAD
-                communityList.clear(); //testing
-=======
 
->>>>>>> origin/master
+                communityList.clear(); //testing
+
                 userlist.clear();
                 userRef.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -179,19 +167,15 @@ public class SearchActivity extends AppCompatActivity {
 
                                 Users users=ds.getValue(Users.class);
                                 String username=users.getUsername();
-<<<<<<< HEAD
+
                                 users.setUserId(ds.getKey()); //getting the key from firebase and set to the id
-=======
->>>>>>> origin/master
+
                                 if (username.toLowerCase().contains(search_input_text.toLowerCase())) {
                                     userlist.add(users);
 
                                 }
 
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/master
                             }
 
                         }
@@ -227,7 +211,6 @@ public class SearchActivity extends AppCompatActivity {
 
 
 
-<<<<<<< HEAD
 
 
 
@@ -235,7 +218,7 @@ public class SearchActivity extends AppCompatActivity {
 
         //making the Intent to transfer to another activity
 
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      /* listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 System.out.println("clicked "+id);
@@ -271,17 +254,11 @@ public class SearchActivity extends AppCompatActivity {
                   }
 
               }
-*/
+
             }
         });
 
-
-    }
-
-
-
-}
-=======
+*/
     }
 
 
@@ -291,4 +268,10 @@ public class SearchActivity extends AppCompatActivity {
 
 
 
->>>>>>> origin/master
+
+
+
+
+
+
+

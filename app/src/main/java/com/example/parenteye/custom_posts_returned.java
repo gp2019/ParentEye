@@ -10,7 +10,7 @@ public class custom_posts_returned {
     private String post_text;
     private String post_owner_ID;
     private String post_image;
-    private Date post_date;
+    private String post_date;
 
     // private  static  final String noimage="-1";
 
@@ -28,7 +28,7 @@ public class custom_posts_returned {
         this.post_Id = post_Id;
     }
 
-    public custom_posts_returned(String post_text, String post_owner_ID, String post_image, Date post_date, String post_owner_name) {
+    public custom_posts_returned(String post_text, String post_owner_ID, String post_image, String post_date, String post_owner_name) {
         this.post_text = post_text;
         this.post_owner_ID = post_owner_ID;
         this.post_image = post_image;
@@ -56,7 +56,7 @@ public class custom_posts_returned {
         this.post_image = post_image;
     }
 
-    public void setPost_date(Date post_date) {
+    public void setPost_date(String post_date) {
         this.post_date = post_date;
     }
 
@@ -88,7 +88,7 @@ public class custom_posts_returned {
         this.countLike = countLike;
     }
 
-    public Date getPost_date() {
+    public String getPost_date() {
         return post_date;
     }
     public boolean haspost_owner_ID(){
