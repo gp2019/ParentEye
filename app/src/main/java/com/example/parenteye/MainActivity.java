@@ -70,13 +70,10 @@ public class MainActivity extends AppCompatActivity {
     private Button mainPage;
     //design
 
-     Toolbar toolbar;
-    private TabLayout tabLayout;
-    private TabItem home;
-    private TabItem notification;
-    private TabItem friendRequest;
-    private TabItem sideMenu;
-    private ViewPager viewPager;
+    private Button mainTwo;
+
+
+
     private CircleImageView profileImage;
 
     private ImageView firendrequestid;
@@ -103,12 +100,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         //////////////////////////////design
-        tabLayout=findViewById(R.id.tablayout);
-        home=findViewById(R.id.Home);
-        notification=findViewById(R.id.notification);
-        friendRequest=findViewById(R.id.friendRequests);
-        sideMenu=findViewById(R.id.sideMenu);
-        viewPager=findViewById(R.id.viewpager);
+
+
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -145,8 +138,17 @@ public class MainActivity extends AppCompatActivity {
         makeGroup = (Button) findViewById(R.id.makeGroup);
         search = (Button) findViewById(R.id.tvSearchBar);
         profileImage=(CircleImageView)findViewById(R.id.profile_image);
+        mainTwo=(Button)findViewById(R.id.mainTwo);
 
 
+        mainTwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent maintwo = new Intent(MainActivity.this,Main2Activity.class);
+                startActivity(maintwo);
+                //finish();
+            }
+        });
 
 
         logout.setOnClickListener(new View.OnClickListener() {
@@ -339,12 +341,12 @@ search.setOnClickListener(new View.OnClickListener() {
 
                 //addNotificationsOfLikes(postid1, post_publisher_Id);
                 String post_publisher_Id =Eman;
-                notifi.addNotificationsOfLikes(postid2, "L7zI36Be0qS2pwLic4Jd8RDdWjD2");
-                notifi.addNotificationsOfLikes(postid1, "L7zI36Be0qS2pwLic4Jd8RDdWjD2");
+                notifi.addNotificationsOfLikes(postid2, "zkoZkODkLSYO8aZFhc0iVOILHc42");
+                notifi.addNotificationsOfLikes(postid1, "zkoZkODkLSYO8aZFhc0iVOILHc42");
 
                 //addNotificationsOfComments(postid1, LikeridAya);
-                notifi.addNotificationsOfComments(postid2, "L7zI36Be0qS2pwLic4Jd8RDdWjD2");
-                notifi.addNotificationsOfComments(postid1, "L7zI36Be0qS2pwLic4Jd8RDdWjD2");
+                notifi.addNotificationsOfComments(postid2, "zkoZkODkLSYO8aZFhc0iVOILHc42");
+                notifi.addNotificationsOfComments(postid1, "zkoZkODkLSYO8aZFhc0iVOILHc42");
 
                 //Add activitylog on likes , comments
                 activityLog.addActivityLogOfLikes(postid2);
