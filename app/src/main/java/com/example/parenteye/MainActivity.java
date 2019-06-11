@@ -148,6 +148,14 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent makepage = new Intent(MainActivity.this,SearchActivity.class);
+                startActivity(makepage);
+                //finish();
+            }
+        });
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
