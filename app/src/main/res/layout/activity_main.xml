@@ -219,6 +219,11 @@
                     android:text="view page" />
 
                 <Button
+                    android:id="@+id/mainTwo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="mainTwo" />
+                <Button
                     android:id="@+id/view_group"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Main2Activity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/Header"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@drawable/header_register"
+        android:elevation="5dp" />
+
+
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:elevation="10dp"
+        android:transitionName="tvLogin"
+        >
+
+
+        <Button
+            android:id="@+id/tvSearchBar"
+            android:layout_width="230dp"
+            android:layout_height="45dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/searchbarbuttom"
+
+            android:textAllCaps="false"
+
+            android:layout_marginBottom="10dp"/>
+
+
+        />
+
+        <Button
+            android:id="@+id/tvchatIcon"
+            android:layout_width="50dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="30dp"
+            android:background="@drawable/tchaticon"
+
+            android:src="@drawable/tchaticon"
+
+
+            />
+
+    </LinearLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/profile_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/header"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:elevation="10dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/defaultprofile"
+        app:civ_border_color="@color/colorPurple"
+        app:civ_border_width="2dp" />
+
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tablayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/profile_image"
+        android:layout_alignBottom="@+id/profile_image"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="-64dp"
+        android:background="@drawable/background_tabs">
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/Home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/thomeicon" />
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/notification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/tnotification"/>
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/friendRequests"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/tfriendicon"/>
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/sideMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/tmenuicon"/>
+    </android.support.design.widget.TabLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></android.support.v4.view.ViewPager>
+
+
+
+</RelativeLayout>
