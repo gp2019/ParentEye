@@ -94,21 +94,21 @@ public class MainActivity extends AppCompatActivity {
 
 
         //////////////////////////////design
-        tabLayout=findViewById(R.id.tablayout);
-        home=findViewById(R.id.Home);
-        notification=findViewById(R.id.notification);
-        friendRequest=findViewById(R.id.friendRequests);
-        sideMenu=findViewById(R.id.sideMenu);
-        viewPager=findViewById(R.id.viewpager);
+        tabLayout = findViewById(R.id.tablayout);
+        home = findViewById(R.id.Home);
+        notification = findViewById(R.id.notification);
+        friendRequest = findViewById(R.id.friendRequests);
+        sideMenu = findViewById(R.id.sideMenu);
+        viewPager = findViewById(R.id.viewpager);
 
 
         mAuth = FirebaseAuth.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference("UserImages/");
         mStorageRef2 = FirebaseStorage.getInstance().getReference("PostsImages/");
         goprofile = (Button) findViewById(R.id.goprofile);
-        firendrequestid=(ImageView) findViewById(R.id.firendrequestid);
-        viewMyFriends=(Button)findViewById(R.id.viewFriends);
-        Post_listview=(ListView) findViewById(R.id.Post_listview);
+        firendrequestid = (ImageView) findViewById(R.id.firendrequestid);
+        viewMyFriends = (Button) findViewById(R.id.viewFriends);
+        Post_listview = (ListView) findViewById(R.id.Post_listview);
 
         floatingActionButton = findViewById(R.id.floatingButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent search=new Intent(MainActivity.this,SearchActivity.class);
+                Intent search = new Intent(MainActivity.this, SearchActivity.class);
                 startActivity(search);
                 //finish();
             }
@@ -200,9 +200,9 @@ public class MainActivity extends AppCompatActivity {
         firendrequestid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-         Intent friendrequest=new Intent(MainActivity.this,FriendRequestActivity.class);
-         startActivity(friendrequest);
-         finish();
+                Intent friendrequest = new Intent(MainActivity.this, FriendRequestActivity.class);
+                startActivity(friendrequest);
+                finish();
             }
         });
 
@@ -210,37 +210,36 @@ public class MainActivity extends AppCompatActivity {
         viewMyFriends.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent userfriendsIntent=new Intent(MainActivity.this,UserFriendsActivity.class);
+                Intent userfriendsIntent = new Intent(MainActivity.this, UserFriendsActivity.class);
                 startActivity(userfriendsIntent);
                 finish();
             }
         });
 
 
-
-        view_page=(Button)findViewById(R.id.view_page);
+        view_page = (Button) findViewById(R.id.view_page);
         view_page.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent pageActv=new Intent(MainActivity.this,PageActivity.class);
+                Intent pageActv = new Intent(MainActivity.this, PageActivity.class);
                 startActivity(pageActv);
                 finish();
             }
         });
-        view_group=(Button)findViewById(R.id.view_group);
+        view_group = (Button) findViewById(R.id.view_group);
         view_group.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent groupActv=new Intent(MainActivity.this,GroupActivity.class);
+                Intent groupActv = new Intent(MainActivity.this, GroupActivity.class);
                 startActivity(groupActv);
                 finish();
             }
         });
-        showGroupRequest=(Button) findViewById(R.id.show_group_request) ;
+        showGroupRequest = (Button) findViewById(R.id.show_group_request);
         showGroupRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent admingroupreq=new Intent(MainActivity.this,AdminGroupRequestActivity.class);
+                Intent admingroupreq = new Intent(MainActivity.this, AdminGroupRequestActivity.class);
                 startActivity(admingroupreq);
                 finish();
             }
@@ -252,19 +251,18 @@ public class MainActivity extends AppCompatActivity {
 
         notification_icon = findViewById(R.id.notification_icon);
         likeNotify = findViewById(R.id.like_icon);
-        disLikeNotifi=findViewById(R.id.dislike_icon);
+        disLikeNotifi = findViewById(R.id.dislike_icon);
         addFriendNotifi = findViewById(R.id.addfriend_icon);
         removeFrindNotify = findViewById(R.id.removeFriend_icon);
-        ActivitylogBtn= findViewById(R.id.Activity_log);
+        ActivitylogBtn = findViewById(R.id.Activity_log);
         //commentNotify=findViewById(R.id.commentNotify);
-
 
 
         notification_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                isActivityLog=false;
+                isActivityLog = false;
 
 
                 Intent makepage = new Intent(MainActivity.this, FragmentPreview.class);
@@ -283,7 +281,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                isActivityLog=true;
+                isActivityLog = true;
 
                 Intent makepage = new Intent(MainActivity.this, FragmentPreview.class);
                 startActivity(makepage);
@@ -315,7 +313,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                 //addNotificationsOfLikes(postid1, post_publisher_Id);
-                String post_publisher_Id =Eman;
+                String post_publisher_Id = Eman;
                 notifi.addNotificationsOfLikes(postid2, "L7zI36Be0qS2pwLic4Jd8RDdWjD2");
                 notifi.addNotificationsOfLikes(postid1, "L7zI36Be0qS2pwLic4Jd8RDdWjD2");
 
@@ -334,9 +332,9 @@ public class MainActivity extends AppCompatActivity {
                    parm Friend Want To Request Id
                  */
 
-                String FriendWantToRequest_Id= Aya;
+                String FriendWantToRequest_Id = Aya;
 
-               // notifi.addNotificationsOfFriendRequest(FriendWantToRequest_Id);
+                // notifi.addNotificationsOfFriendRequest(FriendWantToRequest_Id);
 
 
             }
@@ -347,8 +345,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String ibrahem ="OjEqHKzicMOZkAzjl5OLxBcIpai2";
-                String FriendWantToRequest_Id= ibrahem;
+                String ibrahem = "OjEqHKzicMOZkAzjl5OLxBcIpai2";
+                String FriendWantToRequest_Id = ibrahem;
 
                 notifi.addNotificationsOfFriendRequest(FriendWantToRequest_Id);
 
@@ -357,20 +355,17 @@ public class MainActivity extends AppCompatActivity {
 
 
                 //son recieve a friend request from
-               // activityLog.addLogReceiveFriendRequest(FriendWantToRequest_Id);
+                // activityLog.addLogReceiveFriendRequest(FriendWantToRequest_Id);
 
             }
         });
-
-
 
 
         removeFrindNotify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String Aya = "OjEqHKzicMOZkAzjl5OLxBcIpai2";
-                String FriendWantToRequest_Id= Aya;
-
+                String FriendWantToRequest_Id = Aya;
 
 
                 notifi.DeleteNotificationOfCancelFriendRequest(FriendWantToRequest_Id);
@@ -386,23 +381,24 @@ public class MainActivity extends AppCompatActivity {
                 notifi.DeleteNotificationOfLike(postid2, "L7zI36Be0qS2pwLic4Jd8RDdWjD2");
             }
         });
-        myRef.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String Role=dataSnapshot.getValue(Users.class).getRoleId();
-                if(!TextUtils.equals("1",Role)){
-                    addchild.setVisibility(View.GONE);
-                    mychildren.setVisibility(View.GONE);
-                    ActivitylogBtn.setVisibility(View.GONE);
+        if (mAuth.getCurrentUser() != null){
+            myRef.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    String Role = dataSnapshot.getValue(Users.class).getRoleId();
+                    if (!TextUtils.equals("1", Role)) {
+                        addchild.setVisibility(View.GONE);
+                        mychildren.setVisibility(View.GONE);
+                        ActivitylogBtn.setVisibility(View.GONE);
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
-
+                }
+            });
+    }
         GetMyHomePosts();
 
 

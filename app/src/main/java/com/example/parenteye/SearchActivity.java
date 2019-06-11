@@ -120,6 +120,8 @@ public class SearchActivity extends AppCompatActivity {
                             listview.setAdapter(searchCommunityAdapter);
                         }
                         else {
+                            searchCommunityAdapter searchCommunityAdapter = new searchCommunityAdapter(SearchActivity.this, communityList);
+                            listview.setAdapter(searchCommunityAdapter);
                             Toast.makeText(getApplicationContext(),"You Must Enter The Right Community Name",Toast.LENGTH_SHORT).show();
                         }
 
@@ -176,6 +178,8 @@ public class SearchActivity extends AppCompatActivity {
                             listview.setAdapter(searchFriendAdapter);
                         }
                         else {
+                            searchFriendAdapter searchFriendAdapter=new searchFriendAdapter(SearchActivity.this,userlist);
+                            listview.setAdapter(searchFriendAdapter);
                             Toast.makeText(getApplicationContext(),"You Must Enter The Right User Name",Toast.LENGTH_SHORT).show();
                         }
 
@@ -209,6 +213,7 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 System.out.println("clicked "+id);
+                System.out.println("clicked "+id);
 
            if(userlist.get(position)!=null){
                   Users searched_user=userlist.get(position);
@@ -221,7 +226,7 @@ public class SearchActivity extends AppCompatActivity {
 
 
 
-                /*  else {
+                  else {
 
                  Community searched_comm=communityList.get(position);
                   System.out.println("enter  community "+searched_comm.getCommunityId());
@@ -241,7 +246,7 @@ public class SearchActivity extends AppCompatActivity {
                   }
 
               }
-*/
+
             }
         });
 
