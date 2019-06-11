@@ -92,6 +92,9 @@ public class AccountActivity extends Activity {
     private ImageView gallery;
     private TextView updatetextclose;
     private Spinner spinner1;
+    private Dialog AccountfriendsDialog;
+    private  TextView AccountfriendsDialogtxtclose;
+    private  ListView AccountfriendsDialogList;
     String[] cities = new String[]{"Cairo", "Alexandria", "Giza","Port Said","Suez","Luxor","al-Mansura","El-Mahalla El-Kubra","Tanta","Asyut",
             "tIsmailia","Fayyum","Zagazig"," Aswan","Damietta","Damanhur","al-Minya","Beni Suef"," Qena","Sohag","Hurghada","6th of October City","Shibin El Kom",
             "Banha"," Kafr el-Sheikh","Arish","Mallawi","10th of Ramadan City","Bilbais","Marsa Matruh","Idfu","Mit Ghamr","Al-Hamidiyya","Desouk",
@@ -140,7 +143,10 @@ public class AccountActivity extends Activity {
         gallery=(ImageView) findViewById(R.id.gallery);
         spinner1=(Spinner)  updateprofileDialoge.findViewById(R.id.spinner1);
         friends_chat=(ImageView)findViewById(R.id.friends_chat);
-
+        AccountfriendsDialog=new Dialog(this);
+        AccountfriendsDialog.setContentView(R.layout.account_friends_popup);
+        AccountfriendsDialogtxtclose =(TextView) AccountfriendsDialog.findViewById(R.id.txtclose);
+        AccountfriendsDialogList=(ListView) AccountfriendsDialog.findViewById(R.id.accout_friends);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, cities);
         spinner1.setAdapter(adapter);
@@ -291,8 +297,16 @@ public class AccountActivity extends Activity {
         friends_chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              //  Intent intent = getIntent();
-              //  final   String userID = intent.getStringExtra("searched_user_Id");
+                Intent intent = getIntent();
+               final   String userID = intent.getStringExtra("searched_user_Id");
+                showAccountFriends(userID);
+
+            }
+        });
+        AccountfriendsDialogtxtclose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AccountfriendsDialog.dismiss();
             }
         });
     }
@@ -723,11 +737,59 @@ public class AccountActivity extends Activity {
         dismissProgressDialog();
         super.onDestroy();
     }
-    private void showAccountFriends(String Account_Owner_ID){
-   User_Chat_Adapter friendsAdapter=new User_Chat_Adapter(AccountActivity.this,AccountFriends);
+    private void showAccountFriends(String Account_Owner_ID) {
+        if (mAuth.getCurrentUser() != null) {
+            final ArrayList<String> friends_arraylist=new ArrayList<String>();
+           final  User_Chat_Adapter friendsAdapter = new User_Chat_Adapter(AccountActivity.this, AccountFriends);
+            AccountfriendsDialogList.setAdapter(friendsAdapter);
+            friendsRef.child(Account_Owner_ID).child("userFriends").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.getValue(String.class)!=null) {
+                        String userfriends = dataSnapshot.getValue(String.class);
+                        String[] friends = userfriends.split(",");
+                        for (String id : friends) {
+                            friends_arraylist.add(id);
+                        }
+                        userRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                AccountFriends.clear();
+                                for (DataSnapshot usersnapshot : dataSnapshot.getChildren()) {
+                                    if (friends_arraylist.contains(usersnapshot.getKey())) {
+                                        Users user = new Users();
+                                        user.setUsername(usersnapshot.getValue(Users.class).getUsername());
+                                        user.setUserId(usersnapshot.getKey());
+                                        if (usersnapshot.getValue(Users.class).getProfile_pic_id() != null) {
+                                            user.setProfile_pic_id(usersnapshot.getValue(Users.class).getProfile_pic_id());
+                                        }
+                                        AccountFriends.add(user);
+                                        friendsAdapter.notifyDataSetChanged();
 
+                                    }
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+            AccountfriendsDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            AccountfriendsDialog.show();
+
+        }
     }
-
 
 
 
