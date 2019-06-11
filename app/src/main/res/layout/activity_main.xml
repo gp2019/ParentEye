@@ -48,9 +48,9 @@
             android:layout_height="45dp"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="30dp"
-            android:background="@drawable/chat_icon"
+            android:background="@drawable/tchaticon"
 
-            android:src="@drawable/chat_icon"
+            android:src="@drawable/tchaticon"
 
 
             />
@@ -86,25 +86,25 @@
             android:id="@+id/Home"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:icon="@drawable/home_icon" />
+            android:icon="@drawable/thomeicon" />
 
         <android.support.design.widget.TabItem
             android:id="@+id/notification"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:icon="@drawable/notification_icon_tab"/>
+            android:icon="@drawable/tnotification"/>
 
         <android.support.design.widget.TabItem
             android:id="@+id/friendRequests"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:icon="@drawable/requests_icon"/>
+            android:icon="@drawable/tfriendicon"/>
 
         <android.support.design.widget.TabItem
             android:id="@+id/sideMenu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:icon="@drawable/side_mnue"/>
+            android:icon="@drawable/tmenuicon"/>
     </android.support.design.widget.TabLayout>
 
     <android.support.v4.view.ViewPager
@@ -229,6 +229,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="show my group request" />
+
+                <Button
+                    android:id="@+id/main_page"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Main Page" />
 
 
                 <LinearLayout
