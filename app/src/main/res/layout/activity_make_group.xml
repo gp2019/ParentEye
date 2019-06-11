@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MakeGroupActivity"
-  >
+    >
 
     <ImageView
         android:id="@+id/groupCover"
@@ -30,7 +30,7 @@
         android:layout_marginBottom="220dp"
         android:scaleType="centerCrop"
         android:src="@drawable/defaultprofile"
-        app:civ_border_color="#FF000000"
+        app:civ_border_color="@color/colorPurple"
         app:civ_border_width="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,6 +38,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.376" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -53,7 +54,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/nameTextView"
@@ -61,16 +62,19 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Group name"
-                android:textColor="#000"
+                android:textColor="@color/colorPurple"
+                android:textStyle="bold"
                 android:textSize="20sp" />
 
             <EditText
                 android:id="@+id/groupname"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:background="@drawable/rounded_border_edittext"/>
         </LinearLayout>
 
         <TextView
@@ -79,15 +83,17 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="About"
-            android:textColor="#000"
+            android:textColor="@color/colorPurple"
+            android:textStyle="bold"
             android:textSize="20sp" />
 
         <EditText
+            android:background="@drawable/rounded_border_edittext"
             android:id="@+id/aboutgroup"
             android:layout_width="match_parent"
             android:layout_height="100dp"
+            android:layout_margin="5dp"
             android:layout_weight="1"
-            android:background="@drawable/edittext_background"
             android:inputType="textCapSentences|textMultiLine"
             android:maxLength="100"
             android:maxLines="8"
@@ -98,9 +104,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:background="#004D40"
-            android:text="Create"
-            android:textColor="#B2DFDB" />
+            android:background="@drawable/bg_ui"
+            android:text="Cteate"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
 
 
     </LinearLayout>

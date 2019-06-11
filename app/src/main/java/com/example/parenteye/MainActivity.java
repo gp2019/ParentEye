@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     private Button view_page;
     private Button view_group;
     private Button showGroupRequest;
+    private Button mainPage;
     //design
 
      Toolbar toolbar;
@@ -241,6 +242,16 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent admingroupreq = new Intent(MainActivity.this, AdminGroupRequestActivity.class);
                 startActivity(admingroupreq);
+                finish();
+            }
+        });
+
+        mainPage=(Button) findViewById(R.id.main_page) ;
+        mainPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mainPageIntent=new Intent(MainActivity.this,MainPage.class);
+                startActivity(mainPageIntent);
                 finish();
             }
         });
