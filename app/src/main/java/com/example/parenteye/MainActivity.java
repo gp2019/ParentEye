@@ -1,6 +1,8 @@
 package com.example.parenteye;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -10,6 +12,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -18,6 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -30,6 +34,8 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 //import android.support.v7.app.AlertController.RecycleListView;
 //import android.support.v7.app.AlertController;
@@ -71,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
     private TabItem friendRequest;
     private TabItem sideMenu;
     private ViewPager viewPager;
+    private CircleImageView profileImage;
 
     private ImageView firendrequestid;
     private ArrayList<Posts> myposts=new ArrayList<Posts>();
@@ -82,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
     private Button ActivitylogBtn;
 
     private Button commentNotify;
+    public static final String ProfileId="ProfileId";
 
 
 
@@ -136,6 +144,10 @@ public class MainActivity extends AppCompatActivity {
         logout = (Button) findViewById(R.id.logout);
         makeGroup = (Button) findViewById(R.id.makeGroup);
         search = (Button) findViewById(R.id.tvSearchBar);
+        profileImage=(CircleImageView)findViewById(R.id.profile_image);
+
+
+
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,14 +175,7 @@ public class MainActivity extends AppCompatActivity {
                 //finish();
             }
         });
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent search=new Intent(MainActivity.this,SearchActivity.class);
-                startActivity(search);
-                //finish();
-            }
-        });
+
 
         goprofile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -415,6 +420,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         GetMyHomePosts();
+        showProfilepic();
 
 
 
@@ -546,6 +552,39 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+public  void showProfilepic(){
+    myRef.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            Users user=dataSnapshot.getValue(Users.class);
 
+
+            if (user.getProfile_pic_id()!=null) {
+
+                String profileImageId=user.getProfile_pic_id();
+                mStorageRef.child(profileImageId).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    @Override
+                    public void onSuccess(byte[] bytes) {
+                        final Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        profileImage.setImageBitmap(bm);
+
+                    }
+                });
+            } else if(user.isGender()==true) {
+                profileImage.setImageResource(R.drawable.profile_boys);
+
+            }
+            else {
+                profileImage.setImageResource(R.drawable.profile_giles);
+            }
+
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    });
+}
 
 }

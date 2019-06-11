@@ -78,8 +78,11 @@ public class Users {
         this.userId = userId;
     }
 
-    public void setUsername(String username) {
+    /*public void setUsername(String username) {
         Username = username;
+    }*/
+    public void setUsername(String username){
+        Username=username;
     }
 
   public void setDateofbirth(Date dateofbirth) {
@@ -102,8 +105,12 @@ public class Users {
         return userId;
     }
 
-    public String getUsername() {
+    /*public String getUsername() {
         return Username;
+    }*/
+
+    public  String getUsername(){
+        return  Username;
     }
 
 
