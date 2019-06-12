@@ -32,7 +32,7 @@
     </android.support.v7.widget.Toolbar>
     <!-- end toolbar -->
     <FrameLayout
-        android:id="@+id/notification_fragment_container"
+        android:id="@+id/Activity_log_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/notification_toolbar">

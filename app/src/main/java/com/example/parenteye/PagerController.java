@@ -19,7 +19,7 @@ public class PagerController extends FragmentPagerAdapter {
             case 1:
                 return new NotificationFragment();
             case 2:
-                return new FriendRequests();
+                return new ActivityLogFragment();
             case 3:
                 return new SideMenu();
                 default:
