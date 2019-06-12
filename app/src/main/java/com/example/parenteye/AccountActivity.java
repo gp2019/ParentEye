@@ -238,6 +238,8 @@ public class AccountActivity extends Activity {
                                     if (TextUtils.equals(fr.getSenderid(), mAuth.getCurrentUser().getUid()) && TextUtils.equals(fr.getRecieverid(), userId)) {
                                         FriendRequestRef.child(friendtSnapshot.getKey()).removeValue();
                                         Addfriend.setImageResource(R.drawable.addfriendd);
+                                        Notifications notifi =new Notifications();
+                                        notifi.DeleteNotificationOfRejectOrAcceptFriendRequest(userId);
                                         addfriendtext.setText("Add Friend");
                                         IsExist = false;
 

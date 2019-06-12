@@ -34,6 +34,7 @@ public class HomePostsAdapter extends ArrayAdapter<Posts> {
     DatabaseReference comRef = database.getReference("Community");
     ArrayList<Posts> post_returnedd;
     DatabaseReference userRef = database.getReference("Users");
+    private int position;
 
 
 
@@ -60,7 +61,7 @@ public class HomePostsAdapter extends ArrayAdapter<Posts> {
         final ImageView profileimage=(ImageView) postlist.findViewById(R.id.profile_post);
         final  ImageView postimage=(ImageView) postlist.findViewById(R.id.post_image);
         TextView postdate=(TextView) postlist.findViewById(R.id.postdate);
-        postdate.setText("1/1/2001");
+        postdate.setText(post.getPostdate());
 
        if(TextUtils.equals(post.getPlaceTypeId(),"1")){
            userRef.child(post.getUserId()).addValueEventListener(new ValueEventListener() {
@@ -189,5 +190,66 @@ public class HomePostsAdapter extends ArrayAdapter<Posts> {
         return postlist;
 
 
+    }
+    @Override
+    public int getCount() {
+        int a ;
+
+        if(post_returnedd != null && !post_returnedd.isEmpty()) {
+
+            a = post_returnedd.size();
+        }
+        else {
+
+            a = 0;
+
+        }
+
+        return a;
+
+    }
+
+
+       /*@Override
+       public int getItemCount() {
+
+        int a ;
+
+        if(post_returnedd != null && !post_returnedd.isEmpty()) {
+
+            a = post_returnedd.size();
+        }
+        else {
+
+            a = 0;
+
+        }
+
+        return a;
+    }*/
+
+    @Override
+
+    public long getItemId(int position) {
+
+        return position;
+
+    }
+
+    @Override
+
+    public int getItemViewType(int position) {
+
+        return position;
+
+    }
+
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
     }
 }
