@@ -74,18 +74,23 @@ public class CommunityAboutandmembersActivity extends AppCompatActivity {
                     String about = dataSnapshot.getValue(Community.class).getCommunityAbout();
                     CommAbout.setText(about);
                     String adminId = dataSnapshot.getValue(Community.class).getAdminId();
-                    userRef.child(adminId).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            String Adminname = dataSnapshot.getValue(Users.class).getUsername();
-                            adminname.setText(Adminname +" is Admin");
-                        }
+                    if(TextUtils.equals(mAuth.getCurrentUser().getUid(),adminId)){
+                        adminname.setText("you are the Admin");
+                    }
+                    else {
+                        userRef.child(adminId).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                String Adminname = dataSnapshot.getValue(Users.class).getUsername();
+                                adminname.setText(Adminname + " is Admin");
+                            }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                        }
-                    });
+                            }
+                        });
+                    }
                 }
 
                 @Override

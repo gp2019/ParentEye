@@ -39,6 +39,7 @@
         <activity android:name=".AddPageActivity" />
         <activity android:name=".UserFriendsActivity" />
         <activity android:name=".ChatActivity" />
+        <activity android:name=".Main2Activity" />
         <activity
             android:name=".LoginActivity"
             android:theme="@style/AppTheme.FullScreen">

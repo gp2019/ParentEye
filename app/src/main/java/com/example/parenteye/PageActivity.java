@@ -29,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -50,6 +51,7 @@ public class PageActivity extends AppCompatActivity {
     private FloatingActionButton floatingActionButton;
     private String CommunityId;
     public static final String pageID="pageID";
+    private CreateTime createTime;
 
 
     @Override
@@ -111,7 +113,9 @@ public class PageActivity extends AppCompatActivity {
         });
 
         floatingActionButton = findViewById(R.id.floatingButton);
-        CommunityId = "Lh2x7ArurH4Yu4-XZPW";
+        Intent intent = getIntent();
+        CommunityId = intent.getStringExtra("searched_page_Id");
+       // CommunityId = "Lh2x7ArurH4Yu4-XZPW";
 
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -198,6 +202,7 @@ public class PageActivity extends AppCompatActivity {
             Intent intent = getIntent();
             final   String PageId = intent.getStringExtra("searched_page_Id");
          // final String PageId="-Lg1OLwvGrf5AJFx6-jK"; //will be get automatic later
+            CheckIsAdmin();
             CommunityRef.child(PageId).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -269,6 +274,14 @@ public class PageActivity extends AppCompatActivity {
                         custom.setPost_owner_name(PageName);
                         custom.setpost_owner_ID(pagepost.getPlaceId());
                         custom.setPost_Id(pagepostsnapshot.getKey());
+                        String timePuplisher =pagepost.getPostdate();
+                        createTime =new CreateTime(timePuplisher);
+                        try {
+                            createTime.sdf();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        custom.setPost_date(createTime.calculateTime());
                         if(pagepost.getPostcontent()!=null){
                             custom.setPost_text(pagepost.getPostcontent());
                             // System.out.println("content "+ custom.getPost_text());
@@ -292,6 +305,25 @@ public class PageActivity extends AppCompatActivity {
         });
 
 
+    }
+    private void CheckIsAdmin(){
+        Intent intent = getIntent();
+        String searchedpageId  = intent.getStringExtra("searched_page_Id");
+        CommunityRef.child(searchedpageId).child("adminId").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String admin_id=dataSnapshot.getValue(String.class);
+                if(TextUtils.equals(admin_id,mAuth.getCurrentUser().getUid())){
+                    Like_unLike.setText("you are the admin");
+                    Like_unLike.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
 

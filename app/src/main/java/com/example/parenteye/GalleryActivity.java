@@ -71,7 +71,7 @@ public class GalleryActivity extends AppCompatActivity {
                                      if(dataSnapshot.getValue(Users.class).getCover_pic_id()!=null){
                                          Users photo3 = new Users();
                                          photo3.setRoleId("1");
-                                         photo3.setProfile_pic_id(dataSnapshot.getValue(Users.class).getProfile_pic_id());
+                                         photo3.setCover_pic_id(dataSnapshot.getValue(Users.class).getCover_pic_id());
                                          photos.add(photo3);
                                      }
 
