@@ -74,6 +74,7 @@ public class CommunityAboutandmembersActivity extends AppCompatActivity {
                     String about = dataSnapshot.getValue(Community.class).getCommunityAbout();
                     CommAbout.setText(about);
                     String adminId = dataSnapshot.getValue(Community.class).getAdminId();
+
                     if(TextUtils.equals(mAuth.getCurrentUser().getUid(),adminId)){
                         adminname.setText("you are the Admin");
                     }

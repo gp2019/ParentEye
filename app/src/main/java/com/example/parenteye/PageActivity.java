@@ -113,10 +113,10 @@ public class PageActivity extends AppCompatActivity {
         });
 
         floatingActionButton = findViewById(R.id.floatingButton);
+
+       // CommunityId = "Lh2x7ArurH4Yu4-XZPW";
         Intent intent = getIntent();
         CommunityId = intent.getStringExtra("searched_page_Id");
-       // CommunityId = "Lh2x7ArurH4Yu4-XZPW";
-
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -253,7 +253,25 @@ public class PageActivity extends AppCompatActivity {
             GetPagePosts();
         }
         }
+    private void CheckIsAdmin(){
+        Intent intent = getIntent();
+        String searchedpageId  = intent.getStringExtra("searched_page_Id");
+        CommunityRef.child(searchedpageId).child("adminId").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String admin_id=dataSnapshot.getValue(String.class);
+                if(TextUtils.equals(admin_id,mAuth.getCurrentUser().getUid())){
+                    Like_unLike.setText("you are the admin");
+                    Like_unLike.setEnabled(false);
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     public  void GetPagePosts(){
         Intent intent = getIntent();
@@ -306,25 +324,7 @@ public class PageActivity extends AppCompatActivity {
 
 
     }
-    private void CheckIsAdmin(){
-        Intent intent = getIntent();
-        String searchedpageId  = intent.getStringExtra("searched_page_Id");
-        CommunityRef.child(searchedpageId).child("adminId").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String admin_id=dataSnapshot.getValue(String.class);
-                if(TextUtils.equals(admin_id,mAuth.getCurrentUser().getUid())){
-                    Like_unLike.setText("you are the admin");
-                    Like_unLike.setEnabled(false);
-                }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
 
 
 }

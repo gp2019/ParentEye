@@ -52,8 +52,9 @@ public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned>{
     private StorageReference postStorageRef= FirebaseStorage.getInstance().getReference("PostImages/");
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference userRef = database.getReference("Users");
-    ArrayList<custom_posts_returned> post_returnedd;
     private int position;
+    ArrayList<custom_posts_returned> post_returnedd;
+
 
 
     public ProfilePostAdapter(Activity context, ArrayList<custom_posts_returned> post_returned){

@@ -324,7 +324,7 @@ public class GroupActivity extends AppCompatActivity {
     }
     private void CheckIsAdmin(){
         Intent intent = getIntent();
-       String searchedgroupId  = intent.getStringExtra("searched_group_Id");
+        String searchedgroupId  = intent.getStringExtra("searched_group_Id");
         CommunityRef.child(searchedgroupId).child("adminId").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
