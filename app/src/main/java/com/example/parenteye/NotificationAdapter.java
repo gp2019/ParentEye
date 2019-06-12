@@ -228,7 +228,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 System.out.println("reject");
                 System.out.println(whoMakeAction);
                 System.out.println(mAuth.getCurrentUser().getUid());
-                FriendRequestRef.addValueEventListener(new ValueEventListener() {
+               FriendRequestRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for(DataSnapshot reqsnapshot:dataSnapshot.getChildren())
@@ -237,7 +237,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                             {
                                 FriendRequestRef.child(reqsnapshot.getKey()).removeValue();
                                 Notifications n=new Notifications();
-                               n.DeleteNotificationOfRejectOrAcceptFriendRequest(whoMakeAction);
+                                n.DeleteNotificationOfRejectOrAcceptFriendRequest(whoMakeAction);
+
                             }
 
                         }
@@ -248,6 +249,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
                     }
                 });
+
+
             }
 
         });
