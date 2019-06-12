@@ -37,7 +37,7 @@ public class NotificationFragment extends Fragment {
 
     private RecyclerView recyclerView;
 
-    //public Notifications notifications =new Notifications() ;
+    public Notifications notifications =new Notifications() ;
 
     public static NotificationAdapter notificationAdapter  ;
 
@@ -90,6 +90,7 @@ public class NotificationFragment extends Fragment {
     {
 
          Notifications notifi =new Notifications() ;
+        recyclerView.setAdapter(notificationAdapter);
 
         notifi.readNotifications();
 
