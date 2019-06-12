@@ -66,20 +66,11 @@ public class NotificationFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        MainActivity mainActivity = new MainActivity();
+      //  MainActivity mainActivity = new MainActivity();
 
 
+        setNotifiList();
 
-
-        if(mainActivity.isActivityLog)
-            {
-
-                setActivityLogList();
-            }else{
-
-            setNotifiList();
-
-            }
 
 
 
@@ -109,23 +100,6 @@ public class NotificationFragment extends Fragment {
 
 
        // notificationAdapter.notifyDataSetChanged();
-
-
-    }
-
-    public void setActivityLogList()
-    {
-        ActivityLog activityLog =new ActivityLog() ;
-
-        activityLog.readLogs();
-
-        activityLogAdapter = new ActivityLogAdapter(getContext(), activityLog.logActivityList);
-
-        recyclerView.setAdapter(activityLogAdapter);
-        //notifiList= notifications;
-
-
-        // notificationAdapter.notifyDataSetChanged();
 
 
     }
