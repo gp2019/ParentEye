@@ -59,6 +59,25 @@ public class PageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_page);
         IntializeVariables();
+
+
+
+        floatingActionButton = findViewById(R.id.floatingButton);
+
+        // CommunityId = "Lh2x7ArurH4Yu4-XZPW";
+        Intent intent = getIntent();
+        CommunityId = intent.getStringExtra("searched_page_Id");
+        floatingActionButton.setVisibility(View.GONE);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+                if (currentUser != null) {
+                    CreatePost(currentUser.getUid());
+                }
+
+            }
+        });
         Like_unLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,6 +95,7 @@ public class PageActivity extends AppCompatActivity {
                                         membersRef.child(membersnapshot.getKey()).removeValue();
                                         Like_unLike.setText("Like Page");
                                         IsExist = false;
+                                        floatingActionButton.setVisibility(View.GONE);
                                     }
                                 }
                             }
@@ -112,22 +132,7 @@ public class PageActivity extends AppCompatActivity {
             }
         });
 
-        floatingActionButton = findViewById(R.id.floatingButton);
 
-       // CommunityId = "Lh2x7ArurH4Yu4-XZPW";
-        Intent intent = getIntent();
-        CommunityId = intent.getStringExtra("searched_page_Id");
-
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseUser currentUser = mAuth.getCurrentUser();
-                if (currentUser != null) {
-                    CreatePost(currentUser.getUid());
-                }
-
-            }
-        });
 
     }
 
@@ -160,12 +165,10 @@ public class PageActivity extends AppCompatActivity {
         CommunityRef.child(CommunityId).child("adminId").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue()==mAuth.getCurrentUser().getUid()){
+                if (TextUtils.equals(dataSnapshot.getValue(String.class),mAuth.getCurrentUser().getUid())){
                     floatingActionButton.setVisibility(View.VISIBLE);
                 }
-                else {
-                    floatingActionButton.setVisibility(View.GONE);
-                }
+
             }
 
             @Override

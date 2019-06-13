@@ -27,7 +27,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
                 android:src="@drawable/cover"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop" >
+
+
+            </ImageView>
 
 
             <de.hdodenhof.circleimageview.CircleImageView

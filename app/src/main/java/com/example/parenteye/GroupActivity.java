@@ -26,6 +26,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.w3c.dom.Text;
+
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,6 +59,25 @@ public class GroupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
         Intialize_variables();
+
+
+
+        floatingActionButton = findViewById(R.id.floatingButton);
+        Intent intent = getIntent();
+        CommunityId = intent.getStringExtra("searched_group_Id");
+        // CommunityId = "Lh2x7ArurH4Yu4-XZPW";
+
+        floatingActionButton.setVisibility(View.GONE);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+                if (currentUser != null) {
+                    CreatePost(currentUser.getUid());
+                }
+
+            }
+        });
         join_unjoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,6 +106,7 @@ public class GroupActivity extends AppCompatActivity {
                                         membersRef.child(membersnapshot.getKey()).removeValue();
                                         join_unjoin.setText("join Group");
                                         IsExist=0;
+                                        floatingActionButton.setVisibility(View.GONE);
                                     }
                                 }
                             }
@@ -134,22 +156,7 @@ public class GroupActivity extends AppCompatActivity {
             }
         });
 
-        floatingActionButton = findViewById(R.id.floatingButton);
-        Intent intent = getIntent();
-        CommunityId = intent.getStringExtra("searched_group_Id");
-       // CommunityId = "Lh2x7ArurH4Yu4-XZPW";
 
-
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseUser currentUser = mAuth.getCurrentUser();
-                if (currentUser != null) {
-                    CreatePost(currentUser.getUid());
-                }
-
-            }
-        });
 
     }
 
@@ -182,12 +189,10 @@ public class GroupActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot membersnapshot:dataSnapshot.getChildren()){
                     Members members = membersnapshot.getValue(Members.class);
-                    if (members.getUserId()==mAuth.getCurrentUser().getUid()&&members.getCommunityid()==CommunityId){
+                    if (TextUtils.equals(members.getUserId(),mAuth.getCurrentUser().getUid())&&TextUtils.equals(members.getCommunityid(),CommunityId)){
                         floatingActionButton.setVisibility(View.VISIBLE);
                     }
-                    else {
-                        floatingActionButton.setVisibility(View.GONE);
-                    }
+
                 }
 
 
@@ -198,6 +203,20 @@ public class GroupActivity extends AppCompatActivity {
 
             }
         });
+       CommunityRef.child(CommunityId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(TextUtils.equals(dataSnapshot.getValue(Community.class).getAdminId(),mAuth.getCurrentUser().getUid())){
+                    floatingActionButton.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     public  void getgroupInfo(){
