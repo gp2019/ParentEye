@@ -23,23 +23,24 @@ public class FragmentPreview extends FragmentActivity {
 
         TextView freagmantText = findViewById(R.id.fregmant_text);
 
-        MainActivity mainActivity = new MainActivity();
+        ActivityLogFragment activityLogFragment = new ActivityLogFragment();
 
-        NotificationFragment notificationFragment = new NotificationFragment();
-
+       // NotificationFragment notificationFragment = new NotificationFragment();
 
        //check if the the fragment is a notification or a activity log to open
         // and change the header text
-        if(mainActivity.isActivityLog)
-        {
-            freagmantText.setText("Son's Activity Log");
 
-        }else{
-            freagmantText.setText("Notifications");
-        }
+        freagmantText.setText("Son's Activity Log");
+//        if(mainActivity.isActivityLog)
+//        {
+//            freagmantText.setText("Son's Activity Log");
+//
+//        }else{
+//            freagmantText.setText("Notifications");
+//        }
 
         FragmentManager fragmentTransaction = getSupportFragmentManager();
-        fragmentTransaction.beginTransaction().add(R.id.notification_fragment_container, notificationFragment).commit();
+        fragmentTransaction.beginTransaction().add(R.id.Activity_log_fragment_container, activityLogFragment).commit();
 
 
     }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -45,7 +48,10 @@ public class GroupActivity extends AppCompatActivity {
     private ListView goup_Post_listview;
     public static final String pageID="pageID";
     private ListView Post_listview;
+    private FloatingActionButton floatingActionButton;
+    private String CommunityId;
     ArrayList<custom_posts_returned> Group_posts=new ArrayList<custom_posts_returned>();
+    private CreateTime createTime;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,7 +134,34 @@ public class GroupActivity extends AppCompatActivity {
             }
         });
 
+        floatingActionButton = findViewById(R.id.floatingButton);
+        Intent intent = getIntent();
+        CommunityId = intent.getStringExtra("searched_group_Id");
+       // CommunityId = "Lh2x7ArurH4Yu4-XZPW";
+
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+                if (currentUser != null) {
+                    CreatePost(currentUser.getUid());
+                }
+
+            }
+        });
+
     }
+
+    private void CreatePost(String Uid) {
+        Intent login_main = new Intent(GroupActivity.this, Create_Post.class);
+        login_main.putExtra("userId", Uid);
+        login_main.putExtra("placeTypeId", "3");
+        login_main.putExtra("placeId", CommunityId);
+        startActivity(login_main);
+        finish();
+    }
+
     private void Intialize_variables(){
         mAuth=FirebaseAuth.getInstance();
         groupname=(TextView)findViewById(R.id.group_name);
@@ -143,6 +176,28 @@ public class GroupActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         getgroupInfo();
+
+        membersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot membersnapshot:dataSnapshot.getChildren()){
+                    Members members = membersnapshot.getValue(Members.class);
+                    if (members.getUserId()==mAuth.getCurrentUser().getUid()&&members.getCommunityid()==CommunityId){
+                        floatingActionButton.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        floatingActionButton.setVisibility(View.GONE);
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public  void getgroupInfo(){
@@ -150,6 +205,7 @@ public class GroupActivity extends AppCompatActivity {
             Intent intent = getIntent();
             final   String groupId = intent.getStringExtra("searched_group_Id");
            // final String groupId="-Lg1Gggi2Xo1Qx2-rLG4"; //will be get automatic later
+            CheckIsAdmin();
             CommunityRef.child(groupId).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -203,7 +259,7 @@ public class GroupActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for(DataSnapshot reqsnapshot:dataSnapshot.getChildren()){
                         GroupRequests req=reqsnapshot.getValue(GroupRequests.class);
-                        if(TextUtils.equals(req.getUserid(),mAuth.getCurrentUser().getUid())&&TextUtils.equals(req.getGroupId(),req.getGroupId())){
+                        if(TextUtils.equals(req.getUserid(),mAuth.getCurrentUser().getUid())&&TextUtils.equals(req.getGroupId(),groupId)){
                             join_unjoin.setText("cancel request");
                             IsExist=2;
                         }
@@ -216,7 +272,7 @@ public class GroupActivity extends AppCompatActivity {
                 }
             });
 
-
+            GetGroupPosts();
         }
     }
     private void GetGroupPosts(){
@@ -237,6 +293,14 @@ public class GroupActivity extends AppCompatActivity {
                         custom.setPost_owner_name(post.getUserId());
                         custom.setpost_owner_ID(post.getUserId());
                         custom.setPost_Id(grouppostsnapshot.getKey());
+                        String timePuplisher =post.getPostdate();
+                        createTime =new CreateTime(timePuplisher);
+                        try {
+                            createTime.sdf();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        custom.setPost_date(createTime.calculateTime());
                         if(post.getPostcontent()!=null){
                             custom.setPost_text(post.getPostcontent());
                         }
@@ -258,6 +322,24 @@ public class GroupActivity extends AppCompatActivity {
 
 
     }
+    private void CheckIsAdmin(){
+        Intent intent = getIntent();
+        String searchedgroupId  = intent.getStringExtra("searched_group_Id");
+        CommunityRef.child(searchedgroupId).child("adminId").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String admin_id=dataSnapshot.getValue(String.class);
+                if(TextUtils.equals(admin_id,mAuth.getCurrentUser().getUid())){
+                    join_unjoin.setText("you are the admin");
+                    join_unjoin.setEnabled(false);
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
 }

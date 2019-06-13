@@ -6,11 +6,13 @@
     tools:context=".Home">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <ListView
+        android:id="@+id/Post_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="My Home Here "
-        android:gravity="center"
-        android:textSize="40dp"/>
+        android:padding="10dp">
+
+    </ListView>
 
 </FrameLayout>

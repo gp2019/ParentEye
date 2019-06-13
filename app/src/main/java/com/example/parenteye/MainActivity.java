@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference memberRef = database.getReference("Members");
     private Integer userCompleteProfile = 0;
     private Button logout, show_comment;
-    private ListView Post_listview;
     private String friendlist;
     private ArrayList<String> friendspostskeys = new ArrayList<String>();
     private ArrayList<Posts> Postss = new ArrayList<Posts>();
@@ -77,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     private CircleImageView profileImage;
 
     private ImageView firendrequestid;
-    private ArrayList<Posts> myposts=new ArrayList<Posts>();
+
 
 
     Notifications notifi = new Notifications();
@@ -110,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         goprofile = (Button) findViewById(R.id.goprofile);
         firendrequestid=(ImageView) findViewById(R.id.firendrequestid);
         viewMyFriends=(Button)findViewById(R.id.viewFriends);
-        Post_listview=(ListView) findViewById(R.id.Post_listview);
+
 
         floatingActionButton = findViewById(R.id.floatingButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -372,7 +371,7 @@ search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String ibrahem ="OjEqHKzicMOZkAzjl5OLxBcIpai2";
+                String ibrahem ="zkoZkODkLSYO8aZFhc0iVOILHc42";
                 String FriendWantToRequest_Id= ibrahem;
 
                 notifi.addNotificationsOfFriendRequest(FriendWantToRequest_Id);
@@ -393,7 +392,7 @@ search.setOnClickListener(new View.OnClickListener() {
         removeFrindNotify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String Aya = "OjEqHKzicMOZkAzjl5OLxBcIpai2";
+                String Aya = "zkoZkODkLSYO8aZFhc0iVOILHc42";
                 String FriendWantToRequest_Id= Aya;
 
 
@@ -406,9 +405,15 @@ search.setOnClickListener(new View.OnClickListener() {
         disLikeNotifi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String postid2 = "-LcCMOBCnOomGRFyCwfL";
+                String postid1 = "-LcCMOBCnOomGRFyCwfL";
+                String postid2 = "-LcCMP9H7kmcuYwvfdZC";
 
-                notifi.DeleteNotificationOfLike(postid2, "L7zI36Be0qS2pwLic4Jd8RDdWjD2");
+
+                notifi.DeleteNotificationOfLike(postid1, "zkoZkODkLSYO8aZFhc0iVOILHc42");
+                notifi.DeleteNotificationOfComment(postid1,"zkoZkODkLSYO8aZFhc0iVOILHc42");
+
+                notifi.DeleteNotificationOfLike(postid2, "zkoZkODkLSYO8aZFhc0iVOILHc42");
+                notifi.DeleteNotificationOfComment(postid2,"zkoZkODkLSYO8aZFhc0iVOILHc42");
             }
         });
         myRef.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
@@ -428,7 +433,7 @@ search.setOnClickListener(new View.OnClickListener() {
             }
         });
 
-        GetMyHomePosts();
+       // GetMyHomePosts();
         showProfilepic();
 
 
@@ -462,8 +467,9 @@ search.setOnClickListener(new View.OnClickListener() {
 
     private void CreatePost(String Uid) {
         Intent login_main = new Intent(MainActivity.this, Create_Post.class);
-        login_main.putExtra("userId", Uid);
-        login_main.putExtra("typePost", "1");
+        login_main.putExtra("userId",Uid);
+        login_main.putExtra("placeTypeId", "1");
+        login_main.putExtra("placeId", "");
         startActivity(login_main);
         finish();
     }
@@ -495,76 +501,7 @@ search.setOnClickListener(new View.OnClickListener() {
         finish();
     }
 
-    private void GetMyHomePosts(){
-        if(mAuth.getCurrentUser()!=null){
-            final HomePostsAdapter postadapter=new HomePostsAdapter(MainActivity.this,myposts);
-            Post_listview.setAdapter(postadapter);
-           final ArrayList<String> communityIds=new ArrayList<String>();
-            final ArrayList<String> friendsList=new ArrayList<String>();
 
-            myRef3.child(mAuth.getCurrentUser().getUid()).child("userFriends").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.getValue(String.class)!=null) {
-                        String myfriends = dataSnapshot.getValue(String.class);
-                        final String[] myFriendsID = myfriends.split(",");
-                        for(String id:myFriendsID){
-                            friendsList.add(id);
-                        } }
-                    memberRef.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            for(DataSnapshot membersnaphot:dataSnapshot.getChildren()){
-                                if(TextUtils.equals(membersnaphot.getValue(Members.class).getUserId(),mAuth.getCurrentUser().getUid())){
-                                    communityIds.add(membersnaphot.getValue(Members.class).getCommunityid());
-                                }
-                            }
-                          /*  if (dataSnapshot.getValue(Members.class)!=null) {
-                                for (DataSnapshot membersnapshot : dataSnapshot.getChildren()) {
-                                    Members member = membersnapshot.getValue(Members.class);
-                                    communityIds.add(member.getCommunityid());
-                                    //System.out.println(member.getCommunityid());
-                                }
-                            }*/
-                            myRef2.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    myposts.clear();
-                                    for (DataSnapshot postsnapshot : dataSnapshot.getChildren()) {
-                                        Posts post = postsnapshot.getValue(Posts.class);
-                                        if (friendsList.contains(post.getUserId())&&TextUtils.equals(post.getPlaceTypeId(),"1")|| communityIds.contains(post.getPlaceId())) {
-                                            myposts.add(post);
-                                        }
-                                    }
-                                    Collections.reverse(myposts);
-                                    postadapter.notifyDataSetChanged();
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
-
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-
-            });
-        }
-    }
 
 public  void showProfilepic(){
     myRef.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {

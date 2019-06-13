@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -19,6 +20,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -45,7 +48,10 @@ public class PageActivity extends AppCompatActivity {
     private boolean IsExist=false;
     ArrayList<custom_posts_returned> Page_posts=new ArrayList<custom_posts_returned>();
     private ListView Page_Post_listview;
+    private FloatingActionButton floatingActionButton;
+    private String CommunityId;
     public static final String pageID="pageID";
+    private CreateTime createTime;
 
 
     @Override
@@ -106,8 +112,34 @@ public class PageActivity extends AppCompatActivity {
             }
         });
 
+        floatingActionButton = findViewById(R.id.floatingButton);
+
+       // CommunityId = "Lh2x7ArurH4Yu4-XZPW";
+        Intent intent = getIntent();
+        CommunityId = intent.getStringExtra("searched_page_Id");
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+                if (currentUser != null) {
+                    CreatePost(currentUser.getUid());
+                }
+
+            }
+        });
+
     }
 
+
+    private void CreatePost(String Uid) {
+        Intent login_main = new Intent(PageActivity.this, Create_Post.class);
+        login_main.putExtra("userId", Uid);
+        login_main.putExtra("placeTypeId", "2");
+        login_main.putExtra("placeId", CommunityId);
+        startActivity(login_main);
+        finish();
+    }
 
     private void IntializeVariables(){
         mAuth=FirebaseAuth.getInstance();
@@ -124,6 +156,24 @@ public class PageActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         getPageInfo();
+
+        CommunityRef.child(CommunityId).child("adminId").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue()==mAuth.getCurrentUser().getUid()){
+                    floatingActionButton.setVisibility(View.VISIBLE);
+                }
+                else {
+                    floatingActionButton.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
     }
 
@@ -152,6 +202,7 @@ public class PageActivity extends AppCompatActivity {
             Intent intent = getIntent();
             final   String PageId = intent.getStringExtra("searched_page_Id");
          // final String PageId="-Lg1OLwvGrf5AJFx6-jK"; //will be get automatic later
+            CheckIsAdmin();
             CommunityRef.child(PageId).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -202,7 +253,25 @@ public class PageActivity extends AppCompatActivity {
             GetPagePosts();
         }
         }
+    private void CheckIsAdmin(){
+        Intent intent = getIntent();
+        String searchedpageId  = intent.getStringExtra("searched_page_Id");
+        CommunityRef.child(searchedpageId).child("adminId").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String admin_id=dataSnapshot.getValue(String.class);
+                if(TextUtils.equals(admin_id,mAuth.getCurrentUser().getUid())){
+                    Like_unLike.setText("you are the admin");
+                    Like_unLike.setEnabled(false);
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     public  void GetPagePosts(){
         Intent intent = getIntent();
@@ -223,6 +292,14 @@ public class PageActivity extends AppCompatActivity {
                         custom.setPost_owner_name(PageName);
                         custom.setpost_owner_ID(pagepost.getPlaceId());
                         custom.setPost_Id(pagepostsnapshot.getKey());
+                        String timePuplisher =pagepost.getPostdate();
+                        createTime =new CreateTime(timePuplisher);
+                        try {
+                            createTime.sdf();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        custom.setPost_date(createTime.calculateTime());
                         if(pagepost.getPostcontent()!=null){
                             custom.setPost_text(pagepost.getPostcontent());
                             // System.out.println("content "+ custom.getPost_text());
@@ -247,6 +324,7 @@ public class PageActivity extends AppCompatActivity {
 
 
     }
+
 
 
 }

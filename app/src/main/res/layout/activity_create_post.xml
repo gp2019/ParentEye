@@ -187,13 +187,6 @@
                 android:layout_height="30dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="10dp"
-                android:src="@drawable/add_friend" />
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="10dp"
                 android:src="@drawable/photo_camera" />
 
         </LinearLayout>
