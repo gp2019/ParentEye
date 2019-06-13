@@ -34,6 +34,7 @@ public class Home extends Fragment {
     DatabaseReference myRef2 = database.getReference("Posts");
     DatabaseReference myRef3 = database.getReference("Friends");
     DatabaseReference memberRef = database.getReference("Members");
+    DatabaseReference CommunityRef = database.getReference("Community");
     private ListView Post_listview;
     private ArrayList<Posts> myposts=new ArrayList<Posts>();
     private CreateTime createTime;
@@ -92,6 +93,22 @@ public class Home extends Fragment {
                                     //System.out.println(member.getCommunityid());
                                 }
                             }*/
+                            CommunityRef.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    for(DataSnapshot comsnaphot:dataSnapshot.getChildren()){
+                                        if(TextUtils.equals(comsnaphot.getValue(Community.class).getAdminId(),mAuth.getCurrentUser().getUid())){
+                                            communityIds.add(comsnaphot.getKey());
+                                            System.out.println("Helooooooooooooooooooooooooooooooooooooo"+comsnaphot.getKey());
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
                             myRef2.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

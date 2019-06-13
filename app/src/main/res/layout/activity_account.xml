@@ -127,7 +127,12 @@
                     android:textStyle="bold"
                     android:text="Gallery"/>
             </LinearLayout>
+
         </LinearLayout>
+        <ListView
+            android:id="@+id/accountPost_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -238,10 +243,7 @@
 
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/accountPost_listview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+
 
     </LinearLayout>
 

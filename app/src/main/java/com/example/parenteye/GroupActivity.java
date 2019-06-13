@@ -231,7 +231,7 @@ public class GroupActivity extends AppCompatActivity {
                     Community group=dataSnapshot.getValue(Community.class);
                     groupname.setText(group.getCommunityname());
                     if(group.getCoverPhotoId()!=null){
-                        groupphotoRef.child(group.getPhotoId()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                        groupphotoRef.child(group.getCoverPhotoId()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                             @Override
                             public void onSuccess(byte[] bytes) {
                                 final Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
