@@ -21,6 +21,27 @@
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/cover5" />
 
+    <TextView
+        android:id="@+id/TextViewOnImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/groupCover"
+        android:layout_alignRight="@+id/groupCover"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="choose Your cover photo"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/groupCover"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/groupCover"
+        app:layout_constraintTop_toTopOf="@+id/groupCover" />
+
+
 
 
 
@@ -34,6 +55,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/groupCover">
+
 
         <LinearLayout
             android:layout_width="match_parent"

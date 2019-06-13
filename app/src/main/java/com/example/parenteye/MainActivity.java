@@ -458,7 +458,7 @@ search.setOnClickListener(new View.OnClickListener() {
     protected void onStart() {
 
         if (mAuth.getCurrentUser() == null) {
-            main_login();
+            main_page();
 
 
         }
@@ -491,6 +491,12 @@ search.setOnClickListener(new View.OnClickListener() {
     private void main_login() {
         Intent main_login = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(main_login);
+        finish();
+
+    }
+    private void main_page() {
+        Intent mainpageint = new Intent(MainActivity.this, MainPage.class);
+        startActivity(mainpageint);
         finish();
 
     }
