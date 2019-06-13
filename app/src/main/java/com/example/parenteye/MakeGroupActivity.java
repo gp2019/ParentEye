@@ -43,7 +43,7 @@ public class MakeGroupActivity extends AppCompatActivity {
     private Uri filepath2;
     private StorageReference mStorageRef;
     private FirebaseAuth mAuth;
-    private String profilekey = null;
+   // private String profilekey = null;
     private String coverkey = null;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -56,7 +56,7 @@ public class MakeGroupActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
         coverphoto = (ImageView) findViewById(R.id.groupCover);
-        profilephoto = (CircleImageView) findViewById(R.id.groupProfile);
+        //profilephoto = (CircleImageView) findViewById(R.id.groupProfile);
         groupName = (EditText) findViewById(R.id.groupname);
         aboutGroup = (EditText) findViewById(R.id.aboutgroup);
         makeGroup = (Button) findViewById(R.id.makeGroup);
@@ -72,15 +72,7 @@ public class MakeGroupActivity extends AppCompatActivity {
         });
 
 
-        profilephoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "select image"), PICK_IMAGE);
-            }
-        });
+
 
         makeGroup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,11 +87,9 @@ public class MakeGroupActivity extends AppCompatActivity {
                         group.setTypeid("1");
                         group.setAdminId(mAuth.getCurrentUser().getUid());
                         group.setCommunityType("group");
-                        upload_profile_pic();
+                        //upload_profile_pic();
                         upload_cover_pic();
-                        if (profilekey != null) {
-                            group.setPhotoId(profilekey);
-                        }
+
                         if (coverkey != null) {
                             group.setCoverPhotoId(coverkey);
                         }
@@ -159,7 +149,7 @@ public class MakeGroupActivity extends AppCompatActivity {
 
     }
 
-
+/*
     private void upload_profile_pic() {
         if (filepath2 != null) {
             // final ProgressDialog progressdialogue=new ProgressDialog(this);
@@ -187,6 +177,7 @@ public class MakeGroupActivity extends AppCompatActivity {
                     });
         }
     }
+    */
 
     private void upload_cover_pic() {
         if (filepath != null) {
