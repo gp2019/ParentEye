@@ -53,6 +53,7 @@
             android:theme="@style/AppTheme.FullScreen" />
         <activity android:name=".Create_Comment" />
         <activity android:name=".FragmentPreview" />
+        <activity android:name=".Main2Activity" />
     </application>
 
 </manifest>
