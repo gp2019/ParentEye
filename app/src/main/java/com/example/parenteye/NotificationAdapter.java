@@ -132,7 +132,30 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
         if (notification.getisFriendRequest()) {
             //********************** action on the notification item in the list ***********************
-            viewHolder.Holder_notification_post_content.setOnClickListener(new View.OnClickListener() {
+
+            viewHolder.Holder_notification_user_name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent searched_intent=new Intent(mContext,AccountActivity.class);
+                    searched_intent.putExtra(searched_user_Id,whoMakeAction);
+                    mContext.startActivity(searched_intent);
+                }
+            });
+            viewHolder.Holder_notification_profile_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent searched_intent=new Intent(mContext,AccountActivity.class);
+                    searched_intent.putExtra(searched_user_Id,whoMakeAction);
+                    mContext.startActivity(searched_intent);
+                    System.out.println("Going intent");
+                    System.out.println("Going intent");
+                    System.out.println("Going intent");
+                }
+
+            });
+
+
+            viewHolder.Holder_Friend_request_notifi_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -140,12 +163,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     mContext.startActivity(in);
                     */
                    // whoMakeAction
-                    Intent searched_intent=new Intent(mContext,AccountActivity.class);
-                    searched_intent.putExtra(searched_user_Id,whoMakeAction);
-                    mContext.startActivity(searched_intent);
-                    System.out.println("trying to intent");
-                    System.out.println("trying to intent");
-                    System.out.println("trying to intent");
+
 
                     // new Intent((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.notification_fragment_container,
                     //new custom_posts_returned()).commit();
@@ -303,7 +321,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             viewHolder.Holder_notification_profile_image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Intent searched_intent=new Intent(mContext,AccountActivity.class);
+                    searched_intent.putExtra(searched_user_Id,whoMakeAction);
+                    mContext.startActivity(searched_intent);
                 }
             });
 
