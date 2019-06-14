@@ -18,9 +18,10 @@ public class PagerController extends FragmentPagerAdapter {
                 return new Home();
             case 1:
                 return new NotificationFragment();
-            case 2:
+           /* case 2:
                 return new ActivityLogFragment();
-            case 3:
+                */
+            case 2:
                 return new friends_fregment();
                 default:
                     return null;
