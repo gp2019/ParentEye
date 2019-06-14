@@ -25,23 +25,19 @@
 
             <ImageView
                 android:id="@+id/Accountcover"
-                android:layout_width="match_parent"
-                android:layout_height="220dp"
-                android:src="@drawable/cover"
-                android:scaleType="centerCrop" >
 
-
-            </ImageView>
-
-
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                />
 
             <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/Accountprofile"
                 android:layout_width="156dp"
                 android:layout_height="149dp"
-                android:layout_marginTop="-100dp"
+                android:layout_marginTop= "10dp"
+
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/circle"
                 android:scaleType="centerCrop"
                 android:src="@drawable/defaultprofile" />
 
@@ -66,7 +62,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="400dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:background="@drawable/custom_border"
@@ -267,6 +263,7 @@
             android:id="@+id/accountPost_listview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+
 
     </LinearLayout>
 
