@@ -3,14 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SideMenu">
+    tools:context=".friends_fregment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="My SideMenue Here "
-        android:gravity="center"
-        android:textSize="40dp"/>
+        android:padding="5dp"
+        android:id="@+id/friendsList">
+
+
+    </ListView>
 
 </FrameLayout>

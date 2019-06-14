@@ -22,22 +22,28 @@
         android:padding="10dp"
         android:layout_marginTop="170dp"
         android:orientation="vertical"
-        android:background="#C0C0C0"
         android:layout_gravity="center">
+
         <TextView
             android:id="@+id/group_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textColor="#000"
+            android:textColor="@color/buttonColor"
             android:textSize="23sp"
-            android:layout_gravity="center_horizontal"/>
+            android:background="@drawable/custom_border"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="20dp"/>
+
         <Button
             android:id="@+id/join_unjoinbtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Join Group"
-            android:layout_gravity="center_horizontal"/>
+            android:textAllCaps="false"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/bg_ui"
+            android:padding="10dp"/>
 
     </LinearLayout>
 

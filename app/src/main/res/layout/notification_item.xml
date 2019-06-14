@@ -14,7 +14,9 @@
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:id="@+id/notification_profile_image_"/>
+        android:background="@drawable/circle"
+        android:id="@+id/notification_profile_image_"
+        />
     <!-- End user profile  image (circle view) -->
 
 
@@ -34,7 +36,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/notification_user_name_"
             android:textStyle="bold"
-            android:textColor="@android:color/background_dark"
+
+            android:textColor="@color/textButton"
 
             />
         <!-- End notification user name -->
@@ -45,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/notification_content_text_"
-            android:textColor="@android:color/background_dark"
+            android:textColor="@color/colorPrimary"
             />
         <!--  end notification content Text-->
 
@@ -64,6 +67,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_marginTop="10dp"
 
             android:id="@+id/Friend_request_notifi_layout">
 
@@ -73,16 +77,18 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textColor="#ffffff"
-            android:background="@drawable/accept_button_friend_request_notification"
-            android:text="Accept" />
+            android:background="@drawable/bg_ui"
+            android:text="Accept"
+                android:layout_marginRight="10dp"
+                />
             <Button
                 android:id="@+id/reject_notifi_btn"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
 
-                android:textColor="#ffffff"
-                android:background="@drawable/reject_button_firend_request_notification"
+                android:textColor="@color/colorPrimary"
+                android:background="@drawable/custom_border"
                 android:text="Reject" />
         </LinearLayout>
 

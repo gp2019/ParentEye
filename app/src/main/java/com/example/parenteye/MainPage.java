@@ -9,11 +9,18 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.Calendar;
 
 public class MainPage extends AppCompatActivity {
     private Button main_signup;
     private Button main_login;
+
+    private FirebaseAuth mAuth;
+
 
     ConstraintLayout constraintLayout;
     TextView tvTimeMsg;
@@ -22,6 +29,7 @@ public class MainPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
+        mAuth = FirebaseAuth.getInstance();
 
         constraintLayout=findViewById(R.id.container);
         tvTimeMsg=findViewById(R.id.tv_time_msg);
@@ -75,6 +83,20 @@ public class MainPage extends AppCompatActivity {
         });
 
 
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser!=null){
+            GoHome();
+        }
+
+    }
+    private void GoHome(){
+        Intent login_main=new Intent( MainPage.this,Main2Activity.class);
+        startActivity(login_main);
+        finish();
     }
 
 }

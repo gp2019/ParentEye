@@ -5,24 +5,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".PageActivity">
+    tools:context=".PageActivity"
+    android:background="@color/white">
     <LinearLayout
         android:id="@+id/pageLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:background="#bcd6d8">
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/pageImg"
-            android:layout_width="180dp"
-            android:layout_height="180dp"
-            app:civ_border_width="2dp"
-            app:civ_border_color="#FF000000"
-            android:src="@drawable/user"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_marginTop="10dp"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            android:background="@color/white"
+            android:src="@drawable/defaultprofile"
+             />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,14 +37,33 @@
             android:textSize="25dp"
             android:textStyle="bold"
             android:gravity="center_horizontal"
-            android:textColor="#000"/>
+            android:textColor="@color/com_facebook_button_send_background_color"/>
         </LinearLayout>
+        <View
+            android:layout_width="150dp"
+            android:layout_height="4dp"
+            android:background="@drawable/bg_ui"
+            android:layout_gravity="center" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:background="@drawable/custom_border"
+        android:orientation="horizontal"
+        >
         <Button
             android:id="@+id/LikeUnLike_ID"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="10dp"
             android:text="Like page"
-            android:textSize="17sp"/>
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:background="@drawable/bg_ui"
+            />
+    </LinearLayout>
+
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
@@ -58,6 +78,7 @@
         app:backgroundTint="@color/colorPrimary"
         tools:ignore="MissingConstraints" />
     <ListView
+        android:layout_marginTop="30dp"
         android:layout_below="@id/pageLayout"
         android:id="@+id/pageList"
         android:layout_width="match_parent"

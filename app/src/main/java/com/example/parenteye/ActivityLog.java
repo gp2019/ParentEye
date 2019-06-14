@@ -35,7 +35,7 @@ public class ActivityLog {
     ////////
     private String postId;
 
-    private String ParentId = null;
+    private String ParentId;
 
 
     // flags
@@ -164,8 +164,10 @@ public class ActivityLog {
                         ParentChildren parentChildren = snapshot.getValue(ParentChildren.class);
 
                         if (parentChildren.getChildId().equalsIgnoreCase(ChildId)) {
+
                             ParentId = parentChildren.getParentId();
-                            ;
+                        }else {
+                            String a="a";
                         }
                     }
                 }
@@ -175,7 +177,7 @@ public class ActivityLog {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        }) ;
 
         return ParentId;
 
@@ -184,10 +186,10 @@ public class ActivityLog {
 
     //****************************** add Activity log on like********************************
     public void addActivityLogOfLikes(String postid) {
-        String parentId = ParentOfCurrentUserChild(currentUser.getUid());
+        String parent = ParentOfCurrentUserChild(currentUser.getUid());
 
-        if (parentId != null) {
-            DatabaseReference activityLog_reference = database.getReference("activityLog").child(parentId);
+        if (parent != null) {
+            DatabaseReference activityLog_reference = database.getReference("activityLog").child(parent);
 
 
             HashMap<String, Object> hashMap = new HashMap<>();
@@ -203,6 +205,8 @@ public class ActivityLog {
             activityLog_reference.push().setValue(hashMap);
 
 
+        }else {
+            String a="s";
         }
 
         //to call ----->  addNotificationsOfLikes(String postid, String post_publisher_Id)

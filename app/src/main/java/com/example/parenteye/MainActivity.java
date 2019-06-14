@@ -345,8 +345,8 @@ search.setOnClickListener(new View.OnClickListener() {
                 notifi.addNotificationsOfLikes(postid1, "zkoZkODkLSYO8aZFhc0iVOILHc42");
 
                 //addNotificationsOfComments(postid1, LikeridAya);
-                notifi.addNotificationsOfComments(postid2, "zkoZkODkLSYO8aZFhc0iVOILHc42");
-                notifi.addNotificationsOfComments(postid1, "zkoZkODkLSYO8aZFhc0iVOILHc42");
+                notifi.addNotificationsOfComments(postid2, "zkoZkODkLSYO8aZFhc0iVOILHc42","Hello");
+                notifi.addNotificationsOfComments(postid1, "zkoZkODkLSYO8aZFhc0iVOILHc42","welcom clever ");
 
                 //Add activitylog on likes , comments
                 activityLog.addActivityLogOfLikes(postid2);

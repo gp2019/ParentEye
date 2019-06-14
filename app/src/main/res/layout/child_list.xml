@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -8,7 +8,7 @@
 
         <LinearLayout
             android:id="@+id/listChild"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <de.hdodenhof.circleimageview.CircleImageView
@@ -18,13 +18,13 @@
                 android:layout_height="55dp"
                 android:src="@drawable/defaultprofile"
                 android:layout_marginTop="15dp"
-                app:civ_border_width="0.7dp"
-                app:civ_border_color="#FF000000"
+
                 android:layout_marginBottom="15dp"
                 android:scaleType="centerCrop"/>
             <TextView
                 android:id="@+id/childname"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="4"
                 android:layout_height="wrap_content"
                 android:textSize="20dp"
                 android:layout_marginLeft="10dp"
@@ -35,15 +35,15 @@
             <RelativeLayout
                 android:id="@+id/RelativelayoutID"
                 android:layout_gravity="center"
-                android:layout_marginStart="10dp"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content">
 
                 <ImageButton
                     android:id="@+id/btPlus"
                     android:layout_width="25dp"
                     android:layout_height="20dp"
-                    android:backgroundTint="@color/colorPrimary"
+                    android:backgroundTint="@color/buttonColor"
                     android:background="@android:drawable/arrow_up_float"/>
 
 
@@ -51,7 +51,6 @@
                     android:id="@+id/counter"
                     android:inputType="number"
                     android:ems="1"
-                   android:gravity="center"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="20dp"
                     android:layout_width="wrap_content"
@@ -64,13 +63,15 @@
                     android:layout_width="25dp"
                     android:layout_height="20dp"
                     android:layout_below="@id/counter"
-                    android:backgroundTint="@color/colorPrimary"
+                    android:backgroundTint="@color/buttonColor"
                     android:background="@android:drawable/arrow_down_float"/>
+
 
             </RelativeLayout>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="2"
                 android:layout_height="wrap_content"
                 android:text="hr"
                 android:layout_marginStart="10dp"
@@ -78,15 +79,23 @@
                 android:layout_toEndOf="@id/counter"
                 android:layout_gravity="center"/>
 
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                >
+                <Switch
+                    android:id="@+id/btCloseAccount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/custom_border"
+
+                    />
+            </LinearLayout>
+
         </LinearLayout>
 
-    <Switch
-        android:id="@+id/btCloseAccount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="30dp"
-        android:background="@color/colorPrimary"
-        />
-
-</RelativeLayout>
+</LinearLayout>

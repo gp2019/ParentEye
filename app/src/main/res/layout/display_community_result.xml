@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white">
+    android:layout_height="wrap_content"
+    android:background="@drawable/custom_border"
+    android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/communityPic"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:src="@drawable/search_community"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="20dp"
-        app:civ_border_width="2dp"
-        app:civ_border_color="#FF000000"
-        android:layout_marginBottom="15dp"
-        android:scaleType="centerCrop"/>
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/communityPic"
+            android:layout_width="55dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/circle"
+            android:scaleType="centerCrop"
+            android:src="@drawable/search_community" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,8 +29,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Community Name"
-            android:textSize="35sp"
-            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textColor="@color/buttonColor"
             android:textAlignment="textStart"
             android:textStyle="bold"/>
         <TextView
@@ -38,23 +38,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Type"
-            android:textSize="20sp"
-            android:textColor="@color/black"
+            android:textSize="15sp"
+
+            android:textColor="@color/textButton"
             android:textAlignment="textStart"
-            android:textStyle="bold"/>
+            />
         <TextView
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Description"
-            android:textSize="15sp"
-            android:textColor="@color/black"
+            android:textColor="@color/colorPrimary"
             android:textAlignment="textStart"
             android:textStyle="normal"/>
 
     </LinearLayout>
 
+    </LinearLayout>
 
-
+    <View
+        android:layout_marginTop="20dp"
+        android:layout_width="150dp"
+        android:layout_height="4dp"
+        android:background="@drawable/bg_ui"
+        android:layout_gravity="center" />
 
 </LinearLayout>
