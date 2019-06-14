@@ -40,9 +40,9 @@ public class friends_fregment extends Fragment {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fregment_user_friends, container, false);
         mAuth=FirebaseAuth.getInstance();
-       // friendsList=(ListView)view.findViewById(R.id.friendsList);
+        friendsList=(ListView)view.findViewById(R.id.friendsList);
 
-      //  GetMyFriends();
+        GetMyFriends();
 
         friendsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -61,7 +61,7 @@ public class friends_fregment extends Fragment {
 
 
     }
-   /* private void GetMyFriends(){
+    private void GetMyFriends(){
         final ArrayList<String> friends_arraylist=new ArrayList<String>();
         final User_Chat_Adapter adapter=new User_Chat_Adapter(getActivity(),curremtuserfriends);
         friendsList.setAdapter(adapter);
@@ -115,6 +115,6 @@ public class friends_fregment extends Fragment {
             });
         }
     }
-    */
+
 
 }
