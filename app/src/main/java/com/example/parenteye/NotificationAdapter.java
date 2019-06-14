@@ -155,6 +155,13 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             });
 
 
+
+
+
+
+            
+
+
             viewHolder.Holder_Friend_request_notifi_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
