@@ -156,6 +156,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (mAuth.getCurrentUser() != null) {
+
+                    myRef.child(mAuth.getCurrentUser().getUid()).child("State").setValue("0");
                     mAuth.signOut();
                     main_login();
 

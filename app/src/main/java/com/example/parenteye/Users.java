@@ -17,6 +17,15 @@ public class Users {
     private String cover_pic_id;
     private boolean CloseAccount;
     private String TimeCloseAccount;
+    private String State;
+
+    public void setState(String state) {
+        State = state;
+    }
+
+    public String getState() {
+        return State;
+    }
 
     public Users(String userId, String username, String userEmail, String userPassword, Date dateofbirth, String location, boolean gender, String roleId, String profile_pic_id, String cover_pic_id, boolean closeAccount, String timeCloseAccount) {
         this.userId = userId;
