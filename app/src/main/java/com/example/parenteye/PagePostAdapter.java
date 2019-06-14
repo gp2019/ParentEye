@@ -32,6 +32,7 @@ public class PagePostAdapter  extends ArrayAdapter<custom_posts_returned> {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference comRef = database.getReference("Community");
     ArrayList<custom_posts_returned> post_returnedd;
+    private int position;
 
 
 
@@ -60,7 +61,7 @@ public class PagePostAdapter  extends ArrayAdapter<custom_posts_returned> {
         if(post.getPost_text()!=null){
             postDescription.setVisibility(View.VISIBLE);
             postDescription.setText(post.getPost_text());
-            System.out.println("adapter content "+post.getPost_text());
+           // System.out.println("adapter content "+post.getPost_text());
         }
         else {
             postDescription.setVisibility(View.GONE);
@@ -68,7 +69,7 @@ public class PagePostAdapter  extends ArrayAdapter<custom_posts_returned> {
         }
 
         TextView postdate=(TextView) postlist.findViewById(R.id.postdate);
-        postdate.setText("1/1/2001");
+        postdate.setText(post.getPost_date());
 
 
         final ImageView profileimage=(ImageView) postlist.findViewById(R.id.profile_post);
@@ -143,6 +144,65 @@ public class PagePostAdapter  extends ArrayAdapter<custom_posts_returned> {
         return postlist;
 
 
+    }
+    @Override
+    public int getCount() {
+        int a ;
+
+        if(post_returnedd != null && !post_returnedd.isEmpty()) {
+
+            a = post_returnedd.size();
+        }
+        else {
+
+            a = 0;
+
+        }
+
+        return a;
+
+    }
+
+   public int getItemCount() {
+
+        int a ;
+
+        if(post_returnedd != null && !post_returnedd.isEmpty()) {
+
+            a = post_returnedd.size();
+        }
+        else {
+
+            a = 0;
+
+        }
+
+        return a;
+    }
+
+    @Override
+
+    public long getItemId(int position) {
+
+        return position;
+
+    }
+
+    @Override
+
+    public int getItemViewType(int position) {
+
+        return position;
+
+    }
+
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
     }
 
 }

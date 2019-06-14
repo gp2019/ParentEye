@@ -1,7 +1,5 @@
 package com.example.parenteye;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,67 +8,54 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.List;
 
 
-public class Notification extends Fragment {
-
-
+public class ActivityLogFragment extends Fragment {
 
     private RecyclerView recyclerView;
 
     //public Notifications notifications =new Notifications() ;
 
-    public static NotificationAdapter notificationAdapter  ;
 
     public static ActivityLogAdapter activityLogAdapter;
 
-    public List<Notifications> notificationsList  = new ArrayList<>();
 
-
-    public Notification() {
+    public ActivityLogFragment() {
         // Required empty public constructor
     }
-
-
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_notification, container, false);
+        View view =  inflater.inflate(R.layout.fragment_activitylog, container, false);
 
-        //recyclerView hold notification_recycler_view
-        recyclerView = view.findViewById(R.id.notification_recycler_view);
+
+
+        recyclerView = view.findViewById(R.id.Activity_log_recycler_view);
         recyclerView.setHasFixedSize(true);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        setNotifiList();
 
+        setActivityLogList();
         return view;
-
     }
 
 
 
 
-
-
-
-    public void setNotifiList()
+    public void setActivityLogList()
     {
+        ActivityLog activityLog =new ActivityLog() ;
 
-        Notifications notifi =new Notifications() ;
+        activityLog.readLogs();
 
-        notifi.readNotifications();
+        activityLogAdapter = new ActivityLogAdapter(getContext(), activityLog.logActivityList);
 
-        notificationAdapter = new NotificationAdapter(getContext(), notifi.notificationsList);
-
-        recyclerView.setAdapter(notificationAdapter);
+        recyclerView.setAdapter(activityLogAdapter);
         //notifiList= notifications;
 
 

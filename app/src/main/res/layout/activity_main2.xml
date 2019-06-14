@@ -75,10 +75,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/profile_image"
-        android:layout_alignBottom="@+id/profile_image"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="-64dp"
         android:background="@drawable/background_tabs">
+        <!-- android:layout_marginBottom="-64dp"-->
+        <!--android:layout_alignBottom="@+id/profile_image"-->
+
 
         <android.support.design.widget.TabItem
             android:id="@+id/Home"
@@ -108,7 +109,9 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></android.support.v4.view.ViewPager>
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tablayout"
+        ></android.support.v4.view.ViewPager>
 
 
 

@@ -8,6 +8,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -40,10 +42,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -97,6 +102,8 @@ public class AccountActivity extends Activity {
     private  TextView AccountfriendsDialogtxtclose;
     private  ListView AccountfriendsDialogList;
     private CreateTime createTime;
+    private Integer PICK_IMAGE_REQUEST=71;
+    private Uri filepath;
     String[] cities = new String[]{"Cairo", "Alexandria", "Giza","Port Said","Suez","Luxor","al-Mansura","El-Mahalla El-Kubra","Tanta","Asyut",
             "tIsmailia","Fayyum","Zagazig"," Aswan","Damietta","Damanhur","al-Minya","Beni Suef"," Qena","Sohag","Hurghada","6th of October City","Shibin El Kom",
             "Banha"," Kafr el-Sheikh","Arish","Mallawi","10th of Ramadan City","Bilbais","Marsa Matruh","Idfu","Mit Ghamr","Al-Hamidiyya","Desouk",
@@ -166,6 +173,22 @@ public class AccountActivity extends Activity {
                 addresse="Egypt";
             }
         });
+        AccountCover.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              /*  Intent intent = getIntent();
+                final   String userId = intent.getStringExtra("searched_user_Id");
+                if(TextUtils.equals(mAuth.getCurrentUser().getUid(),userId)) {
+                    Intent intentt = new Intent();
+                    intentt.setType("image/*");
+                    intentt.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(Intent.createChooser(intentt, "select image"), PICK_IMAGE_REQUEST);
+
+                }
+                */
+            }
+        });
+
         Addfriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -238,12 +261,16 @@ public class AccountActivity extends Activity {
                                     if (TextUtils.equals(fr.getSenderid(), mAuth.getCurrentUser().getUid()) && TextUtils.equals(fr.getRecieverid(), userId)) {
                                         FriendRequestRef.child(friendtSnapshot.getKey()).removeValue();
                                         Addfriend.setImageResource(R.drawable.addfriendd);
+
                                         addfriendtext.setText("Add Friend");
                                         IsExist = false;
 
                                     }
 
                                 }
+                                Notifications notifi =new Notifications();
+                                notifi.DeleteNotificationOfRejectOrAcceptFriendRequest(userId);
+
                             }
 
                             @Override
@@ -802,7 +829,45 @@ public class AccountActivity extends Activity {
 
         }
     }
+    private void UploadCoverPhoto(){
+        if(filepath!=null){
+         final String  imagekey = UUID.randomUUID().toString();
+            StorageReference ref = mStorageRef.child("UserImages/"+imagekey);
+            ref.putFile(filepath).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    if(task.isSuccessful()){
+                        dismissProgressDialog();
+                        userRef.child(mAuth.getCurrentUser().getUid()).child("cover_pic_id").setValue(imagekey);
+                    }
+                    else{
+                        dismissProgressDialog();
+                        Toast.makeText(AccountActivity.this,"Cover Photo uploading error !!"+task.getException(),Toast.LENGTH_LONG).show();
 
+                    }
+                }
+            });
 
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==PICK_IMAGE_REQUEST&&resultCode==RESULT_OK&&data!=null&&data.getData()!=null){
+            filepath=data.getData();
+
+            try{
+                Bitmap bitmap= MediaStore.Images.Media.getBitmap(getContentResolver(),filepath);
+                AccountCover.setImageBitmap(bitmap);
+
+            }
+            catch (IOException e){
+                e.printStackTrace();
+
+            }
+        }
+
+    }
 
 }

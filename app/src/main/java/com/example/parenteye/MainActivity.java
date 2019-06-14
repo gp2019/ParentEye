@@ -462,7 +462,6 @@ search.setOnClickListener(new View.OnClickListener() {
 
     private void CreatePost(String Uid) {
         Intent login_main = new Intent(MainActivity.this, Create_Post.class);
-        login_main.putExtra("userId", Uid);
         login_main.putExtra("placeTypeId", "1");
         login_main.putExtra("placeId", "");
         startActivity(login_main);

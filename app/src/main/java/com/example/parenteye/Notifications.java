@@ -231,7 +231,7 @@ public class Notifications {
     {
         final DatabaseReference notification_reference = database.getReference("notifications").child(post_publisher_Id);
 
-        notification_reference.addValueEventListener(new ValueEventListener() {
+        notification_reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -260,7 +260,7 @@ public class Notifications {
     {
         final DatabaseReference notification_reference = database.getReference("notifications").child(post_publisher_Id);
 
-        notification_reference.addValueEventListener(new ValueEventListener() {
+        notification_reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -286,7 +286,7 @@ public class Notifications {
         final DatabaseReference notification_reference = database.getReference("notifications").child(FriendWantToRequest_Id);
          //final List<Notifications> notificationsList = new ArrayList<>();
          //String name="ahmed";
-        notification_reference.addValueEventListener(new ValueEventListener() {
+        notification_reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists())
@@ -334,7 +334,7 @@ public class Notifications {
         final DatabaseReference notification_reference = database.getReference("notifications").child(currentUser.getUid());
         //final List<Notifications> notificationsList = new ArrayList<>();
         //String name="ahmed";
-        notification_reference.addValueEventListener(new ValueEventListener() {
+        notification_reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists())
@@ -394,12 +394,20 @@ public class Notifications {
         notification_reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                notificationsList.clear();
+                notificationAdapter.notifyDataSetChanged();
+
+
                 if (dataSnapshot.exists()) {
                     notificationsList.clear();
+
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         Notifications notifications = snapshot.getValue(Notifications.class);
                         notificationsList.add(notifications);
+
+
                     }
+
                     Collections.reverse(notificationsList);
                    notificationAdapter.notifyDataSetChanged();
                 }
@@ -412,6 +420,50 @@ public class Notifications {
 
             }
         });
+
+
+
+//        ChildEventListener nchildEventListener = new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                if (dataSnapshot.exists()) {
+//                    Notifications notification = dataSnapshot.getValue(Notifications.class);
+//                    notificationsList.add(notification);
+//                    Collections.reverse(notificationsList);
+//                    notificationAdapter.notifyDataSetChanged();
+//
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//                Notifications notification = dataSnapshot.getValue(Notifications.class);
+//
+//                notificationsList.remove(notification);
+//                notificationAdapter.notifyDataSetChanged();
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        };
+
+
+//        notification_reference.addChildEventListener(nchildEventListener);
 
 
 

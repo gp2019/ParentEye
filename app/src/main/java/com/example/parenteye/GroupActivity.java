@@ -26,6 +26,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.w3c.dom.Text;
+
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -50,11 +53,31 @@ public class GroupActivity extends AppCompatActivity {
     private FloatingActionButton floatingActionButton;
     private String CommunityId;
     ArrayList<custom_posts_returned> Group_posts=new ArrayList<custom_posts_returned>();
+    private CreateTime createTime;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
         Intialize_variables();
+
+
+
+        floatingActionButton = findViewById(R.id.floatingButton);
+        Intent intent = getIntent();
+        CommunityId = intent.getStringExtra("searched_group_Id");
+        // CommunityId = "Lh2x7ArurH4Yu4-XZPW";
+
+        floatingActionButton.setVisibility(View.GONE);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+                if (currentUser != null) {
+                    CreatePost(currentUser.getUid());
+                }
+
+            }
+        });
         join_unjoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,6 +106,7 @@ public class GroupActivity extends AppCompatActivity {
                                         membersRef.child(membersnapshot.getKey()).removeValue();
                                         join_unjoin.setText("join Group");
                                         IsExist=0;
+                                        floatingActionButton.setVisibility(View.GONE);
                                     }
                                 }
                             }
@@ -132,20 +156,7 @@ public class GroupActivity extends AppCompatActivity {
             }
         });
 
-        floatingActionButton = findViewById(R.id.floatingButton);
-        CommunityId = "Lh2x7ArurH4Yu4-XZPW";
 
-
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseUser currentUser = mAuth.getCurrentUser();
-                if (currentUser != null) {
-                    CreatePost(currentUser.getUid());
-                }
-
-            }
-        });
 
     }
 
@@ -178,12 +189,10 @@ public class GroupActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot membersnapshot:dataSnapshot.getChildren()){
                     Members members = membersnapshot.getValue(Members.class);
-                    if (members.getUserId()==mAuth.getCurrentUser().getUid()&&members.getCommunityid()==CommunityId){
+                    if (TextUtils.equals(members.getUserId(),mAuth.getCurrentUser().getUid())&&TextUtils.equals(members.getCommunityid(),CommunityId)){
                         floatingActionButton.setVisibility(View.VISIBLE);
                     }
-                    else {
-                        floatingActionButton.setVisibility(View.GONE);
-                    }
+
                 }
 
 
@@ -194,6 +203,20 @@ public class GroupActivity extends AppCompatActivity {
 
             }
         });
+       CommunityRef.child(CommunityId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(TextUtils.equals(dataSnapshot.getValue(Community.class).getAdminId(),mAuth.getCurrentUser().getUid())){
+                    floatingActionButton.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     public  void getgroupInfo(){
@@ -201,13 +224,14 @@ public class GroupActivity extends AppCompatActivity {
             Intent intent = getIntent();
             final   String groupId = intent.getStringExtra("searched_group_Id");
            // final String groupId="-Lg1Gggi2Xo1Qx2-rLG4"; //will be get automatic later
+            CheckIsAdmin();
             CommunityRef.child(groupId).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Community group=dataSnapshot.getValue(Community.class);
                     groupname.setText(group.getCommunityname());
                     if(group.getCoverPhotoId()!=null){
-                        groupphotoRef.child(group.getPhotoId()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                        groupphotoRef.child(group.getCoverPhotoId()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                             @Override
                             public void onSuccess(byte[] bytes) {
                                 final Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
@@ -254,7 +278,7 @@ public class GroupActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for(DataSnapshot reqsnapshot:dataSnapshot.getChildren()){
                         GroupRequests req=reqsnapshot.getValue(GroupRequests.class);
-                        if(TextUtils.equals(req.getUserid(),mAuth.getCurrentUser().getUid())&&TextUtils.equals(req.getGroupId(),req.getGroupId())){
+                        if(TextUtils.equals(req.getUserid(),mAuth.getCurrentUser().getUid())&&TextUtils.equals(req.getGroupId(),groupId)){
                             join_unjoin.setText("cancel request");
                             IsExist=2;
                         }
@@ -267,7 +291,7 @@ public class GroupActivity extends AppCompatActivity {
                 }
             });
 
-
+            GetGroupPosts();
         }
     }
     private void GetGroupPosts(){
@@ -288,6 +312,14 @@ public class GroupActivity extends AppCompatActivity {
                         custom.setPost_owner_name(post.getUserId());
                         custom.setpost_owner_ID(post.getUserId());
                         custom.setPost_Id(grouppostsnapshot.getKey());
+                        String timePuplisher =post.getPostdate();
+                        createTime =new CreateTime(timePuplisher);
+                        try {
+                            createTime.sdf();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        custom.setPost_date(createTime.calculateTime());
                         if(post.getPostcontent()!=null){
                             custom.setPost_text(post.getPostcontent());
                         }
@@ -309,6 +341,24 @@ public class GroupActivity extends AppCompatActivity {
 
 
     }
+    private void CheckIsAdmin(){
+        Intent intent = getIntent();
+        String searchedgroupId  = intent.getStringExtra("searched_group_Id");
+        CommunityRef.child(searchedgroupId).child("adminId").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String admin_id=dataSnapshot.getValue(String.class);
+                if(TextUtils.equals(admin_id,mAuth.getCurrentUser().getUid())){
+                    join_unjoin.setText("you are the admin");
+                    join_unjoin.setEnabled(false);
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
 }
