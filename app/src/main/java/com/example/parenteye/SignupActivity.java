@@ -269,7 +269,7 @@ public class SignupActivity extends AppCompatActivity {
 
 
     private  void Go_to_main(){
-        Intent signup_main=new Intent(SignupActivity.this,MainActivity.class);
+        Intent signup_main=new Intent(SignupActivity.this,Main2Activity.class);
         startActivity(signup_main);
         finish();
     }

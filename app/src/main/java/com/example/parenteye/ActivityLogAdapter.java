@@ -46,7 +46,8 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
 
     private StorageReference UStorageRef;
     private StorageReference PStorageRef;
-
+    private StorageReference GroupStorageRef;
+    private StorageReference pageStorageRef;
 
     //NotificationAdapter constructor
     public ActivityLogAdapter(Context mContext, List<ActivityLog> mActivityLog) {
@@ -61,6 +62,7 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
     @Override
     public ActivityLogAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View notification_root_view = LayoutInflater.from(mContext).inflate(R.layout.notification_item, parent, false);
+
 
         return new ActivityLogAdapter.ViewHolder(notification_root_view);
     }
@@ -106,54 +108,238 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
             // accept and reject lay out will gone
             viewHolder.Holder_Friend_request_notifi_layout.setVisibility(View.GONE);
 
-            String friendID = activityLog.getfriendId();
+            String friendID = activityLog.getuserId();
             //if ispost is false photo of post and content will replace with photo of riend and the name of him
 
             getuserInfo(viewHolder.Holder_notification_post_image, viewHolder.Holder_notification_post_content,friendID);
 
 
+        }else if (activityLog.getisGroupRequest()) {
 
+            viewHolder.Holder_Friend_request_notifi_layout.setVisibility(View.GONE);
+
+            String communityid = activityLog.getPostId();
+
+            getCommunityInfo(viewHolder.Holder_notification_post_content,viewHolder.Holder_notification_post_image,communityid);
+
+        }else if (activityLog.getisPage()) {
+
+            viewHolder.Holder_Friend_request_notifi_layout.setVisibility(View.GONE);
+
+            String communityid = activityLog.getPostId();
+
+            getCommunityInfo(viewHolder.Holder_notification_post_content, viewHolder.Holder_notification_post_image, communityid);
+            //check about friend request
 
         }
-        //check about friend request
+
+                //************************** Activity log is post
+
+        if (activityLog.getIsPost()) {
+            //********************** action on the  post content in the list ***********************
+            viewHolder.Holder_notification_post_content.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent in = new Intent(mContext, MainActivity.class);
+                    mContext.startActivity(in);
+
+
+                    // new Intent((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.notification_fragment_container,
+                    //new custom_posts_returned()).commit();
+                }
+            });
+
+            /*************************************** action on post image btn**************************
+             *
+             */
+            viewHolder.Holder_notification_post_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+
+            /*************************************** action on child profile img btn**************************
+             *
+             */
+
+            viewHolder.Holder_notification_profile_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+            /*************************************** action on child profile username btn**************************
+             *
+             */
+            viewHolder.Holder_notification_user_name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+
+            //************************** Activity log is Friend request
+
+
+        } else if(activityLog.getisFriendRequest()){
 
 
 
-        //********************** action on the notification item in the list ***********************
-        viewHolder.Holder_notification_post_content.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                Intent in = new Intent(mContext, MainActivity.class);
-                mContext.startActivity(in);
+            /*************************************** action on post content used as user how request profile name btn**************************
+             *
+             */            viewHolder.Holder_notification_post_content.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-
-                // new Intent((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.notification_fragment_container,
-                //new custom_posts_returned()).commit();
-            }
-        });
-
-        /*************************************** action on Accept btn**************************
-         *
-         */
-        viewHolder.Holder_reject_notifi_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+                    Intent in = new Intent(mContext, MainActivity.class);
+                    mContext.startActivity(in);
 
 
-        /*************************************** action on Reject btn**************************
-         *
-         */
+                    // new Intent((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.notification_fragment_container,
+                    //new custom_posts_returned()).commit();
+                }
+            });
 
-        viewHolder.Holder_reject_notifi_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            /*************************************** action on post image used as user how request profile img btn**************************
+             *
+             */
+            viewHolder.Holder_notification_post_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-            }
-        });
+                }
+            });
+
+
+            /*************************************** action on child profile img btn**************************
+             *
+             */
+
+            viewHolder.Holder_notification_profile_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+            /*************************************** action on child profile username btn**************************
+             *
+             */
+            viewHolder.Holder_notification_user_name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+
+            //********************************** id it activity on group
+
+
+        }else if (activityLog.getisGroupRequest()) {
+
+            //********************** action on the  post content used as name of group  ***********************
+
+            viewHolder.Holder_notification_post_content.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent in = new Intent(mContext, MainActivity.class);
+                    mContext.startActivity(in);
+
+
+                    // new Intent((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.notification_fragment_container,
+                    //new custom_posts_returned()).commit();
+                }
+            });
+
+            /*************************************** action on post image used as image of group btn**************************
+             *
+             */
+            viewHolder.Holder_notification_post_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+
+            /*************************************** action on child profile img btn**************************
+             *
+             */
+
+            viewHolder.Holder_notification_profile_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+            /*************************************** action on child profile username btn**************************
+             *
+             */
+            viewHolder.Holder_notification_user_name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+
+
+        }else if (activityLog.getisPage()) {
+
+            //********************** action on the  post content used as name of page  ***********************
+
+            viewHolder.Holder_notification_post_content.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent in = new Intent(mContext, MainActivity.class);
+                    mContext.startActivity(in);
+
+
+                    // new Intent((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.notification_fragment_container,
+                    //new custom_posts_returned()).commit();
+                }
+            });
+
+            /*************************************** action on post image used as image of page btn**************************
+             *
+             */
+            viewHolder.Holder_notification_post_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+
+            /*************************************** action on child profile img btn**************************
+             *
+             */
+
+            viewHolder.Holder_notification_profile_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+            /*************************************** action on child profile username btn**************************
+             *
+             */
+            viewHolder.Holder_notification_user_name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+        }
+
 
 
              /*
@@ -298,6 +484,149 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
                     }
 
 
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+/*
+            ChildEventListener pchildEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Posts post = dataSnapshot.getValue(Posts.class);
+
+                PStorageRef.child(post.getImageId()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    @Override
+                    public void onSuccess(byte[] bytes) {
+                        final Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        imageView.setImageBitmap(bm);
+                    }
+                });
+                post_content.setText(post.getImageId());
+
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        postreference.addChildEventListener(pchildEventListener);
+
+
+
+*/
+
+
+
+/*
+            // Glide.with(mContext).load(post.getImageId()).into(imageView);
+
+        });*/
+
+
+    }
+
+    /*
+    private void getFriendRequestuserInfo(final ImageView imageView, final TextView username, String whoMakeAction) {
+
+        //String publisherid="cR6RdBeU5Lg7CEFLhEniBT16ZxM2";
+        DatabaseReference userReference = database.getReference("Users").child(whoMakeAction);
+
+        UStorageRef = FirebaseStorage.getInstance().getReference("UserImages/");
+
+
+        userReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Users user = dataSnapshot.getValue(Users.class);
+                if(user.getProfile_pic_id() !=null)
+                {
+                    UStorageRef.child(user.getProfile_pic_id()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                        @Override
+                        public void onSuccess(byte[] bytes) {
+                            final Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                            imageView.setImageBitmap(bm);
+                        }
+                    });
+                }
+
+                username.setText(user.getUsername());
+                //Glide.with(mContext).load(user.getProfile_pic_id()).into(imageView);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+*/
+
+    private void getCommunityInfo(final TextView communityName, final ImageView imageView, String communityId) {
+        //String postid="-LbU7gdO1Mkx4ZhulHxA";
+
+        DatabaseReference groupreference = database.getReference("Community").child(communityId);
+
+        GroupStorageRef = FirebaseStorage.getInstance().getReference("GroupImages/ ");
+        pageStorageRef = FirebaseStorage.getInstance().getReference("PageImages/ ");
+
+
+        groupreference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Community community = dataSnapshot.getValue(Community.class);
+
+                    if(community.getCommunityType().equalsIgnoreCase("page")) {
+
+                        communityName.setText(community.getCommunityname());
+
+                        if (community.getPhotoId() !=null){
+                            PStorageRef.child(community.getPhotoId()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                @Override
+                                public void onSuccess(byte[] bytes) {
+                                    final Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                    imageView.setImageBitmap(bm);
+                                }
+                            });
+                        }
+
+                    }else if(community.getCommunityType().equalsIgnoreCase("group") ){
+
+                        communityName.setText(community.getCommunityname());
+
+                        if (community.getCoverPhotoId() !=null){
+                            PStorageRef.child(community.getCoverPhotoId()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                @Override
+                                public void onSuccess(byte[] bytes) {
+                                    final Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                    imageView.setImageBitmap(bm);
+                                }
+                            });
+                        }
+                    }
                 }
             }
 
