@@ -372,7 +372,7 @@ search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String ibrahem ="zkoZkODkLSYO8aZFhc0iVOILHc42";
+                String ibrahem ="OjEqHKzicMOZkAzjl5OLxBcIpai2";
                 String FriendWantToRequest_Id= ibrahem;
 
                 notifi.addNotificationsOfFriendRequest(FriendWantToRequest_Id);
@@ -393,7 +393,7 @@ search.setOnClickListener(new View.OnClickListener() {
         removeFrindNotify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String Aya = "zkoZkODkLSYO8aZFhc0iVOILHc42";
+                String Aya = "OjEqHKzicMOZkAzjl5OLxBcIpai2";
                 String FriendWantToRequest_Id= Aya;
 
 
@@ -406,15 +406,9 @@ search.setOnClickListener(new View.OnClickListener() {
         disLikeNotifi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String postid1 = "-LcCMOBCnOomGRFyCwfL";
-                String postid2 = "-LcCMP9H7kmcuYwvfdZC";
+                String postid2 = "-LcCMOBCnOomGRFyCwfL";
 
-
-                notifi.DeleteNotificationOfLike(postid1, "zkoZkODkLSYO8aZFhc0iVOILHc42");
-                notifi.DeleteNotificationOfComment(postid1,"zkoZkODkLSYO8aZFhc0iVOILHc42");
-
-                notifi.DeleteNotificationOfLike(postid2, "zkoZkODkLSYO8aZFhc0iVOILHc42");
-                notifi.DeleteNotificationOfComment(postid2,"zkoZkODkLSYO8aZFhc0iVOILHc42");
+                notifi.DeleteNotificationOfLike(postid2, "L7zI36Be0qS2pwLic4Jd8RDdWjD2");
             }
         });
         myRef.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {

@@ -110,8 +110,8 @@ public class Edit_Comment extends AppCompatActivity implements View.OnClickListe
 
     private void GoComment()
     {
-        Intent intent = new Intent( Edit_Comment.this, Create_Comment.class );
-        startActivity( intent );
+        //Intent intent = new Intent( Edit_Comment.this, Create_Comment.class );
+        //startActivity( intent );
         finish();
     }
 }

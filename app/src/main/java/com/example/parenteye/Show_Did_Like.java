@@ -53,12 +53,13 @@ public class Show_Did_Like extends AppCompatActivity implements View.OnClickList
         new getReaction().execute(  );
     }
 
+    /*
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         Go_Back_Create_Comment();
     }
-
+*/
     @Override
     public void onClick(View view) {
        int id=view.getId();

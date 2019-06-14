@@ -311,13 +311,7 @@
                     android:layout_height="80dp"
                     android:src="@drawable/ic_friends" />
 
-                <ListView
-                    android:id="@+id/Post_listview"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="5dp">
 
-                </ListView>
 
 
             </LinearLayout>

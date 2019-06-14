@@ -110,7 +110,7 @@
        <ImageView
            android:id="@+id/post_image"
            android:layout_width="match_parent"
-           android:layout_height="200dp"
+           android:layout_height="wrap_content"
            android:layout_margin="3dp"
            android:layout_marginLeft="10dp"
            android:layout_marginRight="10dp"
@@ -159,39 +159,42 @@
             />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:orientation="horizontal">
+          
+                <ImageView
+                    android:id="@+id/btLike"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:layout_centerInParent="true"
+                    android:scaleType="centerCrop" />
+                      <!--android:src="@drawable/heart"-->
 
-
-            <ImageView
-                android:id="@+id/btLike"
-
-                android:layout_width="0dp"
-                android:layout_height="30dp"
-                android:layout_weight="1"
-                android:layout_marginTop="2dp"
-                android:layout_alignParentStart="true" />
-            <!--android:src="@drawable/heart"-->
-
+          
             <View
                 android:layout_width="0.7dp"
                 android:layout_height="match_parent"
                 android:background="#777"
                 />
 
-            <ImageView
+            <RelativeLayout
                 android:id="@+id/btComment"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="30dp"
-                android:layout_marginTop="3dp"
-                android:src="@drawable/comment"
-                android:layout_alignParentEnd="true" />
+                android:layout_height="40dp">
 
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/comment" />
+            </RelativeLayout>
 
         </LinearLayout>
         <View

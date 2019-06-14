@@ -16,24 +16,24 @@
             android:id="@+id/profilepage"
             android:layout_width="180dp"
             android:layout_height="180dp"
-            app:civ_border_width="2dp"
-            app:civ_border_color="#FF000000"
+            app:civ_border_width="3dp"
+            app:civ_border_color="@color/colorPurple"
             android:layout_marginBottom="40dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="40dp"
-            android:src="@drawable/user"
+            android:src="@drawable/defaultprofile"
             android:scaleType="centerCrop"/>
 
 <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:padding="10dp"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/textView"
@@ -41,24 +41,31 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Page Name"
-            android:textSize="20sp"
-            android:textColor="#000"/>
+            android:textColor="@color/colorPurple"
+            android:textStyle="bold"
+            android:textSize="20sp"/>
 
         <EditText
             android:id="@+id/pagename"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/rounded_border_edittext"
             android:ems="10"
+            android:layout_weight="1"
             android:inputType="textPersonName" />
     </LinearLayout>
+
+
+
     <TextView
         android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="About"
         android:layout_marginTop="10dp"
-        android:textColor="#000"
+        android:textColor="@color/colorPurple"
+        android:textStyle="bold"
         android:textSize="20sp"/>
 
     <EditText
@@ -68,22 +75,22 @@
         android:layout_weight="1"
         android:inputType="textCapSentences|textMultiLine"
         android:maxLength="100"
-        android:padding="2dp"
-        android:maxLines="8"
-        android:background="@drawable/edittext_background"/>
+        android:layout_margin="5dp"
+        android:background="@drawable/rounded_border_edittext"
+        android:ems="10"
+        android:maxLines="8"/>
+
 
     <Button
         android:id="@+id/Addpage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Submit"
-        android:background="#fad7a0"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:text="Note that page name and about are mandatory to create the page"/>
+        android:background="@drawable/bg_ui"
+        android:text="Cteate"
+        android:textAllCaps="false"
+        android:textColor="@color/white" />
+
 
 
 
