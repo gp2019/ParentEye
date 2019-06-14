@@ -58,14 +58,14 @@ public class Create_Comment extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ArrayAdapterForComment mAdapter;
     private String postId=null;
-    private int countOfLike;
+    private String countOfLike;
     private LinearLayout Show_Like;
     ImageView noInernet;
     private TextView postLikeDate;
     private String imagekey;
     private RelativeLayout cameraRelative,bottom_WriteComment;
     private EditText writeComment;
-    private  ImageView btCamare,Image_of_gallery,cancelImage,btLike;
+    private  ImageView btCamare,Image_of_gallery,cancelImage,btLikePost;
     private int SELECT_FILE = 1;
     private int CHECK_IMAGE=0;
     private StorageReference mStorageRef;
@@ -74,6 +74,7 @@ public class Create_Comment extends AppCompatActivity {
     final long ONE_MEGABYTE = 1024 * 1024;
     private String CommentId,ContentComment;
     private Clipboard clipboard = new Clipboard();
+    private String ReactionId;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference galleryRef = database.getReference("Gallery");
 
@@ -85,7 +86,7 @@ public class Create_Comment extends AppCompatActivity {
         setContentView( R.layout.activity_create_comment );
         recyclerView=findViewById( R.id.Post_recyclelistview);
         Image_of_gallery=findViewById( R.id.image_of_gallery );
-        btLike=findViewById(R.id.btLikePost);
+        btLikePost=findViewById(R.id.btLikePost);
         cameraRelative = findViewById( R.id.bottom_sheet_for_camera );
         bottom_WriteComment=findViewById( R.id.bottom_WriteComment );
         cameraRelative.setVisibility( View.GONE );
@@ -103,9 +104,11 @@ public class Create_Comment extends AppCompatActivity {
         dbRef4=FirebaseDatabase.getInstance().getReference().child("Posts");
         final FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        postId=getIntent().getStringExtra("postId");
-        countOfLike=getIntent().getIntExtra("countOfLike",0);
 
+        postId=getIntent().getStringExtra("postId");
+        countOfLike=getIntent().getStringExtra("countOfLike");
+
+        ReactionId =postId+mAuth.getCurrentUser().getUid();
         writeComment.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -185,7 +188,7 @@ public class Create_Comment extends AppCompatActivity {
 
 
 */
-
+/*
         Query queryToGetData = dbRef3.orderByChild("postorCommentId_userId").equalTo(postId+mAuth.getCurrentUser().getUid());
         queryToGetData.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -202,28 +205,92 @@ public class Create_Comment extends AppCompatActivity {
             }
         });
 
-        btLike.setOnClickListener(new View.OnClickListener() {
+*/
+        dbRef3.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View v) {
-                Query queryToGetData = dbRef3.orderByChild("postorCommentId_userId").equalTo(postId+mAuth.getCurrentUser().getUid());
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot reactionShot : dataSnapshot.getChildren()){
+                    ReactionPosts reactionPosts = reactionShot.getValue(ReactionPosts.class);
+                    if (reactionPosts.getReactionId().equals( ReactionId)){
+                        btLikePost.setImageResource(R.drawable.heart_reaction);
+                    }
+                    else {
+                        btLikePost.setImageResource(R.drawable.heart);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        dbRef4.child(postId).child("countLike").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                postLikeDate.setText(dataSnapshot.getValue(Integer.class)+" Like");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        btLikePost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Query queryToGetData = dbRef3.orderByChild("reactionId").equalTo(ReactionId);
                 queryToGetData.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (!dataSnapshot.exists()) {
-                            String ReactionID =postId+mAuth.getCurrentUser().getUid();
-                            ReactionPosts reactionComment = new ReactionPosts(ReactionID, postId, mAuth.getCurrentUser().getUid(), postId + mAuth.getCurrentUser().getUid());
-                            btLike.setBackgroundResource(R.drawable.heart_reaction);
-                            //comments_of_post.get(position).setCountOfLike(comments_of_post.get(position).getCountOfLike() + 1);
-                            postLikeDate.setText(++countOfLike+" Like");
-                            dbRef3.child(ReactionID).setValue(reactionComment);
-                            dbRef4.child(postId).child("countLike").setValue(countOfLike);
 
-                        } else {
-                            btLike.setBackgroundResource(R.drawable.heart);
-                            //comments_of_post.get(position).setCountOfLike(comments_of_post.get(position).getCountOfLike() - 1);
-                            postLikeDate.setText(--countOfLike+" Like");
-                            dbRef4.child(postId).child("countLike").setValue(countOfLike);
-                            dbRef3.child(postId+mAuth.getCurrentUser().getUid()).removeValue();
+
+                        if (dataSnapshot.exists()){
+
+                            final int[] min = new int[1];
+                            dbRef4.child(postId).child("countLike").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    min[0] = dataSnapshot.getValue(Integer.class);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+                            btLikePost.setImageResource(R.drawable.heart);
+                            postLikeDate.setText((min[0])+" Like");
+                            dbRef4.child(postId).child("countLike").setValue(min[0]);
+                            dbRef3.child(ReactionId).removeValue();
+
+                        }
+
+                        else {
+                            final int[] plus = new int[1];
+                            dbRef4.child(postId).child("countLike").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    plus[0] = dataSnapshot.getValue(Integer.class);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+
+                            ReactionPosts reactionComment = new ReactionPosts(ReactionId,postId, mAuth.getCurrentUser().getUid());
+                            btLikePost.setImageResource(R.drawable.heart_reaction);
+                            postLikeDate.setText((++plus[0])+" Like");
+                            dbRef3.child(ReactionId).setValue(reactionComment);
+                            dbRef4.child(postId).child("countLike").setValue(plus[0]);
+
                         }
 
                     }
@@ -235,7 +302,8 @@ public class Create_Comment extends AppCompatActivity {
                 });
 
             }
-        } );
+        });
+
 
         postLikeDate.setText(countOfLike+" Like");
 
@@ -245,12 +313,11 @@ public class Create_Comment extends AppCompatActivity {
                 Intent Go_Show_Did_Like = new Intent(Create_Comment.this, Show_Did_Like.class);
                 Go_Show_Did_Like.putExtra("PostId",postId);
                 startActivity(Go_Show_Did_Like);
-                finish();
             }
         });
 
     }
-
+/*
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -258,7 +325,7 @@ public class Create_Comment extends AppCompatActivity {
         startActivity(goMain);
         finish();
     }
-
+*/
     @Override
     public boolean onContextItemSelected(MenuItem item) {
       //  int position = -1;
@@ -327,7 +394,7 @@ public class Create_Comment extends AppCompatActivity {
         intent.putExtra( "CommentContent",comments_of_post.get(position).getCommentcontent() );
         intent.putExtra( "CommentUserId",comments_of_post.get(position).getUserId() );
         startActivity( intent );
-        finish();
+        //finish();
     }
     private void upload_post_pic(){
         if(filepath!=null){

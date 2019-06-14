@@ -42,6 +42,7 @@ public class ArrayAdapterForComment extends RecyclerView.Adapter {
     public Context contextAdapter;
     Users users = new Users();
     private int position;
+    private String ReactionId;
 
 
     public ArrayAdapterForComment(Context context, ArrayList<PostComments> comments) {
@@ -54,9 +55,9 @@ public class ArrayAdapterForComment extends RecyclerView.Adapter {
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
 
-        ImageView imageViewComment,imageViewUser;
+        ImageView imageViewComment,imageViewUser,btLike;
         TextView textViewComment, timeOfComment, countLikeOfComment, replyOfComment,textViewUserName;
-        Button btLike;
+
 
         public ViewHolder(View itemView) {
             super( itemView );
@@ -64,7 +65,7 @@ public class ArrayAdapterForComment extends RecyclerView.Adapter {
             textViewComment = itemView.findViewById( R.id.textViewComment );
             timeOfComment = itemView.findViewById( R.id.TimeOfComment );
             countLikeOfComment = itemView.findViewById( R.id.countLikeOfComment );
-            replyOfComment = itemView.findViewById( R.id.replyOfComment );
+          //  replyOfComment = itemView.findViewById( R.id.replyOfComment );
             btLike = itemView.findViewById( R.id.btLikeComment );
             imageViewUser=itemView.findViewById( R.id.imageUserComment );
             textViewUserName=itemView.findViewById( R.id.name_of_user );
@@ -183,16 +184,20 @@ public class ArrayAdapterForComment extends RecyclerView.Adapter {
         ((ViewHolder) holder).timeOfComment.setText( calTime.calculateTime() );
 
         ((ViewHolder) holder).countLikeOfComment.setText(  CommentArrayList.get( position ).getCountOfLike()+" Like" );
-        Query queryToGetData = dbRef3.orderByChild("postorCommentId_userId").equalTo(CommentArrayList.get(position).getCommentID()+mAuth.getCurrentUser().getUid());
-        queryToGetData.addListenerForSingleValueEvent(new ValueEventListener() {
+        ReactionId = CommentArrayList.get(position).getCommentID()+mAuth.getCurrentUser().getUid();
+
+        dbRef3.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.exists()) {
-                    ((ViewHolder) holder).btLike.setBackgroundResource(R.drawable.heart);
-                } else {
-                    ((ViewHolder) holder).btLike.setBackgroundResource(R.drawable.heart_reaction);
-                      }
-
+                for (DataSnapshot reactionShot : dataSnapshot.getChildren()){
+                    ReactionPosts reactionPosts = reactionShot.getValue(ReactionPosts.class);
+                    if (reactionPosts.getReactionId().equals( ReactionId)){
+                        ((ViewHolder) holder).btLike.setImageResource(R.drawable.heart_reaction);
+                    }
+                    else {
+                        ((ViewHolder) holder).btLike.setImageResource(R.drawable.heart);
+                    }
+                }
             }
 
             @Override
@@ -205,25 +210,26 @@ public class ArrayAdapterForComment extends RecyclerView.Adapter {
         ((ViewHolder) holder).btLike.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Query queryToGetData = dbRef3.orderByChild("postorCommentId_userId").equalTo(CommentArrayList.get(position).getCommentID()+mAuth.getCurrentUser().getUid());
+                final String ReactionID =CommentArrayList.get(position).getCommentID()+mAuth.getCurrentUser().getUid();
+                Query queryToGetData = dbRef3.orderByChild("reactionId").equalTo(ReactionID);
                 queryToGetData.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if (!dataSnapshot.exists()) {
-                                String ReactionID =CommentArrayList.get(position).getCommentID()+mAuth.getCurrentUser().getUid(); //dbRef.push().getKey();
-                                ReactionPosts reactionComment = new ReactionPosts(ReactionID, CommentArrayList.get(position).getCommentID(), CommentArrayList.get(position).getUserId(), CommentArrayList.get(position).getCommentID() + CommentArrayList.get(position).getUserId());
-                                ((ViewHolder) holder).btLike.setBackgroundResource(R.drawable.heart_reaction);
-                                CommentArrayList.get(position).setCountOfLike(CommentArrayList.get(position).getCountOfLike() + 1);
+                                ReactionPosts reactionComment = new ReactionPosts(ReactionID, CommentArrayList.get(position).getCommentID(), CommentArrayList.get(position).getUserId());
+                                ((ViewHolder) holder).btLike.setImageResource(R.drawable.heart_reaction);
+                                CommentArrayList.get(position).setCountOfLike(CommentArrayList.get(position).getCountOfLike() +1);
                                 ((ViewHolder) holder).countLikeOfComment.setText(CommentArrayList.get(position).getCountOfLike() + " Like");
                                 dbRef3.child(ReactionID).setValue(reactionComment);
                                 dbRef2.child(CommentArrayList.get(position).getCommentID()).child("countOfLike").setValue(CommentArrayList.get(position).getCountOfLike());
 
                             } else {
-                                ((ViewHolder) holder).btLike.setBackgroundResource(R.drawable.heart);
-                                CommentArrayList.get(position).setCountOfLike(CommentArrayList.get(position).getCountOfLike() - 1);
+
+                                ((ViewHolder) holder).btLike.setImageResource(R.drawable.heart);
+                                CommentArrayList.get(position).setCountOfLike(CommentArrayList.get(position).getCountOfLike() -1);
                                 ((ViewHolder) holder).countLikeOfComment.setText(CommentArrayList.get(position).getCountOfLike() + " Like");
                                 dbRef2.child(CommentArrayList.get(position).getCommentID()).child("countOfLike").setValue(CommentArrayList.get(position).getCountOfLike());
-                                dbRef3.child(CommentArrayList.get(position).getCommentID()+mAuth.getCurrentUser().getUid()).removeValue();
+                                dbRef3.child(ReactionID).removeValue();
                             }
 
                     }

@@ -77,7 +77,7 @@ public class ArrayAdapterForShowDidLike  extends RecyclerView.Adapter  {
         mStorageRef = FirebaseStorage.getInstance().getReference("UserImages/");
 
 
-        dbRef.child(reactionPostsArrayList.get( position ).getUserid()).addValueEventListener(new ValueEventListener() {
+        dbRef.child(reactionPostsArrayList.get( position ).getUserId()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 users = dataSnapshot.getValue(Users.class);

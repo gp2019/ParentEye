@@ -38,6 +38,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.like.LikeButton;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned>{
@@ -54,6 +55,10 @@ public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned>{
     DatabaseReference userRef = database.getReference("Users");
     ArrayList<custom_posts_returned> post_returnedd;
     private int position;
+    private String ReactionId;
+    private Users user = new Users();
+    CreateTime calTime;
+
 
 
     public ProfilePostAdapter(Activity context, ArrayList<custom_posts_returned> post_returned){
@@ -63,13 +68,6 @@ public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned>{
         this.contextAdapter=context;
     }
 
-    /*@Override
-    public int getCount() {
-        System.out.println("new size is "+post_returnedd.size());
-        return post_returnedd.size();
-
-    }
-    */
 
     @NonNull
     public View getView(final int position, @Nullable final View convertView, @NonNull ViewGroup parent) {
@@ -84,13 +82,12 @@ public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned>{
        final custom_posts_returned post= getItem(position);
         count=count+1;
        final TextView postownername=(TextView) postlist.findViewById(R.id.postowner);
-       // postownername.setText(post.getPost_owner_name());
 
         userRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if(TextUtils.equals(dataSnapshot.getKey(),post.getPost_owner_name())){
-                    Users user=dataSnapshot.getValue(Users.class);
+                    user=dataSnapshot.getValue(Users.class);
                     postownername.setText(user.getUsername());
                 }
             }
@@ -238,22 +235,25 @@ public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned>{
             }
         });
 
-        final ImageView btLike=postlist.findViewById(R.id.btLike);
+        final RelativeLayout btLike=postlist.findViewById(R.id.btLike);
+        final ImageView imLike = postlist.findViewById(R.id.imLike);
         dbRef3= FirebaseDatabase.getInstance().getReference().child("ReactionComment_Post");
         dbRef2= FirebaseDatabase.getInstance().getReference().child("Posts");
         mAuth = FirebaseAuth.getInstance();
+        ReactionId = post_returnedd.get(position).getPost_Id()+mAuth.getCurrentUser().getUid();
 
-
-        Query queryToGetData = dbRef3.orderByChild("postorCommentId_userId").equalTo(post_returnedd.get(position).getPost_Id()+mAuth.getCurrentUser().getUid());
-        queryToGetData.addListenerForSingleValueEvent(new ValueEventListener() {
+        dbRef3.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.exists()) {
-                   btLike.setBackgroundResource(R.drawable.heart);
-                } else {
-                    btLike.setBackgroundResource(R.drawable.heart_reaction);
+                for (DataSnapshot reactionShot : dataSnapshot.getChildren()){
+                    ReactionPosts reactionPosts = reactionShot.getValue(ReactionPosts.class);
+                    if (reactionPosts.getReactionId().equals( ReactionId)){
+                        imLike.setImageResource(R.drawable.heart_reaction);
+                    }
+                    else {
+                        imLike.setImageResource(R.drawable.heart);
+                    }
                 }
-
             }
 
             @Override
@@ -261,42 +261,76 @@ public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned>{
 
             }
         });
-            btLike.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Query queryToGetData = dbRef3.orderByChild("postorCommentId_userId").equalTo(post_returnedd.get(position).getPost_Id()+mAuth.getCurrentUser().getUid());
-                queryToGetData.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (!dataSnapshot.exists()) {
-                            String ReactionID =post_returnedd.get(position).getPost_Id()+mAuth.getCurrentUser().getUid();
-                            ReactionPosts reactionComment = new ReactionPosts(ReactionID, post_returnedd.get(position).getPost_Id(), post_returnedd.get(position).getpost_owner_ID(), post_returnedd.get(position).getPost_Id() + post_returnedd.get(position).getpost_owner_ID());
-                            btLike.setBackgroundResource(R.drawable.heart_reaction);
-                            post_returnedd.get(position).setCountLike(post_returnedd.get(position).getCountLike() + 1);
-                            countLike.setText(post_returnedd.get(position).getCountLike() + " Like");
-                            dbRef3.child(ReactionID).setValue(reactionComment);
-                            dbRef2.child(post_returnedd.get(position).getPost_Id()).child("countLike").setValue(post_returnedd.get(position).getCountLike());
 
-                        } else {
-                            btLike.setBackgroundResource(R.drawable.heart);
-                            post_returnedd.get(position).setCountLike(post_returnedd.get(position).getCountLike() - 1);
-                            countLike.setText(post_returnedd.get(position).getCountLike() + " Like");
-                            dbRef2.child(post_returnedd.get(position).getPost_Id()).child("countLike").setValue(post_returnedd.get(position).getCountLike());
-                            dbRef3.child(post_returnedd.get(position).getPost_Id()+mAuth.getCurrentUser().getUid()).removeValue();
+
+            btLike.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    final String ReactionID =post_returnedd.get(position).getPost_Id()+mAuth.getCurrentUser().getUid();
+
+                    Query queryToGetData = dbRef3.orderByChild("reactionId").equalTo(ReactionID);
+                    queryToGetData.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
+                            if (dataSnapshot.exists()){
+
+                                imLike.setImageResource(R.drawable.heart);
+                                post_returnedd.get(position).setCountLike(post_returnedd.get(position).getCountLike() - 1);
+                                countLike.setText(post_returnedd.get(position).getCountLike() + " Like");
+                                dbRef2.child(post_returnedd.get(position).getPost_Id()).child("countLike").setValue(post_returnedd.get(position).getCountLike());
+                                dbRef3.child(ReactionID).removeValue();
+
+                            }
+
+                            else {
+
+                                ReactionPosts reactionComment = new ReactionPosts(ReactionID, post_returnedd.get(position).getPost_Id(), post_returnedd.get(position).getpost_owner_ID());
+                                imLike.setImageResource(R.drawable.heart_reaction);
+                                post_returnedd.get(position).setCountLike(post_returnedd.get(position).getCountLike() + 1);
+                                countLike.setText(post_returnedd.get(position).getCountLike() + " Like");
+                                dbRef3.child(ReactionID).setValue(reactionComment);
+                                dbRef2.child(post_returnedd.get(position).getPost_Id()).child("countLike").setValue(post_returnedd.get(position).getCountLike());
+
+                            }
+
                         }
 
-                    }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        }
+                    });
 
-                    }
-                });
+                }
+            });
+
+
+
+        postimage.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                Intent intent = new Intent( contextAdapter, ViewImage.class );
+                intent.putExtra( "image", post_returnedd.get(position).getPost_image() );
+                intent.putExtra("userName",user.getUsername());
+                String timePublish = post_returnedd.get( position ).getPost_date();
+
+                try {
+                    calTime =new CreateTime(timePublish);
+                    calTime.sdf();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                intent.putExtra("time",calTime.calculateTime());
+                contextAdapter.startActivity( intent );
 
             }
         } );
 
-        final ImageView btComment=postlist.findViewById(R.id.btComment);
+
+        final RelativeLayout btComment=postlist.findViewById(R.id.btComment);
         btComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -470,17 +504,16 @@ public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned>{
         intent.putExtra("userId",userId);
         intent.putExtra("hasImage",hasImage);
         contextAdapter.startActivity( intent );
-        contextAdapter.finish();
+
     }
 
     private  void  go_create_post(int position)
     {
         Intent intent = new Intent( contextAdapter, Create_Comment.class );
         intent.putExtra("postId",post_returnedd.get(position).getPost_Id());
-        intent.putExtra("countOfLike",post_returnedd.get(position).getCountLike());
+        intent.putExtra("countOfLike",""+post_returnedd.get(position).getCountLike());
         intent.putExtra("position",position);
         contextAdapter.startActivity(intent);
-        contextAdapter.finish();
     }
 
 
