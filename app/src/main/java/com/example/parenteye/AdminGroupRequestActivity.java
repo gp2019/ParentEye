@@ -40,6 +40,13 @@ public class AdminGroupRequestActivity extends AppCompatActivity {
         super.onStart();
 
     }
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+        request.clear();
+
+    }
 
     private void Intialize_variables(){
         mAuth=FirebaseAuth.getInstance();
