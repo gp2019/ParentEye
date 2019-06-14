@@ -34,7 +34,7 @@ public class Home extends Fragment {
     DatabaseReference myRef2 = database.getReference("Posts");
     DatabaseReference myRef3 = database.getReference("Friends");
     DatabaseReference memberRef = database.getReference("Members");
-    DatabaseReference CommunityRef = database.getReference("Communityd");
+    DatabaseReference CommunityRef = database.getReference("Community");
     private ListView Post_listview;
     private ArrayList<Posts> myposts=new ArrayList<Posts>();
     private CreateTime createTime;
@@ -52,13 +52,15 @@ public class Home extends Fragment {
 
 
         Post_listview=(ListView) view.findViewById(R.id.Post_listview);
+        GetMyHomePosts();
         return view;
     }
 
     @Override
     public void onStart() {
-        GetMyHomePosts();
+
         super.onStart();
+
     }
 
     private void GetMyHomePosts(){
@@ -103,7 +105,6 @@ public class Home extends Fragment {
                                         }
                                     }
                                 }
-
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError databaseError) {
 

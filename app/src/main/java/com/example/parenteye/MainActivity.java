@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
     //design
 
     private Button mainTwo;
+    private Button SpecificPost;
 
 
 
@@ -155,6 +156,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (mAuth.getCurrentUser() != null) {
+
+                    myRef.child(mAuth.getCurrentUser().getUid()).child("State").setValue("0");
                     mAuth.signOut();
                     main_login();
 
@@ -269,6 +272,15 @@ search.setOnClickListener(new View.OnClickListener() {
                 finish();
             }
         });
+        SpecificPost=(Button)findViewById(R.id.SpecificPost);
+        SpecificPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent SpecificPostintent=new Intent(MainActivity.this,SpecificPostActivity.class);
+                startActivity(SpecificPostintent);
+                finish();
+            }
+        });
 
 /*****************************************************/
 
@@ -331,22 +343,24 @@ search.setOnClickListener(new View.OnClickListener() {
                 /*Intent makepage=new Intent(MainActivity.this,NotificationFragment.class);
                 startActivity(makepage);*/
                 // L7zI36Be0qS2pwLic4Jd8RDdWjD2
-                String postid1 = "-LhH_tK5evs2PwOTG8UZ";
-                String postid2 = "-LhHb-BqXhirwpH0blPd";
-                //String myuserId="currentUser";
-                String Aya = "cR6RdBeU5Lg7CEFLhEniBT16ZxM2";
 
-                String Eman = "bb6wXlVRzdUWnij5KkgPltKdCz43";
+                String postid1 = "-LhH_tK5evs2PwOTG8UZ";
+                String postid2 = "-LhHoSs_bTvIO4fUatWK";
+                //String myuserId="currentUser";
+               // String Aya = "cR6RdBeU5Lg7CEFLhEniBT16ZxM2";
+
+               // String Eman = "bb6wXlVRzdUWnij5KkgPltKdCz43";
 
 
                 //addNotificationsOfLikes(postid1, post_publisher_Id);
-                String post_publisher_Id =Eman;
-                notifi.addNotificationsOfLikes(postid2, "es7V48sAoPROMjjkJP2Pz3xXDaP2");
-                notifi.addNotificationsOfLikes(postid1, "es7V48sAoPROMjjkJP2Pz3xXDaP2");
+             //   String post_publisher_Id =Eman;
+                notifi.addNotificationsOfLikes(postid2, "7Ys6wnuIdthwmSUVVKxNvPYWhXC3");
+                notifi.addNotificationsOfLikes(postid1, "7tgshzqqqHXIOjdjdfzcU6tiqa52");
+                //String post_publisher_Id =Eman;
 
                 //addNotificationsOfComments(postid1, LikeridAya);
-                notifi.addNotificationsOfComments(postid2, "es7V48sAoPROMjjkJP2Pz3xXDaP2","Hello");
-                notifi.addNotificationsOfComments(postid1, "es7V48sAoPROMjjkJP2Pz3xXDaP2","welcome clever ");
+                notifi.addNotificationsOfComments(postid2, "7tgshzqqqHXIOjdjdfzcU6tiqa52","Hello");
+                notifi.addNotificationsOfComments(postid1, "7Ys6wnuIdthwmSUVVKxNvPYWhXC3","welcom clever ");
 
                 //Add activitylog on likes , comments
                 activityLog.addActivityLogOfLikes(postid2);
@@ -359,7 +373,7 @@ search.setOnClickListener(new View.OnClickListener() {
                    parm Friend Want To Request Id
                  */
 
-                String FriendWantToRequest_Id= Aya;
+             //   String FriendWantToRequest_Id= Aya;
 
                // notifi.addNotificationsOfFriendRequest(FriendWantToRequest_Id);
 

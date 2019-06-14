@@ -28,6 +28,10 @@
         android:layout_marginTop="5dp"
         android:layout_below="@id/message_user"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="13sp"
+        android:textSize="20sp"
+      android:padding="15dp"
+        android:textColor="#000"
+        android:background="@drawable/bg_ui"
+        android:gravity="center"
         android:id="@+id/message_text" />
 </RelativeLayout>

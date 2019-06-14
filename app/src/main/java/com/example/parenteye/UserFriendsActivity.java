@@ -45,13 +45,14 @@ public class UserFriendsActivity extends AppCompatActivity {
             }
         });
 
+        GetMyFriends();
     }
 
 
 
     @Override
     protected void onStart() {
-        GetMyFriends();
+
         super.onStart();
     }
 
@@ -85,6 +86,7 @@ public class UserFriendsActivity extends AppCompatActivity {
                                         if (usersnapshot.getValue(Users.class).getProfile_pic_id() != null) {
                                             user.setProfile_pic_id(usersnapshot.getValue(Users.class).getProfile_pic_id());
                                         }
+                                        System.out.println("inside friends fragment");
                                         curremtuserfriends.add(user);
                                         adapter.notifyDataSetChanged();
 
