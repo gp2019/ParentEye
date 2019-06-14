@@ -81,11 +81,14 @@
 
 
     <ListView
+        android:layout_marginTop="20dp"
         android:id="@+id/search_listview"
         android:layout_width="match_parent"
-        android:layout_height="601dp"
-        android:layout_alignParentTop="true"
-
-        android:layout_marginTop="130dp"></ListView>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/buttons"
+        android:background="@color/white"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="8dp"
+        ></ListView>
 
 </RelativeLayout>

@@ -237,7 +237,7 @@ public class AccountActivity extends Activity {
                                     FriendRequest fr = friendtSnapshot.getValue(FriendRequest.class);
                                     if (TextUtils.equals(fr.getSenderid(), mAuth.getCurrentUser().getUid()) && TextUtils.equals(fr.getRecieverid(), userId)) {
                                         FriendRequestRef.child(friendtSnapshot.getKey()).removeValue();
-                                        Addfriend.setImageResource(R.drawable.addfriendd);
+                                        Addfriend.setImageResource(R.drawable.ic_person_add);
                                         addfriendtext.setText("Add Friend");
                                         IsExist = false;
 
@@ -258,7 +258,7 @@ public class AccountActivity extends Activity {
                         friend.setRecieverid(userId);
                         friend.setState(1);
                         FriendRequestRef.push().setValue(friend);
-                        Addfriend.setImageResource(R.drawable.addfriendd);
+                        Addfriend.setImageResource(R.drawable.ic_person_add);
                         addfriendtext.setText("cancel request");
                         Notifications notifi =new Notifications();
                         notifi.addNotificationsOfFriendRequest(userId);
@@ -332,7 +332,7 @@ public class AccountActivity extends Activity {
            // final String userID = "OjEqHKzicMOZkAzjl5OLxBcIpai2";
             //if the user enter his own profile
             if(TextUtils.equals(mAuth.getCurrentUser().getUid(),userID)){
-                Addfriend.setImageResource(R.drawable.updateprofile);
+                Addfriend.setImageResource(R.drawable.ic_edit);
                 addfriendtext.setText("Update Profile");
                 GetProfileData(userID);
 
@@ -585,12 +585,12 @@ public class AccountActivity extends Activity {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 FriendRequest friendRequest = dataSnapshot.getValue(FriendRequest.class);
                 if (TextUtils.equals(friendRequest.getSenderid(), mAuth.getCurrentUser().getUid()) && TextUtils.equals(friendRequest.getRecieverid(), userID) && friendRequest.getState() == 1) {
-                    Addfriend.setImageResource(R.drawable.addfriendd);
+                    Addfriend.setImageResource(R.drawable.ic_person_add);
                     addfriendtext.setText("cancel request");
                     IsExist = true;
                 }
                 else if(TextUtils.equals(friendRequest.getSenderid(),userID) && TextUtils.equals(friendRequest.getRecieverid(), mAuth.getCurrentUser().getUid()) && friendRequest.getState() == 1) {
-                    Addfriend.setImageResource(R.drawable.addfriendd);
+                    Addfriend.setImageResource(R.drawable.ic_person_add);
                     addfriendtext.setText("pending");
                     Addfriend.setEnabled(false);
                 }
