@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".side_menu_bar">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:orientation="vertical">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/notification_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_border"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="10dp"
+
+        >
+        <!--android:background="?android:attr/windowBackground"-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/fregmant_text"
+                android:text="Side Menu"
+                android:textColor="@color/buttonColor"
+
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+
+    </android.support.v7.widget.Toolbar>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_border">
+        <Button
+            android:id="@+id/ic_makePage"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:text="Make Page"
+            android:background="@drawable/bg_ui"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/white"
+            android:fontFamily="sans-serif"
+            android:textSize="25sp"
+            android:textAllCaps="false"
+            />
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_border"
+        android:layout_marginTop="15dp"
+        >
+        <Button
+            android:id="@+id/ic_makeGroup"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:text="Make Group"
+            android:background="@drawable/bg_ui"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/white"
+            android:fontFamily="sans-serif"
+            android:textSize="25sp"
+            android:textAllCaps="false"
+            />
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_border"
+            android:layout_marginTop="15dp"
+            >
+        <Button
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:id="@+id/ic_myChildren"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:text="View My Children"
+            android:textAllCaps="false"
+            android:background="@drawable/bg_ui"
+            android:textColor="@color/white"
+            android:fontFamily="sans-serif"
+            android:textSize="25sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_border"
+            android:layout_marginTop="15dp"
+            >
+
+    <Button
+        android:id="@+id/ic_activity_log"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/bg_ui"
+        android:fontFamily="sans-serif"
+        android:text="Activity Log"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="25sp" />
+
+        </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_border"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+
+        >
+        <Button
+            android:id="@+id/ic_logOut"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:text="log Out"
+            android:background="@drawable/bg_ui"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/white"
+            android:fontFamily="sans-serif"
+            android:textSize="25sp"
+            android:textAllCaps="false"
+            />
+    </LinearLayout>
+
+    </LinearLayout>
+
+
+</ScrollView>

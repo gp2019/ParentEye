@@ -63,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                           if (dataSnapshot.child("closeAccount").getValue(boolean.class)==false){
                                               progressdialogue.dismiss();
+                                              myRefUsers.child(mAuth.getCurrentUser().getUid()).child("State").setValue("1");
                                               Toast.makeText(LoginActivity.this,"Login Successfully",Toast.LENGTH_LONG).show();
                                               GoHome();
                                           }
@@ -156,7 +157,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void GoHome(){
-        Intent login_main=new Intent(LoginActivity.this,MainActivity.class);
+        Intent login_main=new Intent(LoginActivity.this,Main2Activity.class);
         startActivity(login_main);
         finish();
     }

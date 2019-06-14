@@ -30,7 +30,7 @@ public class AdminGroupRequestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_group_request);
         Intialize_variables();
-
+        GetAdminRequest();
 
 
     }
@@ -38,7 +38,14 @@ public class AdminGroupRequestActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        GetAdminRequest();
+
+    }
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+        request.clear();
+
     }
 
     private void Intialize_variables(){

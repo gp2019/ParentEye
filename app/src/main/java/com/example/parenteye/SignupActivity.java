@@ -209,6 +209,7 @@ public class SignupActivity extends AppCompatActivity {
                     newuser.setRoleId("1");
                     newuser.setCloseAccount(false);
                     newuser.setProfile_pic_id(imagekey);
+
                    // newuser.setCover_pic_id("");
 
                     mAuth.createUserWithEmailAndPassword(Email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -216,6 +217,7 @@ public class SignupActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
                                 newuser.setUserId(mAuth.getCurrentUser().getUid());
+                                newuser.setState("1"); //edited
                   UserRef.child(mAuth.getCurrentUser().getUid()).setValue(newuser).addOnCompleteListener(new OnCompleteListener<Void>() {
                       @Override
                       public void onComplete(@NonNull Task<Void> task) {

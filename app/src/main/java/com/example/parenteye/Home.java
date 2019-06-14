@@ -52,13 +52,15 @@ public class Home extends Fragment {
 
 
         Post_listview=(ListView) view.findViewById(R.id.Post_listview);
+        GetMyHomePosts();
         return view;
     }
 
     @Override
     public void onStart() {
-        GetMyHomePosts();
+
         super.onStart();
+
     }
 
     private void GetMyHomePosts(){
@@ -103,7 +105,6 @@ public class Home extends Fragment {
                                         }
                                     }
                                 }
-
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError databaseError) {
 

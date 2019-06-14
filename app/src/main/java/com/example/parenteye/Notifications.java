@@ -49,6 +49,16 @@ public class Notifications {
     private boolean isLike;
     private boolean isFriendRequest;
 
+    public boolean getisGroupRequest() {
+        return isGroupRequest;
+    }
+
+    public void setGroupRequest(boolean groupRequest) {
+        isGroupRequest = groupRequest;
+    }
+
+    private boolean isGroupRequest;
+
     public List<Notifications> notificationsList  = new ArrayList<>();
 
     //  String record;
@@ -72,7 +82,7 @@ public class Notifications {
 
     }
 
-    public Notifications(String id, String userId, String notificationMessage, Date date, boolean seen ,boolean isPost,boolean isLike ,boolean isComment,boolean isFriendRequest) {
+    public Notifications(String id, String userId, String notificationMessage, Date date, boolean seen ,boolean isPost,boolean isLike ,boolean isComment,boolean isFriendRequest,boolean isGrouprequest) {
         this.id = id;
         this.userId = userId;
         NotificationMessage = notificationMessage;
@@ -82,6 +92,7 @@ public class Notifications {
         this.isComment=isComment;
         this.isPost=isPost;
         this.isFriendRequest=isFriendRequest;
+        this.isGroupRequest=isGrouprequest;
     }
 
     public void setId(String id) {
@@ -189,13 +200,13 @@ public class Notifications {
 
     //************************  add notification func on comment***************
 
-    public void addNotificationsOfComments(String postid, String post_publisher_Id) {
+    public void addNotificationsOfComments(String postid, String post_publisher_Id,String comment) {
 
         DatabaseReference notification_reference = database.getReference("notifications").child(post_publisher_Id);
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("userId", currentUser.getUid()); // or hashMap.put("userid ", firebaseUser.getUid());
-        hashMap.put("NotificationMessage", "commented: welcome clever");
+        hashMap.put("NotificationMessage", "commented on your post:"+comment);
         hashMap.put("postId", postid);
         hashMap.put("isPost", true);
         hashMap.put("isLike", false);
@@ -220,6 +231,25 @@ public class Notifications {
         hashMap.put("postId", " ");
         hashMap.put("isPost", false);
         hashMap.put("isFriendRequest",true);
+        notification_reference.push().setValue(hashMap);
+
+        //to call ----->  addNotificationsOfFriendRequest(FriendRequesterId)
+
+    }
+    //************************  add notification func on Friend request ***************
+
+    public void addNotificationsOfGroupRequest( String groupAdminId) {
+        DatabaseReference notification_reference = database.getReference("notifications").child(groupAdminId);
+
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("userId", currentUser.getUid()); // or hashMap.put("userid ", firebaseUser.getUid());
+        hashMap.put("NotificationMessage", "send to you a join group Request ");
+        hashMap.put("postId", " ");
+        hashMap.put("isPost", false);
+        hashMap.put("isFriendRequest",false);
+        hashMap.put("isGroupRequest",true);
+
         notification_reference.push().setValue(hashMap);
 
         //to call ----->  addNotificationsOfFriendRequest(FriendRequesterId)
@@ -325,8 +355,7 @@ public class Notifications {
 
     }
 
-
-    //***************************************  Delete notification  cancel of Friend Request ******************************
+    //***************************************  Delete notification  reject of Friend Request ******************************
 
 
     public void DeleteNotificationOfRejectOrAcceptFriendRequest(final String FriendWantToRejectRequest_Id)
@@ -372,6 +401,77 @@ public class Notifications {
 //            notification_reference.child(record).removeValue();
 
     }
+    //***************************************  Delete notification  cancel of Group Join Request ******************************
+
+    public void DeleteNotificationOfCancelJoinGroupRequest(final String groupAdminId )
+    {
+        final DatabaseReference notification_reference = database.getReference("notifications").child(groupAdminId);
+        //final List<Notifications> notificationsList = new ArrayList<>();
+        //String name="ahmed";
+        notification_reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists())
+                {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Notifications notification = snapshot.getValue(Notifications.class);
+                        //notificationsList.add(notification);
+                        if ( notification.getisGroupRequest() && notification.getUserId().equalsIgnoreCase(currentUser.getUid())  ) {
+
+                            notification_reference.child(snapshot.getKey()).removeValue();
+                        }
+
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+//            notification_reference.child(record).removeValue();
+
+    }
+//***************************************  Delete notification  reject of Join Group Request ******************************
+
+
+    public void DeleteNotificationOfRejectOrAcceptJoinGroupRequest(final String UserIdWantToRejectRequest_Id)
+    {
+        final DatabaseReference notification_reference = database.getReference("notifications").child(currentUser.getUid());
+        //final List<Notifications> notificationsList = new ArrayList<>();
+        //String name="ahmed";
+        notification_reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists())
+                {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Notifications notification = snapshot.getValue(Notifications.class);
+                        //notificationsList.add(notification);
+                        if ( notification.getisGroupRequest() && notification.getUserId().equalsIgnoreCase(UserIdWantToRejectRequest_Id)  ) {
+
+                            notification_reference.child(snapshot.getKey()).removeValue();
+                        }
+
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+//            notification_reference.child(record).removeValue();
+
+    }
+
+
 
     //********************* read notifications current user from fire base and but in notification list
     //********************* put it in adapter

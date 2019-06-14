@@ -41,7 +41,6 @@
 
                 <ImageButton
                     android:id="@+id/btPlus"
-                    android:layout_marginLeft="30dp"
                     android:layout_width="25dp"
                     android:layout_height="20dp"
                     android:backgroundTint="@color/colorPrimary"
@@ -51,7 +50,7 @@
                 <EditText
                     android:id="@+id/counter"
                     android:inputType="number"
-                    android:ems="4"
+                    android:ems="1"
                    android:gravity="center"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="20dp"
@@ -62,7 +61,6 @@
 
                 <ImageButton
                     android:id="@+id/btMins"
-                    android:layout_marginLeft="30dp"
                     android:layout_width="25dp"
                     android:layout_height="20dp"
                     android:layout_below="@id/counter"

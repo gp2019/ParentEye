@@ -6,7 +6,7 @@ public class ReactionPosts {
     private String PostORCommentId;
     private String userId;
 
-    public ReactionPosts() {
+    public ReactionPosts(String reactionID, String post_id, String s, String s1) {
     }
 
     public ReactionPosts(String reactionId, String postORCommentId, String userId) {

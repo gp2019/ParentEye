@@ -1,10 +1,12 @@
 package com.example.parenteye;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -17,7 +19,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class UserFriendsActivity extends AppCompatActivity {
+
+public class friends_fregment extends Fragment {
+
     private FirebaseAuth mAuth;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference Friendsref = database.getReference("Friends");
@@ -25,40 +29,41 @@ public class UserFriendsActivity extends AppCompatActivity {
     ArrayList<Users> curremtuserfriends=new ArrayList<Users>();
     private ListView friendsList;
     public static final String friendId="Friend_Id";
+    public friends_fregment() {
+        // Required empty public constructor
+    }
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_friends);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view=inflater.inflate(R.layout.fregment_user_friends, container, false);
         mAuth=FirebaseAuth.getInstance();
-        friendsList=(ListView)findViewById(R.id.friendsList);
+       // friendsList=(ListView)view.findViewById(R.id.friendsList);
 
-
+      //  GetMyFriends();
 
         friendsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Users friend=curremtuserfriends.get(position);
-                Intent chatIntent=new Intent(UserFriendsActivity.this,ChatActivity.class);
+                Intent chatIntent=new Intent(getActivity(),ChatActivity.class);
                 chatIntent.putExtra(friendId,friend.getUserId());
                 startActivity(chatIntent);
             }
         });
 
-        GetMyFriends();
+
+        return view;
+
+
+
+
     }
-
-
-
-    @Override
-    protected void onStart() {
-
-        super.onStart();
-    }
-
-    private void GetMyFriends(){
+   /* private void GetMyFriends(){
         final ArrayList<String> friends_arraylist=new ArrayList<String>();
-        final User_Chat_Adapter adapter=new User_Chat_Adapter(UserFriendsActivity.this,curremtuserfriends);
+        final User_Chat_Adapter adapter=new User_Chat_Adapter(getActivity(),curremtuserfriends);
         friendsList.setAdapter(adapter);
 
         if(mAuth.getCurrentUser()!=null){
@@ -110,4 +115,6 @@ public class UserFriendsActivity extends AppCompatActivity {
             });
         }
     }
+    */
+
 }

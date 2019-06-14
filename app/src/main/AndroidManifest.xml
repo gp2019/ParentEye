@@ -16,15 +16,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SearchActivity"></activity>
-        <activity android:name=".MakeGroupActivity" />
-        <activity android:name=".MainPage" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".SpecificPostActivity"></activity>
+        <activity android:name=".MainPage">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
+        <activity android:name=".SearchActivity" />
+        <activity android:name=".MakeGroupActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".AdminGroupRequestActivity" />
         <activity android:name=".GroupActivity" />
         <activity android:name=".CommunityAboutandmembersActivity" />
@@ -36,9 +39,6 @@
         <activity android:name=".ViewImage" />
         <activity android:name=".Edit_Comment" />
         <activity android:name=".AddChildActivity" />
-        <activity
-            android:name=".MainActivity"
-            android:theme="@style/AppTheme.FullScreen" />
         <activity android:name=".Show_Did_Like" />
         <activity android:name=".Create_Post" />
         <activity android:name=".AccountActivity" />
@@ -46,16 +46,14 @@
         <activity android:name=".UserFriendsActivity" />
         <activity android:name=".ChatActivity" />
         <activity
-            android:name=".LoginActivity"
-            android:theme="@style/AppTheme.FullScreen">
-
-        </activity>
+            android:name=".Main2Activity"
+            android:theme="@style/AppTheme.FullScreen"></activity>
         <activity
             android:name=".SignupActivity"
             android:theme="@style/AppTheme.FullScreen" />
         <activity android:name=".Create_Comment" />
         <activity android:name=".FragmentPreview" />
-        <activity android:name=".Main2Activity" />
+        <activity android:name=".side_menu_bar" />
     </application>
 
 </manifest>

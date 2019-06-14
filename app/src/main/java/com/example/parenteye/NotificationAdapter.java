@@ -60,6 +60,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     private StorageReference UStorageRef;
     private StorageReference PStorageRef;
+    public static final String searched_user_Id="searched_user_Id";
+    public static final String specific_Post_Id="specific_Post_Id";
 
 
     //NotificationAdapter constructor
@@ -99,7 +101,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         //call getuserInfo func to get the user name and profile pic of him
         getuserInfo(viewHolder.Holder_notification_profile_image, viewHolder.Holder_notification_user_name, whoMakeAction);
 
-        String PostId = notification.getPostId();
+        final String PostId = notification.getPostId();
 
         //getPostImage(viewHolder.Holder_notification_post_content ,viewHolder.Holder_notification_post_image, PostId);
 
@@ -116,7 +118,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             getPostImage(viewHolder.Holder_notification_post_content, viewHolder.Holder_notification_post_image, notification.getPostId());
 
 
-        } else if(notification.getisFriendRequest()){
+        } else if (notification.getisFriendRequest() || notification.getisGroupRequest()) {
             //if ispost is false photo will gone
             viewHolder.Holder_notification_post_image.setVisibility(View.GONE);
             viewHolder.Holder_notification_post_content.setVisibility(View.GONE);
@@ -125,137 +127,242 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             viewHolder.Holder_Friend_request_notifi_layout.setVisibility(View.VISIBLE);
 
 
-
         }
         //check about friend request
 
 
+        if (notification.getisFriendRequest()) {
+            //********************** action on the notification item in the list ***********************
 
-        //********************** action on the notification item in the list ***********************
-        viewHolder.Holder_notification_post_content.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            viewHolder.Holder_notification_user_name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent searched_intent=new Intent(mContext,AccountActivity.class);
+                    searched_intent.putExtra(searched_user_Id,whoMakeAction);
+                    mContext.startActivity(searched_intent);
+                }
+            });
+            viewHolder.Holder_notification_profile_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent searched_intent=new Intent(mContext,AccountActivity.class);
+                    searched_intent.putExtra(searched_user_Id,whoMakeAction);
+                    mContext.startActivity(searched_intent);
+                    System.out.println("Going intent");
+                    System.out.println("Going intent");
+                    System.out.println("Going intent");
+                }
 
-                Intent in = new Intent(mContext, MainActivity.class);
-                mContext.startActivity(in);
-
-
-                // new Intent((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.notification_fragment_container,
-                //new custom_posts_returned()).commit();
-            }
-        });
-
-        /*************************************** action on Accept btn**************************
-         *
-         */
-        viewHolder.Holder_Accept_notifi_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FriendRequestRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for(DataSnapshot reqsnapshot:dataSnapshot.getChildren())
-                        {
-                            if (TextUtils.equals(whoMakeAction,reqsnapshot.getValue(FriendRequest.class).getSenderid())&&TextUtils.equals(reqsnapshot.getValue(FriendRequest.class).getRecieverid(),mAuth.getCurrentUser().getUid()))
-                            {
-                                FriendRequestRef.child(reqsnapshot.getKey()).removeValue();
-                                Notifications n=new Notifications();
-                                n.DeleteNotificationOfRejectOrAcceptFriendRequest(whoMakeAction);
-                            }
-
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-              friendsRef.child(mAuth.getCurrentUser().getUid()).child("userFriends").addListenerForSingleValueEvent(new ValueEventListener() {
-                  @Override
-                  public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                      if(dataSnapshot.getValue(String.class)!=null){
-                          String Recieverfriends=dataSnapshot.getValue(String.class).concat(","+whoMakeAction);
-                          friendsRef.child(mAuth.getCurrentUser().getUid()).child("userFriends").setValue(Recieverfriends);
-
-                      }
-                      else{
-                          friendsRef.child(mAuth.getCurrentUser().getUid()).child("userFriends").setValue(whoMakeAction);
-
-                      }
-                  }
-
-                  @Override
-                  public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                  }
-              });
-                friendsRef.child(whoMakeAction).child("userFriends").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.getValue(String.class)!=null){
-                            String senderfriends=dataSnapshot.getValue(String.class).concat(","+mAuth.getCurrentUser().getUid());
-                            friendsRef.child(whoMakeAction).child("userFriends").setValue(senderfriends);
-
-                        }
-                        else{
-                            friendsRef.child(whoMakeAction).child("userFriends").setValue(mAuth.getCurrentUser().getUid());
-
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+            });
 
 
 
-            }
-        });
 
 
 
-        /*************************************** action on Reject btn**************************
-         *
-         */
 
-        viewHolder.Holder_reject_notifi_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                System.out.println("reject");
-                System.out.println(whoMakeAction);
-                System.out.println(mAuth.getCurrentUser().getUid());
-               FriendRequestRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for(DataSnapshot reqsnapshot:dataSnapshot.getChildren())
-                        {
-                            if (TextUtils.equals(whoMakeAction,reqsnapshot.getValue(FriendRequest.class).getSenderid())&&TextUtils.equals(reqsnapshot.getValue(FriendRequest.class).getRecieverid(),mAuth.getCurrentUser().getUid()))
-                            {
-                                FriendRequestRef.child(reqsnapshot.getKey()).removeValue();
-                                Notifications n=new Notifications();
-                                n.DeleteNotificationOfRejectOrAcceptFriendRequest(whoMakeAction);
+
+            viewHolder.Holder_Friend_request_notifi_layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                   /* Intent in = new Intent(mContext, MainActivity.class);
+                    mContext.startActivity(in);
+                    */
+                   // whoMakeAction
+
+
+                    // new Intent((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.notification_fragment_container,
+                    //new custom_posts_returned()).commit();
+                }
+            });
+
+            /*************************************** action on Accept btn**************************
+             *
+             */
+            viewHolder.Holder_Accept_notifi_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FriendRequestRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot reqsnapshot : dataSnapshot.getChildren()) {
+                                if (TextUtils.equals(whoMakeAction, reqsnapshot.getValue(FriendRequest.class).getSenderid()) && TextUtils.equals(reqsnapshot.getValue(FriendRequest.class).getRecieverid(), mAuth.getCurrentUser().getUid())) {
+                                    FriendRequestRef.child(reqsnapshot.getKey()).removeValue();
+                                    Notifications n = new Notifications();
+                                    n.DeleteNotificationOfRejectOrAcceptFriendRequest(whoMakeAction);
+                                }
 
                             }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
                         }
-                    }
+                    });
+                    friendsRef.child(mAuth.getCurrentUser().getUid()).child("userFriends").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.getValue(String.class) != null) {
+                                String Recieverfriends = dataSnapshot.getValue(String.class).concat("," + whoMakeAction);
+                                friendsRef.child(mAuth.getCurrentUser().getUid()).child("userFriends").setValue(Recieverfriends);
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                            } else {
+                                friendsRef.child(mAuth.getCurrentUser().getUid()).child("userFriends").setValue(whoMakeAction);
 
-                    }
-                });
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                    friendsRef.child(whoMakeAction).child("userFriends").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.getValue(String.class) != null) {
+                                String senderfriends = dataSnapshot.getValue(String.class).concat("," + mAuth.getCurrentUser().getUid());
+                                friendsRef.child(whoMakeAction).child("userFriends").setValue(senderfriends);
+
+                            } else {
+                                friendsRef.child(whoMakeAction).child("userFriends").setValue(mAuth.getCurrentUser().getUid());
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
 
 
-            }
+                }
+            });
 
-        });
+
+            /*************************************** action on Reject btn**************************
+             *
+             */
+
+            viewHolder.Holder_reject_notifi_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    System.out.println("reject");
+                    System.out.println(whoMakeAction);
+                    System.out.println(mAuth.getCurrentUser().getUid());
+                    FriendRequestRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot reqsnapshot : dataSnapshot.getChildren()) {
+                                if (TextUtils.equals(whoMakeAction, reqsnapshot.getValue(FriendRequest.class).getSenderid()) && TextUtils.equals(reqsnapshot.getValue(FriendRequest.class).getRecieverid(), mAuth.getCurrentUser().getUid())) {
+                                    FriendRequestRef.child(reqsnapshot.getKey()).removeValue();
+                                    Notifications n = new Notifications();
+                                    n.DeleteNotificationOfRejectOrAcceptFriendRequest(whoMakeAction);
+
+                                }
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
 
 
+                }
+
+            });
+            ///     the navigation if notification on group request
+
+        }else if(notification.getisGroupRequest())
+        {
+            //********************** action on the notification item in the list ***********************
+
+            viewHolder.Holder_notification_post_content.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+            /*************************************** action on Accept btn**************************
+             *
+             */
+
+            viewHolder.Holder_Accept_notifi_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+            /*************************************** action on Reject btn**************************
+             *
+             */
+            viewHolder.Holder_reject_notifi_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+
+            ///     the navigation if notification on post
+        }else if(notification.getIsPost()){
+
+            //********************** action on the notification item in the list ***********************
+
+            viewHolder.Holder_notification_post_content.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent specificPost_intent=new Intent(mContext,SpecificPostActivity.class);
+                    specificPost_intent.putExtra(specific_Post_Id,PostId);
+                    mContext.startActivity(specificPost_intent);
+                    System.out.println("post id is  "+PostId);
+
+                }
+            });
+
+
+            viewHolder.Holder_notification_user_name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent searched_intent=new Intent(mContext,AccountActivity.class);
+                    searched_intent.putExtra(searched_user_Id,whoMakeAction);
+                    mContext.startActivity(searched_intent);
+                }
+
+            });
+            //********************** action on the notification user profile  in the list ***********************
+            viewHolder.Holder_notification_profile_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent searched_intent=new Intent(mContext,AccountActivity.class);
+                    searched_intent.putExtra(searched_user_Id,whoMakeAction);
+                    mContext.startActivity(searched_intent);
+                }
+            });
+            viewHolder.Holder_notification_post_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent specificPost_intent=new Intent(mContext,SpecificPostActivity.class);
+                    specificPost_intent.putExtra(specific_Post_Id,PostId);
+                    mContext.startActivity(specificPost_intent);
+                }
+            });
+
+
+
+
+
+        }
              /*
             onClick func if pressed on the notification take action to go the post *****wants some trace and understanding*****
             */
@@ -289,7 +396,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 }
             }
         });*/
-    }
+        }
 
     @Override
     public int getItemCount() {

@@ -1,6 +1,7 @@
 package com.example.parenteye;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
@@ -34,12 +35,15 @@ public class GroupRequestAdapter extends ArrayAdapter<Users> {
     DatabaseReference userRef = database.getReference("Users");
     DatabaseReference groupReqRef = database.getReference("GroupRequests");
     DatabaseReference membersRef = database.getReference("Members");
-
+    public static final String searched_user_Id="searched_user_Id";
+    public static final String searched_group_Id="searched_group_Id";
+    public static final String searched_Item_name="searched_Item_name";
+    private  Activity adaptercontext;
 
     public GroupRequestAdapter(Activity context, ArrayList<Users> requests){
 
         super(context,0,requests);
-
+        adaptercontext=context;
     }
 
 
@@ -49,8 +53,10 @@ public class GroupRequestAdapter extends ArrayAdapter<Users> {
 
         View requestList=convertView;
 
-        requestList = LayoutInflater.from(getContext()).inflate(
-                R.layout.request_list, parent, false);
+       if(requestList==null)  {
+           requestList= LayoutInflater.from(getContext()).inflate(
+                   R.layout.request_list, parent, false);
+       }
 
        final Users request= getItem(position);
          TextView sendername=(TextView) requestList.findViewById(R.id.sendername);
@@ -121,10 +127,34 @@ public class GroupRequestAdapter extends ArrayAdapter<Users> {
                 });
             }
         });
+        sendername.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent RequesterUser_Intent=new Intent(adaptercontext,AccountActivity.class);
+                RequesterUser_Intent.putExtra(searched_user_Id,request.getUserId());
+                adaptercontext.startActivity(RequesterUser_Intent);
 
+            }
+        });
+        groupname.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent RequesterGroup_intent=new Intent(adaptercontext,GroupActivity.class);
+                RequesterGroup_intent.putExtra(searched_group_Id,request.getLocation());
+                RequesterGroup_intent.putExtra(searched_Item_name,request.getRoleId());
+                adaptercontext.startActivity(RequesterGroup_intent);
+            }
+        });
 
+        senderphoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent RequesterUser_Intent=new Intent(adaptercontext,AccountActivity.class);
+                RequesterUser_Intent.putExtra(searched_user_Id,request.getUserId());
+                adaptercontext.startActivity(RequesterUser_Intent);
 
-
+            }
+        });
 
         return requestList;
 

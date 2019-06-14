@@ -60,8 +60,12 @@ public class MemberAdapter extends ArrayAdapter<Users> {
         else{
             Removebutton.setVisibility(View.VISIBLE);
         }
+
+       ImageView chatIcon=(ImageView)MemberList.findViewById(R.id.chat_icon);
+        chatIcon.setVisibility(View.GONE);
         TextView membername=(TextView) MemberList.findViewById(R.id.membername);
         membername.setText(member.getUsername());
+
 
 
 
