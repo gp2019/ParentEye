@@ -35,6 +35,47 @@ public class HomePostsAdapter extends ArrayAdapter<Posts> {
     ArrayList<Posts> post_returnedd;
     DatabaseReference userRef = database.getReference("Users");
     private int position;
+    @Override
+    public int getCount() {
+        int a ;
+
+        if(post_returnedd != null && !post_returnedd.isEmpty()) {
+
+            a = post_returnedd.size();
+        }
+        else {
+
+            a = 0;
+
+        }
+
+        return a;
+
+    }
+    @Override
+
+    public long getItemId(int position) {
+
+        return position;
+
+    }
+
+    @Override
+
+    public int getItemViewType(int position) {
+
+        return position;
+
+    }
+
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
 
 
 
@@ -42,6 +83,7 @@ public class HomePostsAdapter extends ArrayAdapter<Posts> {
 
         super(context,0,post_returned);
         post_returnedd=post_returned;
+
 
     }
 
@@ -191,23 +233,6 @@ public class HomePostsAdapter extends ArrayAdapter<Posts> {
 
 
     }
-    @Override
-    public int getCount() {
-        int a ;
-
-        if(post_returnedd != null && !post_returnedd.isEmpty()) {
-
-            a = post_returnedd.size();
-        }
-        else {
-
-            a = 0;
-
-        }
-
-        return a;
-
-    }
 
 
        /*@Override
@@ -228,28 +253,5 @@ public class HomePostsAdapter extends ArrayAdapter<Posts> {
         return a;
     }*/
 
-    @Override
 
-    public long getItemId(int position) {
-
-        return position;
-
-    }
-
-    @Override
-
-    public int getItemViewType(int position) {
-
-        return position;
-
-    }
-
-
-    public int getPosition() {
-        return position;
-    }
-
-    public void setPosition(int position) {
-        this.position = position;
-    }
 }

@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="20dp">
+        android:padding="10dp">
 
         <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/memberphoto"
@@ -25,7 +25,7 @@
             android:id="@+id/membername"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
+            android:textSize="18dp"
             android:text="Username"
             android:layout_gravity="center"
             android:textStyle="bold"
@@ -42,13 +42,13 @@
 
             />
 
-    <ImageView
-        android:id="@+id/chat_icon"
-        android:layout_width="0dp"
-        android:layout_height="55dp"
-        android:layout_weight="2"
-        android:src="@drawable/tchaticon"
-        />
+        <ImageView
+            android:id="@+id/chat_icon"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_weight="2"
+            android:src="@drawable/tchaticon"
+            />
 
     </LinearLayout>
     <View

@@ -34,7 +34,7 @@ public class Home extends Fragment {
     DatabaseReference myRef2 = database.getReference("Posts");
     DatabaseReference myRef3 = database.getReference("Friends");
     DatabaseReference memberRef = database.getReference("Members");
-    DatabaseReference CommunityRef = database.getReference("Community");
+    DatabaseReference CommunityRef = database.getReference("Communityd");
     private ListView Post_listview;
     private ArrayList<Posts> myposts=new ArrayList<Posts>();
     private CreateTime createTime;

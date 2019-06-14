@@ -31,7 +31,19 @@
            android:layout_height="wrap_content"
            android:orientation="horizontal"
             >
-
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/profile_post"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@drawable/circle"
+                android:src="@drawable/defaultprofile"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                app:civ_border_width="0.5dp"
+                app:civ_border_color="#FF000000"
+                android:layout_marginBottom="15dp"
+                android:scaleType="centerCrop"/>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -81,19 +93,7 @@
 
             </RelativeLayout>
 
-            <de.hdodenhof.circleimageview.CircleImageView
-               xmlns:app="http://schemas.android.com/apk/res-auto"
-               android:id="@+id/profile_post"
-               android:layout_width="70dp"
-               android:layout_height="70dp"
-               android:background="@drawable/circle"
-               android:src="@drawable/defaultprofile"
-               android:layout_marginLeft="10dp"
-               android:layout_marginTop="15dp"
-               app:civ_border_width="0.5dp"
-               app:civ_border_color="#FF000000"
-               android:layout_marginBottom="15dp"
-               android:scaleType="centerCrop"/>
+
 
         </LinearLayout>
 
@@ -172,7 +172,8 @@
                     android:layout_height="30dp"
                     android:layout_weight="1"
                     android:layout_centerInParent="true"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/heart"/>
                       <!--android:src="@drawable/heart"-->
 
           
@@ -183,17 +184,17 @@
                 />
 
             <RelativeLayout
-                android:id="@+id/btComment"
+
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="40dp">
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_centerInParent="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/comment" />
+                <ImageView
+                    android:id="@+id/btComment"
+                    android:layout_width="32dp"
+                    android:layout_height="26dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/comment" />
             </RelativeLayout>
 
         </LinearLayout>

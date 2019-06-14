@@ -60,6 +60,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     private StorageReference UStorageRef;
     private StorageReference PStorageRef;
+    public static final String searched_user_Id="searched_user_Id";
 
 
     //NotificationAdapter constructor
@@ -135,9 +136,16 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 @Override
                 public void onClick(View v) {
 
-                    Intent in = new Intent(mContext, MainActivity.class);
+                   /* Intent in = new Intent(mContext, MainActivity.class);
                     mContext.startActivity(in);
-
+                    */
+                   // whoMakeAction
+                    Intent searched_intent=new Intent(mContext,AccountActivity.class);
+                    searched_intent.putExtra(searched_user_Id,whoMakeAction);
+                    mContext.startActivity(searched_intent);
+                    System.out.println("trying to intent");
+                    System.out.println("trying to intent");
+                    System.out.println("trying to intent");
 
                     // new Intent((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.notification_fragment_container,
                     //new custom_posts_returned()).commit();

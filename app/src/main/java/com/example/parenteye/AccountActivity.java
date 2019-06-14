@@ -592,7 +592,8 @@ public class AccountActivity extends Activity {
                   String[] arrayfriends = friends.split(",");
                   for (String friend : arrayfriends) {
                       if (TextUtils.equals(friend, mAuth.getCurrentUser().getUid())) {
-                          Addfriend.setImageResource(R.drawable.friends);
+                         // Addfriend.setImageResource(R.drawable.friends);
+                          Addfriend.setImageResource(R.drawable.ic_friends);
                           addfriendtext.setText("  Friends");
                           Addfriend.setEnabled(false);
                       }
