@@ -48,11 +48,7 @@
         <activity
             android:name=".Main2Activity"
             android:theme="@style/AppTheme.FullScreen">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".SignupActivity"
@@ -60,6 +56,7 @@
         <activity android:name=".Create_Comment" />
         <activity android:name=".FragmentPreview" />
         <activity android:name=".side_menu_bar"/>
+
     </application>
 
 </manifest>
