@@ -1,5 +1,6 @@
 package com.example.parenteye;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
@@ -60,7 +61,10 @@ public class SpecificPostActivity extends AppCompatActivity {
         mStorageRef2 = FirebaseStorage.getInstance().getReference("UserImages/");
     }
     private void GetSpecificPost(){
-      final   String PostID="-LhHb-BqXhirwpH0blPd";
+        Intent intent=getIntent();
+        final   String PostID=intent.getStringExtra("specific_Post_Id");
+
+
         postref.child(PostID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

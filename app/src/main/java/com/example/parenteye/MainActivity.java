@@ -341,22 +341,22 @@ search.setOnClickListener(new View.OnClickListener() {
                 /*Intent makepage=new Intent(MainActivity.this,NotificationFragment.class);
                 startActivity(makepage);*/
                 // L7zI36Be0qS2pwLic4Jd8RDdWjD2
-                String postid1 = "-LcCMOBCnOomGRFyCwfL";
-                String postid2 = "-LcCMP9H7kmcuYwvfdZC";
+                String postid1 = "-LhH_tK5evs2PwOTG8UZ";
+                String postid2 = "-LhHoSs_bTvIO4fUatWK";
                 //String myuserId="currentUser";
-                String Aya = "cR6RdBeU5Lg7CEFLhEniBT16ZxM2";
+               // String Aya = "cR6RdBeU5Lg7CEFLhEniBT16ZxM2";
 
-                String Eman = "bb6wXlVRzdUWnij5KkgPltKdCz43";
+               // String Eman = "bb6wXlVRzdUWnij5KkgPltKdCz43";
 
 
                 //addNotificationsOfLikes(postid1, post_publisher_Id);
-                String post_publisher_Id =Eman;
-                notifi.addNotificationsOfLikes(postid2, "zkoZkODkLSYO8aZFhc0iVOILHc42");
-                notifi.addNotificationsOfLikes(postid1, "zkoZkODkLSYO8aZFhc0iVOILHc42");
+             //   String post_publisher_Id =Eman;
+                notifi.addNotificationsOfLikes(postid2, "7Ys6wnuIdthwmSUVVKxNvPYWhXC3");
+                notifi.addNotificationsOfLikes(postid1, "7tgshzqqqHXIOjdjdfzcU6tiqa52");
 
                 //addNotificationsOfComments(postid1, LikeridAya);
-                notifi.addNotificationsOfComments(postid2, "zkoZkODkLSYO8aZFhc0iVOILHc42","Hello");
-                notifi.addNotificationsOfComments(postid1, "zkoZkODkLSYO8aZFhc0iVOILHc42","welcom clever ");
+                notifi.addNotificationsOfComments(postid2, "7tgshzqqqHXIOjdjdfzcU6tiqa52","Hello");
+                notifi.addNotificationsOfComments(postid1, "7Ys6wnuIdthwmSUVVKxNvPYWhXC3","welcom clever ");
 
                 //Add activitylog on likes , comments
                 activityLog.addActivityLogOfLikes(postid2);
@@ -369,7 +369,7 @@ search.setOnClickListener(new View.OnClickListener() {
                    parm Friend Want To Request Id
                  */
 
-                String FriendWantToRequest_Id= Aya;
+             //   String FriendWantToRequest_Id= Aya;
 
                // notifi.addNotificationsOfFriendRequest(FriendWantToRequest_Id);
 

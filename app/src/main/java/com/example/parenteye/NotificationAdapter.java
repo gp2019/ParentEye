@@ -61,6 +61,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     private StorageReference UStorageRef;
     private StorageReference PStorageRef;
     public static final String searched_user_Id="searched_user_Id";
+    public static final String specific_Post_Id="specific_Post_Id";
 
 
     //NotificationAdapter constructor
@@ -100,7 +101,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         //call getuserInfo func to get the user name and profile pic of him
         getuserInfo(viewHolder.Holder_notification_profile_image, viewHolder.Holder_notification_user_name, whoMakeAction);
 
-        String PostId = notification.getPostId();
+        final String PostId = notification.getPostId();
 
         //getPostImage(viewHolder.Holder_notification_post_content ,viewHolder.Holder_notification_post_image, PostId);
 
@@ -321,8 +322,23 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             viewHolder.Holder_notification_post_content.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Intent specificPost_intent=new Intent(mContext,SpecificPostActivity.class);
+                    specificPost_intent.putExtra(specific_Post_Id,PostId);
+                    mContext.startActivity(specificPost_intent);
+                    System.out.println("post id is  "+PostId);
 
                 }
+            });
+
+
+            viewHolder.Holder_notification_user_name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent searched_intent=new Intent(mContext,AccountActivity.class);
+                    searched_intent.putExtra(searched_user_Id,whoMakeAction);
+                    mContext.startActivity(searched_intent);
+                }
+
             });
             //********************** action on the notification user profile  in the list ***********************
             viewHolder.Holder_notification_profile_image.setOnClickListener(new View.OnClickListener() {
@@ -333,6 +349,18 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     mContext.startActivity(searched_intent);
                 }
             });
+            viewHolder.Holder_notification_post_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent specificPost_intent=new Intent(mContext,SpecificPostActivity.class);
+                    specificPost_intent.putExtra(specific_Post_Id,PostId);
+                    mContext.startActivity(specificPost_intent);
+                }
+            });
+
+
+
+
 
         }
              /*
