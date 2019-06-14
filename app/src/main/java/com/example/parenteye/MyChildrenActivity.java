@@ -1,5 +1,6 @@
 package com.example.parenteye;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -28,30 +30,20 @@ public class MyChildrenActivity extends AppCompatActivity {
     private DatabaseReference parentChildrenRef = database.getReference("ParentChildren");
     DatabaseReference userRef = database.getReference("Users");
     private ArrayList<Users> children=new ArrayList<Users>();
+    private ArrayList<String> childrenId=new ArrayList<String>();
     private ListView childrenList;
-    public static final String child_Id="ChildId";
-    public static final String Child_Name="CHildName";
+    ProgressBar progressBar;
+    private ChildAdapter childrenAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_children);
         mAuth = FirebaseAuth.getInstance();
-        childrenList=(ListView) findViewById(R.id.childrenList);
+        childrenList= findViewById(R.id.childrenList);
+        progressBar = findViewById( R.id.progressBar );
 
 
-        /*
-        childrenList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Users child=children.get(position);
-                Intent childIntent=new Intent(getApplicationContext(),ChildLogActivity.class);
-                childIntent.putExtra(child_Id,child.getUserId());
-                childIntent.putExtra(Child_Name,child.getUsername());
-                startActivity(childIntent);
-            }
-        });
-            */
     }
 
     @Override
@@ -62,38 +54,50 @@ public class MyChildrenActivity extends AppCompatActivity {
 
     private void ReturnAllChildren() {
         if (mAuth.getCurrentUser()!=null){
-           // System.out.println("in my function  "+mAuth.getCurrentUser().getUid());
             final String currentuserId =mAuth.getCurrentUser().getUid();
-            final ChildAdapter childrenAdapter=new ChildAdapter(MyChildrenActivity.this,children);
-            childrenList.setAdapter(childrenAdapter);
             parentChildrenRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    children.clear();
                     for (DataSnapshot parentchildsnapshot : dataSnapshot.getChildren()) {
                         ParentChildren parentchild = parentchildsnapshot.getValue(ParentChildren.class);
                         if (TextUtils.equals(parentchild.getParentId(), currentuserId)) {
-                            final String childId = parentchild.getChildId();
+                            childrenId.add( parentchild.getChildId() );
+                        }
                             userRef.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot usersnapshot : dataSnapshot.getChildren()) {
-                                        Users user = usersnapshot.getValue(Users.class);
-                                        if (TextUtils.equals(usersnapshot.getKey(), childId)) {
-                                            Users mychild = new Users();
-                                            mychild.setUserId(usersnapshot.getKey());
-                                            mychild.setUsername(user.getUsername());
-                                            if (user.getProfile_pic_id() != null) {
-                                                mychild.setProfile_pic_id(user.getProfile_pic_id());
-                                            }
-                                            children.add(mychild);
+                                    children.clear();
+                                    for (String childId : childrenId) {
+                                        for (DataSnapshot usersnapshot : dataSnapshot.getChildren()) {
+                                            Users user = usersnapshot.getValue(Users.class);
+                                            if (TextUtils.equals(usersnapshot.getKey(), childId)) {
+                                                Users mychild = new Users();
+                                                mychild.setUserId(usersnapshot.getKey());
+                                                mychild.setUsername(user.getUsername());
+                                                if (user.getProfile_pic_id() != null) {
+                                                    mychild.setProfile_pic_id(user.getProfile_pic_id());
+                                                }
+                                                children.add(mychild);
 
+                                            }
                                         }
                                     }
-                                    //  Collections.reverse(children);
-                                    childrenAdapter.notifyDataSetChanged();
-                                }
+                                    if (children.size()==0) {
+                                        progressBar.setVisibility( View.GONE );
+                                    }
+                                    else {
+                                        progressBar.setVisibility( View.GONE );
+                                        if (childrenList.getAdapter() == null) {
+                                            childrenAdapter = new ChildAdapter( MyChildrenActivity.this, children );
+                                            childrenList.setAdapter(childrenAdapter);
 
+                                        } else {
+
+                                            childrenAdapter.notifyDataSetChanged();
+                                        }
+                                    }
+
+                                }
 
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -101,7 +105,7 @@ public class MyChildrenActivity extends AppCompatActivity {
                                 }
                             });
 
-                        }
+
                     }
                 }
 

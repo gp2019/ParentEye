@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference myRef3 = database.getReference("Friends");
     DatabaseReference memberRef = database.getReference("Members");
     private Integer userCompleteProfile = 0;
-    private Button logout, show_comment;
+    private Button logout;
     private ListView Post_listview;
     private String friendlist;
     private ArrayList<String> friendspostskeys = new ArrayList<String>();
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     private Button view_page;
     private Button view_group;
     private Button showGroupRequest;
-    private Button mainPage;
+    private Button mainPage,ShowMyFriends;
     //design
 
     private Button mainTwo;
@@ -121,15 +121,6 @@ public class MainActivity extends AppCompatActivity {
                     CreatePost(currentUser.getUid());
                 }
 
-            }
-        });
-
-        show_comment = findViewById(R.id.ShowComments);
-        show_comment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseUser currentUser = mAuth.getCurrentUser();
-                CreateComment(currentUser.getUid());
             }
         });
 
@@ -206,7 +197,6 @@ search.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent mychildren = new Intent(MainActivity.this, MyChildrenActivity.class);
                 startActivity(mychildren);
-                finish();
             }
         });
 
@@ -226,11 +216,19 @@ search.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent userfriendsIntent=new Intent(MainActivity.this,UserFriendsActivity.class);
                 startActivity(userfriendsIntent);
-                finish();
             }
         });
 
 
+
+        ShowMyFriends = (Button) findViewById(R.id.ShowMyFriends);
+        ShowMyFriends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent userfriendsIntent=new Intent(MainActivity.this,ViewPager_myFriends.class);
+                startActivity(userfriendsIntent);
+            }
+        });
 
         view_page=(Button)findViewById(R.id.view_page);
         view_page.setOnClickListener(new View.OnClickListener() {
@@ -411,6 +409,7 @@ search.setOnClickListener(new View.OnClickListener() {
                 notifi.DeleteNotificationOfLike(postid2, "L7zI36Be0qS2pwLic4Jd8RDdWjD2");
             }
         });
+
         myRef.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -428,7 +427,7 @@ search.setOnClickListener(new View.OnClickListener() {
             }
         });
 
-        GetMyHomePosts();
+//        GetMyHomePosts();
         showProfilepic();
 
 
@@ -464,14 +463,6 @@ search.setOnClickListener(new View.OnClickListener() {
         Intent login_main = new Intent(MainActivity.this, Create_Post.class);
         login_main.putExtra("placeTypeId", "1");
         login_main.putExtra("placeId", "");
-        startActivity(login_main);
-        finish();
-    }
-
-    private void CreateComment(String Uid) {
-        Intent login_main = new Intent(MainActivity.this, Create_Comment.class);
-        login_main.putExtra("userId", Uid);
-        login_main.putExtra("typePost", "1");
         startActivity(login_main);
         finish();
     }
