@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
     //design
 
     private Button mainTwo;
+    private Button SpecificPost;
 
 
 
@@ -266,6 +267,15 @@ search.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent mainPageIntent=new Intent(MainActivity.this,MainPage.class);
                 startActivity(mainPageIntent);
+                finish();
+            }
+        });
+        SpecificPost=(Button)findViewById(R.id.SpecificPost);
+        SpecificPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent SpecificPostintent=new Intent(MainActivity.this,SpecificPostActivity.class);
+                startActivity(SpecificPostintent);
                 finish();
             }
         });
