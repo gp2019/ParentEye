@@ -9,7 +9,7 @@ public class Community {
     private String Communityname;
     private String CommunityAbout;
     private String typeid;  //1 if group and 2 if page
-    private LocalDate createdDate;
+    //private LocalDate createdDate;
     private String coverPhotoId;
     private String PhotoId;
     private String AdminId;
@@ -23,13 +23,13 @@ public class Community {
 
     }
 
-    public Community(String communityId, String communityname, String communityAbout, String typeid, LocalDate createdDate, String coverPhotoId, String photoId, String adminId,String communityType) {
+    public Community(String communityId, String communityname, String communityAbout, String typeid, String coverPhotoId, String photoId, String adminId,String communityType) {
         CommunityId = communityId;
         Communityname = communityname;
         CommunityAbout = communityAbout;
         this.typeid = typeid;
         this.communityType= communityType;
-        this.createdDate = createdDate;
+      //  this.createdDate = createdDate;
         this.coverPhotoId = coverPhotoId;
         PhotoId = photoId;
         AdminId = adminId;
@@ -52,9 +52,7 @@ public class Community {
         this.typeid = typeid;
     }
 
-    public void setCreatedDate(LocalDate createdDate) {
-        this.createdDate = createdDate;
-    }
+    //public void setCreatedDate(LocalDate createdDate) { this.createdDate = createdDate; }
 
     public void setCoverPhotoId(String coverPhotoId) {
         this.coverPhotoId = coverPhotoId;
@@ -91,9 +89,7 @@ public class Community {
         return typeid;
     }
 
-    public LocalDate getCreatedDate() {
-        return createdDate;
-    }
+    //public LocalDate getCreatedDate() { return createdDate; }
 
     public String getCoverPhotoId() {
         return coverPhotoId;
