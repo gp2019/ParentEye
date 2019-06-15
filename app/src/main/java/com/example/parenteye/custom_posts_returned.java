@@ -11,6 +11,8 @@ public class custom_posts_returned {
     private String post_owner_ID;
     private String post_image;
     private String post_date;
+    private String placeTypeId;
+    private String communityId;
 
     // private  static  final String noimage="-1";
 
@@ -28,16 +30,34 @@ public class custom_posts_returned {
         this.post_Id = post_Id;
     }
 
-    public custom_posts_returned(String post_text, String post_owner_ID, String post_image, String post_date, String post_owner_name) {
+    public custom_posts_returned(String post_text, String post_owner_ID, String post_image, String post_date, String post_owner_name,String placeTypeId,String communityId) {
         this.post_text = post_text;
         this.post_owner_ID = post_owner_ID;
         this.post_image = post_image;
         this.post_date = post_date;
         this.post_owner_name=post_owner_name;
+        this.placeTypeId=placeTypeId;
+        this.communityId=communityId;
     }
 
     public void setPost_owner_name(String post_owner_name) {
         this.post_owner_name = post_owner_name;
+    }
+
+    public String getPlaceTypeId() {
+        return placeTypeId;
+    }
+
+    public void setPlaceTypeId(String placeTypeId) {
+        this.placeTypeId = placeTypeId;
+    }
+
+    public String getCommunityId() {
+        return communityId;
+    }
+
+    public void setCommunityId(String communityId) {
+        this.communityId = communityId;
     }
 
     public String getPost_owner_name() {
