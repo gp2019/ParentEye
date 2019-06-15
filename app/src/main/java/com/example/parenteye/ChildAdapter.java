@@ -18,8 +18,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -37,6 +40,8 @@ public class ChildAdapter extends ArrayAdapter<Users> {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference UserRef = database.getReference("Users");
     private Date time;
+    private getCurrentTime currentTime;
+    private CreateTime createTime;
     final long ONE_MEGABYTE = 1024 * 1024;
     public ChildAdapter(Activity context, ArrayList<Users> childreturned){
         super(context,0,childreturned);
@@ -54,23 +59,12 @@ public class ChildAdapter extends ArrayAdapter<Users> {
 
         }
 
+        final Switch switchButton = childrenlist.findViewById(R.id.btCloseAccount);
         final Users child= getItem(position);
-    //    TextView Datetime=(TextView) childrenlist.findViewById(R.id.datetime);
         TextView childname=(TextView) childrenlist.findViewById(R.id.childname);
         childname.setText(child.getUsername());
-      /*  if(child.getRoleId()!=null){
-            Datetime.setVisibility(View.VISIBLE);
-            Datetime.setText(child.getRoleId());
-          //  System.out.println("date is "+child.getRoleId());
-        }
-        else{
-            Datetime.setVisibility(View.GONE);
-        }
-*/
 
-
-
-       final  ImageView profileimage=(ImageView) childrenlist.findViewById(R.id.childphoto);
+       final  ImageView profileimage = childrenlist.findViewById(R.id.childphoto);
 
         if(child.getProfile_pic_id()!=null) {
             userStorageRef.child(child.getProfile_pic_id()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
@@ -114,20 +108,55 @@ public class ChildAdapter extends ArrayAdapter<Users> {
             }
         });
 
-        final Switch switchButton = childrenlist.findViewById(R.id.btCloseAccount);
+        UserRef.child(childArayList.get(position).getUserId()).child("TimeCloseAccount").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            currentTime = new getCurrentTime();
+                if (dataSnapshot.exists()){
+                    String ti = dataSnapshot.getValue(String.class);
+                    if (!ti.isEmpty()){
+                        createTime = new CreateTime(ti);
+
+                        try {
+                            boolean CheckTime =  currentTime.compareTime(currentTime.getDateTime(),ti);
+                            createTime.sdf();
+                            if (CheckTime==false){
+                                counter.setText(""+(createTime.calculateTime().replace("-","")));
+                                switchButton.setChecked(true);
+                            }
+                            else {
+                                counter.setText("0");
+                                switchButton.setChecked(false);
+                            }
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else {
+                        counter.setText("0");
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         switchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (switchButton.isChecked()){
 
                     if (Counter>0){
-                    getCurrentTime currentTime = new getCurrentTime();
+                        currentTime = new getCurrentTime();
 
                     try {
-                        String date= null;
-                        date = currentTime.getTimeCloseAccount(Counter);
-                        //boolean x=currentTime.compareTime(currentTime.getDateTime(),date);
-                        UserRef.child(childArayList.get(position).getUserId()).child("CloseAccount").setValue(true);
+                        String date = currentTime.getTimeCloseAccount(Counter);
+                        UserRef.child(childArayList.get(position).getUserId()).child("closeAccount").setValue(true);
                         UserRef.child(childArayList.get(position).getUserId()).child("TimeCloseAccount").setValue(date);
                         Counter=0;
 
@@ -137,7 +166,10 @@ public class ChildAdapter extends ArrayAdapter<Users> {
                     }
                 }
                 else {
-
+                    UserRef.child(childArayList.get(position).getUserId()).child("closeAccount").setValue(false);
+                    UserRef.child(childArayList.get(position).getUserId()).child("TimeCloseAccount").setValue("");
+                    Counter=0;
+                    counter.setText(""+Counter);
                 }
             }
         });

@@ -531,8 +531,6 @@ public class Create_Comment extends AppCompatActivity {
                         if (recyclerView.getAdapter() == null) {
                             mAdapter = new ArrayAdapterForComment( Create_Comment.this, comments_of_post );
                             recyclerView.setAdapter(mAdapter);
-
-
                         } else {
 
                             mAdapter.notifyDataSetChanged();

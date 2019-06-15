@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
     //design
 
     private Button mainTwo;
-    private Button SpecificPost;
 
 
 
@@ -156,8 +155,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (mAuth.getCurrentUser() != null) {
-
-                    myRef.child(mAuth.getCurrentUser().getUid()).child("State").setValue("0");
                     mAuth.signOut();
                     main_login();
 
@@ -272,15 +269,6 @@ search.setOnClickListener(new View.OnClickListener() {
                 finish();
             }
         });
-        SpecificPost=(Button)findViewById(R.id.SpecificPost);
-        SpecificPost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent SpecificPostintent=new Intent(MainActivity.this,SpecificPostActivity.class);
-                startActivity(SpecificPostintent);
-                finish();
-            }
-        });
 
 /*****************************************************/
 
@@ -343,26 +331,26 @@ search.setOnClickListener(new View.OnClickListener() {
                 /*Intent makepage=new Intent(MainActivity.this,NotificationFragment.class);
                 startActivity(makepage);*/
                 // L7zI36Be0qS2pwLic4Jd8RDdWjD2
-                String postid1 = "-LhH_tK5evs2PwOTG8UZ";
-                String postid2 = "-LhHoSs_bTvIO4fUatWK";
+                String postid1 = "-LcCMOBCnOomGRFyCwfL";
+                String postid2 = "-LcCMP9H7kmcuYwvfdZC";
                 //String myuserId="currentUser";
-               // String Aya = "cR6RdBeU5Lg7CEFLhEniBT16ZxM2";
+                String Aya = "cR6RdBeU5Lg7CEFLhEniBT16ZxM2";
 
-               // String Eman = "bb6wXlVRzdUWnij5KkgPltKdCz43";
+                String Eman = "bb6wXlVRzdUWnij5KkgPltKdCz43";
 
 
                 //addNotificationsOfLikes(postid1, post_publisher_Id);
-             //   String post_publisher_Id =Eman;
-                notifi.addNotificationsOfLikes(postid2, "7Ys6wnuIdthwmSUVVKxNvPYWhXC3");
-                notifi.addNotificationsOfLikes(postid1, "7tgshzqqqHXIOjdjdfzcU6tiqa52");
+                String post_publisher_Id =Eman;
+                notifi.addNotificationsOfLikes(postid2, "zkoZkODkLSYO8aZFhc0iVOILHc42");
+                notifi.addNotificationsOfLikes(postid1, "zkoZkODkLSYO8aZFhc0iVOILHc42");
 
                 //addNotificationsOfComments(postid1, LikeridAya);
-                notifi.addNotificationsOfComments(postid2, "7tgshzqqqHXIOjdjdfzcU6tiqa52","Hello");
-                notifi.addNotificationsOfComments(postid1, "7Ys6wnuIdthwmSUVVKxNvPYWhXC3","welcom clever ");
+               /// notifi.addNotificationsOfComments(postid2, "zkoZkODkLSYO8aZFhc0iVOILHc42");
+               //// notifi.addNotificationsOfComments(postid1, "zkoZkODkLSYO8aZFhc0iVOILHc42");
 
                 //Add activitylog on likes , comments
                 activityLog.addActivityLogOfLikes(postid2);
-                activityLog.addActivityLogOfComments(postid1);
+               // activityLog.addActivityLogOfComments(postid1);
 
 
 
@@ -371,7 +359,7 @@ search.setOnClickListener(new View.OnClickListener() {
                    parm Friend Want To Request Id
                  */
 
-             //   String FriendWantToRequest_Id= Aya;
+                String FriendWantToRequest_Id= Aya;
 
                // notifi.addNotificationsOfFriendRequest(FriendWantToRequest_Id);
 
@@ -390,7 +378,7 @@ search.setOnClickListener(new View.OnClickListener() {
                 notifi.addNotificationsOfFriendRequest(FriendWantToRequest_Id);
 
                 /// son sends a friend request to
-                activityLog.addActivityLogOfSendFriendRequest(FriendWantToRequest_Id);
+               // activityLog.addActivityLogOfSendFriendRequest(FriendWantToRequest_Id);
 
 
                 //son recieve a friend request from
@@ -440,8 +428,7 @@ search.setOnClickListener(new View.OnClickListener() {
             }
         });
 
-
-        showProfilepic();
+             showProfilepic();
 
 
 
@@ -474,7 +461,6 @@ search.setOnClickListener(new View.OnClickListener() {
 
     private void CreatePost(String Uid) {
         Intent login_main = new Intent(MainActivity.this, Create_Post.class);
-        login_main.putExtra("userId", Uid);
         login_main.putExtra("placeTypeId", "1");
         login_main.putExtra("placeId", "");
         startActivity(login_main);

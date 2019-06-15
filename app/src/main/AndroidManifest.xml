@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".SpecificPostActivity"></activity>
-        <activity android:name=".MainPage">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,7 +27,7 @@
         <activity android:name=".SearchActivity" />
         <activity android:name=".MakeGroupActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainPage" />
         <activity android:name=".AdminGroupRequestActivity" />
         <activity android:name=".GroupActivity" />
         <activity android:name=".CommunityAboutandmembersActivity" />

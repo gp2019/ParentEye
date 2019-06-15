@@ -57,7 +57,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     // initialize list of Notifications
     private List<Notifications> mNotification;
 
-
+    private StorageReference GroupStorageRef;
+    private StorageReference pageStorageRef;
     private StorageReference UStorageRef;
     private StorageReference PStorageRef;
     public static final String searched_user_Id="searched_user_Id";
@@ -127,6 +128,21 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             viewHolder.Holder_Friend_request_notifi_layout.setVisibility(View.VISIBLE);
 
 
+        }else if(notification.getIsGroupRequestResponse())
+        {
+            //friend request layout gone
+            viewHolder.Holder_Friend_request_notifi_layout.setVisibility(View.GONE);
+
+            viewHolder.Holder_notification_post_image.setVisibility(View.VISIBLE);
+
+            getCommunityInfo(viewHolder.Holder_notification_post_content, viewHolder.Holder_notification_post_image,notification.getPostId());
+
+
+            ///// when notification is response on add friend request
+        }else {
+
+            viewHolder.Holder_Friend_request_notifi_layout.setVisibility(View.GONE);
+
         }
         //check about friend request
 
@@ -142,6 +158,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     mContext.startActivity(searched_intent);
                 }
             });
+
             viewHolder.Holder_notification_profile_image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -192,6 +209,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                     FriendRequestRef.child(reqsnapshot.getKey()).removeValue();
                                     Notifications n = new Notifications();
                                     n.DeleteNotificationOfRejectOrAcceptFriendRequest(whoMakeAction);
+                                    n.addNotificationsAcceptFriendRequest(whoMakeAction);
                                 }
 
                             }
@@ -263,6 +281,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                     FriendRequestRef.child(reqsnapshot.getKey()).removeValue();
                                     Notifications n = new Notifications();
                                     n.DeleteNotificationOfRejectOrAcceptFriendRequest(whoMakeAction);
+                                    n.addNotificationsRejectFriendRequest(whoMakeAction);
 
                                 }
 
@@ -361,6 +380,64 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
 
 
+
+            //**************************** notification on response group request  ***********************************
+        }else if(notification.getIsGroupRequestResponse())
+        {
+            /*********** Admin group profile image ***********/
+            viewHolder.Holder_notification_profile_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+            /*********** Admin group profile User name ***********/
+
+            viewHolder.Holder_notification_user_name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+            /***********  group  User name ***********/
+
+            viewHolder.Holder_notification_post_content.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+            /***********  group  image ***********/
+
+            viewHolder.Holder_notification_post_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        }else if (notification.getIsisFriendRequestResponse()){
+
+
+            /***********  user who Accept or Reject Friend request  image ***********/
+
+            viewHolder.Holder_notification_profile_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+            /***********  user who Accept or Reject Friend request  user name ***********/
+
+            viewHolder.Holder_notification_user_name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
         }
              /*
@@ -565,6 +642,58 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         });*/
 
 
+    }
+    private void getCommunityInfo(final TextView communityName, final ImageView imageView, String communityId) {
+        //String postid="-LbU7gdO1Mkx4ZhulHxA";
+
+        DatabaseReference groupreference = database.getReference("Community").child(communityId);
+
+        GroupStorageRef = FirebaseStorage.getInstance().getReference("GroupImages/ ");
+        pageStorageRef = FirebaseStorage.getInstance().getReference("PageImages/ ");
+
+
+        groupreference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Community community = dataSnapshot.getValue(Community.class);
+
+                    if(community.getCommunityType().equalsIgnoreCase("page")) {
+
+                        communityName.setText(community.getCommunityname());
+
+                        if (community.getPhotoId() !=null){
+                            PStorageRef.child(community.getPhotoId()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                @Override
+                                public void onSuccess(byte[] bytes) {
+                                    final Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                    imageView.setImageBitmap(bm);
+                                }
+                            });
+                        }
+
+                    }else if(community.getCommunityType().equalsIgnoreCase("group") ){
+
+                        communityName.setText(community.getCommunityname());
+
+                        if (community.getCoverPhotoId() !=null){
+                            PStorageRef.child(community.getCoverPhotoId()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                @Override
+                                public void onSuccess(byte[] bytes) {
+                                    final Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                    imageView.setImageBitmap(bm);
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     /*
