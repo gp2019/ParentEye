@@ -66,6 +66,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public static final String specific_Post_Id="specific_Post_Id";
     DatabaseReference groupReqRef = database.getReference("GroupRequests");
     DatabaseReference membersRef = database.getReference("Members");
+    public static final String searched_group_Id="searched_group_Id";
 
 
     //NotificationAdapter constructor
@@ -307,13 +308,39 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             ///     the navigation if notification on group request
 
         }else if(notification.getisGroupRequest())
+        //********************** action on the notification item in the list ***********************
         {
-            //********************** action on the notification item in the list ***********************
+            viewHolder.Holder_notification_user_name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent searched_intent=new Intent(mContext,AccountActivity.class);
+                    searched_intent.putExtra(searched_user_Id,whoMakeAction);
+                    mContext.startActivity(searched_intent);
+                }
+            });
+
+            viewHolder.Holder_notification_profile_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent searched_intent=new Intent(mContext,AccountActivity.class);
+                    searched_intent.putExtra(searched_user_Id,whoMakeAction);
+                    mContext.startActivity(searched_intent);
+                    System.out.println("Going intent");
+                    System.out.println("Going intent");
+                    System.out.println("Going intent");
+                }
+
+            });
+
+
+
 
             viewHolder.Holder_notification_post_content.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Intent specificPost_intent=new Intent(mContext,GroupActivity.class);
+                    specificPost_intent.putExtra(specific_Post_Id,PostId);
+                    mContext.startActivity(specificPost_intent);
                 }
             });
 
@@ -346,7 +373,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     new_member.setUserId(whoMakeAction);
                     new_member.setTyptId("1");
                     membersRef.push().setValue(new_member);
-                    CommunityRef.child(PostId).child("Communityname").addValueEventListener(new ValueEventListener() {
+                    CommunityRef.child(PostId).child("communityname").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             ActivityLog log=new ActivityLog();
@@ -419,7 +446,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     Intent specificPost_intent=new Intent(mContext,SpecificPostActivity.class);
                     specificPost_intent.putExtra(specific_Post_Id,PostId);
                     mContext.startActivity(specificPost_intent);
-                    System.out.println("post id is  "+PostId);
+
 
                 }
             });
@@ -463,7 +490,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             viewHolder.Holder_notification_profile_image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Intent searched_intent=new Intent(mContext,AccountActivity.class);
+                    searched_intent.putExtra(searched_user_Id,whoMakeAction);
+                    mContext.startActivity(searched_intent);
                 }
             });
 
@@ -472,7 +501,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             viewHolder.Holder_notification_user_name.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Intent searched_intent=new Intent(mContext,AccountActivity.class);
+                    searched_intent.putExtra(searched_user_Id,whoMakeAction);
+                    mContext.startActivity(searched_intent);
                 }
             });
 
@@ -481,7 +512,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             viewHolder.Holder_notification_post_content.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Intent specificPost_intent=new Intent(mContext,GroupActivity.class);
+                    specificPost_intent.putExtra(searched_group_Id,PostId);
+                    mContext.startActivity(specificPost_intent);
                 }
             });
 
@@ -490,29 +523,38 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             viewHolder.Holder_notification_post_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent specificPost_intent=new Intent(mContext,GroupActivity.class);
+                specificPost_intent.putExtra(searched_group_Id,PostId);
+                mContext.startActivity(specificPost_intent);
             }
         });
-        }else if (notification.getIsisFriendRequestResponse()){
-
-
-            /***********  user who Accept or Reject Friend request  image ***********/
-
-            viewHolder.Holder_notification_profile_image.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
-
-            /***********  user who Accept or Reject Friend request  user name ***********/
+        }else {
 
             viewHolder.Holder_notification_user_name.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Intent searched_intent=new Intent(mContext,AccountActivity.class);
+                    searched_intent.putExtra(searched_user_Id,whoMakeAction);
+                    mContext.startActivity(searched_intent);
                 }
             });
+
+            viewHolder.Holder_notification_profile_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent searched_intent=new Intent(mContext,AccountActivity.class);
+                    searched_intent.putExtra(searched_user_Id,whoMakeAction);
+                    mContext.startActivity(searched_intent);
+                    System.out.println("Going intent");
+                    System.out.println("Going intent");
+                    System.out.println("Going intent");
+                }
+
+            });
+
+
+            /***********  user who Accept or Reject Friend request  image ***********/
+
 
         }
              /*
