@@ -206,6 +206,7 @@ public class Create_Comment extends AppCompatActivity {
         });
 
 */
+
         dbRef3.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -394,7 +395,6 @@ public class Create_Comment extends AppCompatActivity {
         intent.putExtra( "CommentContent",comments_of_post.get(position).getCommentcontent() );
         intent.putExtra( "CommentUserId",comments_of_post.get(position).getUserId() );
         startActivity( intent );
-        //finish();
     }
     private void upload_post_pic(){
         if(filepath!=null){
