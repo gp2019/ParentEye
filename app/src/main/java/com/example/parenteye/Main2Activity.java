@@ -71,6 +71,7 @@ private TextView add_notifi_icon;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+        mAuth = FirebaseAuth.getInstance();
 
 
         readNotifications();
@@ -94,7 +95,9 @@ private TextView add_notifi_icon;
         add_notifi_icon.setText(n);
 
 
-        mAuth = FirebaseAuth.getInstance();
+
+
+
         mStorageRef = FirebaseStorage.getInstance().getReference("UserImages/");
 
         Main2 =(Button)findViewById(R.id.Main2) ;
@@ -225,7 +228,7 @@ private TextView add_notifi_icon;
     public void readNotifications() {
         //FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-
+        if(mAuth.getCurrentUser()!=null) {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         //FirebaseHelper firebaseHelper = new FirebaseHelper();
@@ -234,41 +237,43 @@ private TextView add_notifi_icon;
         //String userId = "EzH9MI0WJ7N0AwZNUidC45e2wiP2";
 
 
-        DatabaseReference notification_reference = database.getReference("notifications").child(user.getUid());
+            DatabaseReference notification_reference = database.getReference("notifications").child(user.getUid());
 
 
-        notification_reference.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                 i++;
+            notification_reference.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    i++;
 
-                 x=i-y;
-             String n =String.valueOf(x);
+                    x=i-y;
+                    String n =String.valueOf(x);
 
-             add_notifi_icon.setVisibility(View.VISIBLE);
-                add_notifi_icon.setText(n);
-            }
+                    add_notifi_icon.setVisibility(View.VISIBLE);
+                    add_notifi_icon.setText(n);
+                }
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-            }
+                }
 
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
-            }
+                }
 
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-            }
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+
+        }
 
 
     }

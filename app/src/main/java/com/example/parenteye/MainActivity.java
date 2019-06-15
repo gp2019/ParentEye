@@ -345,12 +345,12 @@ search.setOnClickListener(new View.OnClickListener() {
                 notifi.addNotificationsOfLikes(postid1, "zkoZkODkLSYO8aZFhc0iVOILHc42");
 
                 //addNotificationsOfComments(postid1, LikeridAya);
-                notifi.addNotificationsOfComments(postid2, "zkoZkODkLSYO8aZFhc0iVOILHc42");
-                notifi.addNotificationsOfComments(postid1, "zkoZkODkLSYO8aZFhc0iVOILHc42");
+                notifi.addNotificationsOfComments(postid2, "zkoZkODkLSYO8aZFhc0iVOILHc42","wdasdffv");
+                notifi.addNotificationsOfComments(postid1, "zkoZkODkLSYO8aZFhc0iVOILHc42","dvzxclksdv");
 
                 //Add activitylog on likes , comments
                 activityLog.addActivityLogOfLikes(postid2);
-                activityLog.addActivityLogOfComments(postid1);
+                activityLog.addActivityLogOfComments(postid1 , "sdszdaasf");
 
 
 
@@ -378,7 +378,7 @@ search.setOnClickListener(new View.OnClickListener() {
                 notifi.addNotificationsOfFriendRequest(FriendWantToRequest_Id);
 
                 /// son sends a friend request to
-                activityLog.addActivityLogOfSendFriendRequest(FriendWantToRequest_Id);
+                activityLog.addActivityLogOfSonSendFriendRequest(FriendWantToRequest_Id);
 
 
                 //son recieve a friend request from
@@ -411,28 +411,28 @@ search.setOnClickListener(new View.OnClickListener() {
                 notifi.DeleteNotificationOfLike(postid2, "L7zI36Be0qS2pwLic4Jd8RDdWjD2");
             }
         });
-        myRef.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String Role=dataSnapshot.getValue(Users.class).getRoleId();
-                if(!TextUtils.equals("1",Role)){
-                    addchild.setVisibility(View.GONE);
-                    mychildren.setVisibility(View.GONE);
-                    ActivitylogBtn.setVisibility(View.GONE);
+        if(mAuth.getCurrentUser()!=null) {
+            myRef.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    String Role = dataSnapshot.getValue(Users.class).getRoleId();
+                    if (!TextUtils.equals("1", Role)) {
+                        addchild.setVisibility(View.GONE);
+                        mychildren.setVisibility(View.GONE);
+                        ActivitylogBtn.setVisibility(View.GONE);
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
 
-        GetMyHomePosts();
-        showProfilepic();
+            showProfilepic();
 
 
-
+        }
     }
 
 
@@ -495,76 +495,6 @@ search.setOnClickListener(new View.OnClickListener() {
         finish();
     }
 
-    private void GetMyHomePosts(){
-        if(mAuth.getCurrentUser()!=null){
-            final HomePostsAdapter postadapter=new HomePostsAdapter(MainActivity.this,myposts);
-            Post_listview.setAdapter(postadapter);
-           final ArrayList<String> communityIds=new ArrayList<String>();
-            final ArrayList<String> friendsList=new ArrayList<String>();
-
-            myRef3.child(mAuth.getCurrentUser().getUid()).child("userFriends").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.getValue(String.class)!=null) {
-                        String myfriends = dataSnapshot.getValue(String.class);
-                        final String[] myFriendsID = myfriends.split(",");
-                        for(String id:myFriendsID){
-                            friendsList.add(id);
-                        } }
-                    memberRef.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            for(DataSnapshot membersnaphot:dataSnapshot.getChildren()){
-                                if(TextUtils.equals(membersnaphot.getValue(Members.class).getUserId(),mAuth.getCurrentUser().getUid())){
-                                    communityIds.add(membersnaphot.getValue(Members.class).getCommunityid());
-                                }
-                            }
-                          /*  if (dataSnapshot.getValue(Members.class)!=null) {
-                                for (DataSnapshot membersnapshot : dataSnapshot.getChildren()) {
-                                    Members member = membersnapshot.getValue(Members.class);
-                                    communityIds.add(member.getCommunityid());
-                                    //System.out.println(member.getCommunityid());
-                                }
-                            }*/
-                            myRef2.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    myposts.clear();
-                                    for (DataSnapshot postsnapshot : dataSnapshot.getChildren()) {
-                                        Posts post = postsnapshot.getValue(Posts.class);
-                                        if (friendsList.contains(post.getUserId())&&TextUtils.equals(post.getPlaceTypeId(),"1")|| communityIds.contains(post.getPlaceId())) {
-                                            myposts.add(post);
-                                        }
-                                    }
-                                    Collections.reverse(myposts);
-                                    postadapter.notifyDataSetChanged();
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
-
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-
-            });
-        }
-    }
 
 public  void showProfilepic(){
     myRef.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {

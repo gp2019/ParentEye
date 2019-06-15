@@ -17,12 +17,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".SpecificPostActivity"></activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".Main2Activity">
 
         </activity>
         <activity android:name=".SearchActivity" />
         <activity android:name=".MakeGroupActivity" />
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".MainActivity"/>
         <activity android:name=".MainPage" />
         <activity android:name=".AdminGroupRequestActivity" />
         <activity android:name=".GroupActivity" />
@@ -42,7 +42,7 @@
         <activity android:name=".UserFriendsActivity" />
         <activity android:name=".ChatActivity" />
         <activity
-            android:name=".Main2Activity"
+            android:name=".LoginActivity"
             android:theme="@style/AppTheme.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
