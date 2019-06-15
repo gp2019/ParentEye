@@ -63,6 +63,7 @@ public class GroupActivity extends AppCompatActivity {
 
 
         floatingActionButton = findViewById(R.id.floatingButton);
+        floatingActionButton.setVisibility(View.GONE);
         Intent intent = getIntent();
         CommunityId = intent.getStringExtra("searched_group_Id");
         // CommunityId = "Lh2x7ArurH4Yu4-XZPW";
@@ -191,9 +192,21 @@ public class GroupActivity extends AppCompatActivity {
                     Members members = membersnapshot.getValue(Members.class);
                     if (TextUtils.equals(members.getUserId(),mAuth.getCurrentUser().getUid())&&TextUtils.equals(members.getCommunityid(),CommunityId)){
                         floatingActionButton.setVisibility(View.VISIBLE);
-                    }else {
-                        floatingActionButton.setVisibility(View.VISIBLE);
-                    }
+                    }CommunityRef.child(CommunityId).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(TextUtils.equals(dataSnapshot.getValue(Community.class).getAdminId(),mAuth.getCurrentUser().getUid())){
+                                floatingActionButton.setVisibility(View.VISIBLE);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+
                 }
 
 

@@ -238,7 +238,7 @@ public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned>{
             }
         });
 
-        final ImageView btLike=postlist.findViewById(R.id.btLike);
+        final ImageView btLike=postlist.findViewById(R.id.imLike);
         dbRef3= FirebaseDatabase.getInstance().getReference().child("ReactionComment_Post");
         dbRef2= FirebaseDatabase.getInstance().getReference().child("Posts");
         mAuth = FirebaseAuth.getInstance();

@@ -273,7 +273,7 @@ public class ArrayAdapterForPost extends ArrayAdapter<custom_posts_returned> {
             }
         });
 
-        final RelativeLayout btComment = postlist.findViewById(R.id.btComment);
+        final RelativeLayout btComment = postlist.findViewById(R.id.RelativebtComment);
         btComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
