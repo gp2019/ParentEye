@@ -43,9 +43,13 @@ public class ArrayAdapterForPost extends ArrayAdapter<custom_posts_returned> {
     private Activity contextAdapter;
     final long ONE_MEGABYTE = 1024 * 1024;
     private StorageReference userStorageRef = FirebaseStorage.getInstance().getReference("UserImages/");
+    private StorageReference pageStorageRef = FirebaseStorage.getInstance().getReference("PageImages/");
+
     private StorageReference postStorageRef = FirebaseStorage.getInstance().getReference("PostImages/");
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference userRef = database.getReference("Users");
+    DatabaseReference communityRef = database.getReference("Community");
+
     ArrayList<custom_posts_returned> post_returnedd;
     private int position;
 
@@ -71,36 +75,66 @@ public class ArrayAdapterForPost extends ArrayAdapter<custom_posts_returned> {
         final TextView postownername = (TextView) postlist.findViewById(R.id.postowner);
         // postownername.setText(post.getPost_owner_name());
 
-        userRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if (TextUtils.equals(dataSnapshot.getKey(), post.getPost_owner_name())) {
-                    Users user = dataSnapshot.getValue(Users.class);
-                    postownername.setText(user.getUsername());
+
+        if (post_returnedd.get(position).getPlaceTypeId().equals("1")){
+            userRef.child(post_returnedd.get(position).getpost_owner_ID()).child("username").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()){
+                        postownername.setText(dataSnapshot.getValue(String.class));
+                    }
                 }
-            }
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
+                }
+            });
+        }
+        else if (post_returnedd.get(position).getPlaceTypeId().equals("2")){
+            communityRef.child(post_returnedd.get(position).getCommunityId()).child("communityname").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()){
+                        postownername.setText(dataSnapshot.getValue(String.class));
+                    }
+                }
 
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
+                }
+            });
+        }
+        else if (post_returnedd.get(position).getPlaceTypeId().equals("3")){
+            communityRef.child(post_returnedd.get(position).getCommunityId()).child("communityname").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()){
+                        final String nameGroup = dataSnapshot.getValue(String.class);
+                        userRef.child(post_returnedd.get(position).getpost_owner_ID()).child("username").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                if (dataSnapshot.exists()){
+                                    postownername.setText(dataSnapshot.getValue(String.class)+" Posted "+nameGroup+" Group");
+                                }
+                            }
 
-            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            }
+                        });
+                    }
+                }
 
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
+                }
+            });
+        }
 
         final TextView postDescription = postlist.findViewById(R.id.postDescription);
         if (post.getPost_text() != null && !(post.getPost_text().isEmpty())) {
@@ -122,46 +156,50 @@ public class ArrayAdapterForPost extends ArrayAdapter<custom_posts_returned> {
         final ImageView profileimage = (ImageView) postlist.findViewById(R.id.profile_post);
         final ImageView postimage = (ImageView) postlist.findViewById(R.id.post_image);
 
-        userRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if (TextUtils.equals(dataSnapshot.getKey(), post.getpost_owner_ID())) {
-                    Users user = dataSnapshot.getValue(Users.class);
-                    if (user.getProfile_pic_id() != null) {
-                        userStorageRef.child(user.getProfile_pic_id()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+        if (post_returnedd.get(position).getPlaceTypeId().equals("1")||post_returnedd.get(position).getPlaceTypeId().equals("3")) {
+            userRef.child(post_returnedd.get(position).getpost_owner_ID()).child("profile_pic_id").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()){
+
+                        userStorageRef.child(dataSnapshot.getValue(String.class)).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                             @Override
                             public void onSuccess(byte[] bytes) {
                                 final Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                                 profileimage.setImageBitmap(bm);
-
                             }
                         });
                     }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 }
-            }
+            });
+        }
+        else if(post_returnedd.get(position).getPlaceTypeId().equals("2")){
+            communityRef.child(post_returnedd.get(position).getpost_owner_ID()).child("photoId").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()){
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        pageStorageRef.child(dataSnapshot.getValue(String.class)).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                            @Override
+                            public void onSuccess(byte[] bytes) {
+                                final Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                profileimage.setImageBitmap(bm);
+                            }
+                        });
+                    }
+                }
 
-            }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
+                }
+            });
+        }
 
         if (post.haspostimage() == true) {
             postimage.setVisibility(View.VISIBLE);

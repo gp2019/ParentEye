@@ -36,7 +36,7 @@ public class side_menu_bar extends AppCompatActivity {
             public void onClick(View v) {
                 Intent addPageIntent=new Intent(side_menu_bar.this,AddPageActivity.class);
                 startActivity(addPageIntent);
-                finish();
+                //finish();
             }
         });
 
@@ -45,7 +45,7 @@ public class side_menu_bar extends AppCompatActivity {
             public void onClick(View v) {
                 Intent MakeGroupIntent=new Intent(side_menu_bar.this,MakeGroupActivity.class);
                 startActivity(MakeGroupIntent);
-                finish();
+                //finish();
             }
         });
 
@@ -54,7 +54,7 @@ public class side_menu_bar extends AppCompatActivity {
             public void onClick(View v) {
                 Intent MyChildrenIntent=new Intent(side_menu_bar.this,MyChildrenActivity.class);
                 startActivity(MyChildrenIntent);
-                finish();
+                //finish();
             }
         });
 
@@ -63,7 +63,7 @@ public class side_menu_bar extends AppCompatActivity {
             public void onClick(View v) {
                 Intent activity_logIntent=new Intent(side_menu_bar.this,FragmentPreview.class);
                 startActivity(activity_logIntent);
-                finish();
+                //finish();
             }
         });
 

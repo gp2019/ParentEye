@@ -50,6 +50,7 @@ public class Main2Activity extends AppCompatActivity {
     final long ONE_MEGABYTE = 1024 * 1024;
     private FirebaseAuth mAuth;
     private StorageReference mStorageRef;
+    private FloatingActionButton floatingActionButton;
 
 
     Toolbar toolbar;
@@ -124,7 +125,6 @@ private TextView add_notifi_icon;
             public void onClick(View v) {
                 Intent sideMenuPage=new Intent(Main2Activity.this,side_menu_bar.class);
                 startActivity(sideMenuPage);
-                finish();
             }
         });
 
@@ -181,7 +181,17 @@ private TextView add_notifi_icon;
 
 
 
+        floatingActionButton = findViewById(R.id.floatingButton);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+                if (currentUser != null) {
+                    CreatePost(currentUser.getUid());
+                }
 
+            }
+        });
 
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -276,5 +286,12 @@ private TextView add_notifi_icon;
         }
 
 
+    }
+    private void CreatePost(String Uid) {
+        Intent login_main = new Intent(Main2Activity.this, Create_Post.class);
+        login_main.putExtra("userId", Uid);
+        login_main.putExtra("placeTypeId", "1");
+        login_main.putExtra("placeId", "");
+        startActivity(login_main);
     }
 }

@@ -57,7 +57,7 @@ public class Create_Post extends AppCompatActivity implements View.OnClickListen
     private BottomSheetDialog bottomSheetDialog;
     private RelativeLayout bottomSheet;
     private EditText writePost;
-    private ImageView arrowBack,imageViewPost,remove,profileImage;
+    private ImageView imageViewPost,remove,profileImage;
     private TextView post,nameUser,CreatePost;
     DatabaseReference dbRef;
     private String userId,placeTypeId,placeId;
@@ -78,7 +78,6 @@ public class Create_Post extends AppCompatActivity implements View.OnClickListen
         setContentView(R.layout.activity_create_post);
 
         writePost = findViewById(R.id.edit_text_write_post);
-        arrowBack = findViewById(R.id.arrow_back);
         post = findViewById(R.id.post);
         nameUser = findViewById(R.id.name_of_user);
         bottomSheet = findViewById(R.id.bottom_sheet);
@@ -147,7 +146,26 @@ public class Create_Post extends AppCompatActivity implements View.OnClickListen
         bottomSheet.setOnClickListener(this);
         remove.setOnClickListener(this);
         post.setOnClickListener(this);
-        arrowBack.setOnClickListener(this);
+
+
+    }
+    @Override
+    public void onBackPressed()
+    {
+        if (postIdEdit!=null){
+            GoAcountActive();
+        }
+        else {
+            if (writePost.getText().toString().equals("")&&imageViewPost.getDrawable()==null)
+            {
+
+                super.onBackPressed();
+            }
+            else {
+                showAlertDialog();
+
+            }
+        }
     }
 
    //listener function
@@ -187,9 +205,6 @@ public class Create_Post extends AppCompatActivity implements View.OnClickListen
                 publishPost();
                 break;
 
-                case R.id.arrow_back:
-                    arrowBack();
-                    break;
         }
 
     }
@@ -339,38 +354,7 @@ public class Create_Post extends AppCompatActivity implements View.OnClickListen
         remove.setVisibility(View.VISIBLE);
     }
 
-    //arrow back
-    private void arrowBack(){
-        if (postIdEdit!=null){
-            GoAcountActive();
-        }else{
-        if (writePost.getText().toString().equals("")&&imageViewPost.getDrawable()==null)
-    {
-        //here will put intent from ""home page"" and exchange by ""Toast""
 
-        GoHome();
-    }
-                else {
-        showAlertDialog();
-                }
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (postIdEdit!=null){
-            GoAcountActive();
-        }
-        else {
-            if (writePost.getText().toString().equals("")&&imageViewPost.getDrawable()==null)
-            {
-                GoHome();
-            }
-            else {
-                showAlertDialog();
-            }
-        }
-    }
 
     //function of Alert Dialog
     private void showAlertDialog(){
@@ -384,7 +368,8 @@ public class Create_Post extends AppCompatActivity implements View.OnClickListen
             public void onClick(DialogInterface dialogInterface, int i) {
 
                 //here will put intent from ""home page"" and exchange by ""finish"();
-                GoHome();
+               // GoHome();
+                Create_Post.super.onBackPressed();
             }
         });
 
@@ -401,10 +386,11 @@ public class Create_Post extends AppCompatActivity implements View.OnClickListen
 
     // intent for go the home main
     private void GoHome(){
-        Intent home_main=new Intent(Create_Post.this,MainActivity.class);
+        Intent home_main=new Intent(Create_Post.this,Home.class);
         startActivity(home_main);
         finish();
     }
+
     // intent for go the home main
     private void GoAcountActive(){
         Intent home_main=new Intent(Create_Post.this,AccountActivity.class);

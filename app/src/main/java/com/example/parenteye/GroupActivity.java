@@ -205,7 +205,7 @@ public class GroupActivity extends AppCompatActivity {
         login_main.putExtra("placeTypeId", "3");
         login_main.putExtra("placeId", CommunityId);
         startActivity(login_main);
-        finish();
+
     }
 
     private void Intialize_variables(){
@@ -351,7 +351,7 @@ public class GroupActivity extends AppCompatActivity {
        // final String GroupName="group1 test";
         Intent intent = getIntent();
         final   String GropuId = intent.getStringExtra("searched_group_Id");
-        final ProfilePostAdapter groupAdapter=new ProfilePostAdapter(GroupActivity.this,Group_posts);
+        final ArrayAdapterForPost groupAdapter=new ArrayAdapterForPost(GroupActivity.this,Group_posts);
         Post_listview.setAdapter(groupAdapter);
         postref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -364,6 +364,8 @@ public class GroupActivity extends AppCompatActivity {
                         custom.setPost_owner_name(post.getUserId());
                         custom.setpost_owner_ID(post.getUserId());
                         custom.setPost_Id(grouppostsnapshot.getKey());
+                        custom.setPlaceTypeId(post.getPlaceTypeId());
+                        custom.setCommunityId(post.getPlaceId());
                         String timePuplisher =post.getPostdate();
                         createTime =new CreateTime(timePuplisher);
                         try {
@@ -412,5 +414,6 @@ public class GroupActivity extends AppCompatActivity {
             }
         });
     }
+
 
 }

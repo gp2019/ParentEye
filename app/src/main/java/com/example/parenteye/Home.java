@@ -36,7 +36,7 @@ public class Home extends Fragment {
     DatabaseReference memberRef = database.getReference("Members");
     DatabaseReference CommunityRef = database.getReference("Community");
     private ListView Post_listview;
-    private ArrayList<Posts> myposts=new ArrayList<Posts>();
+    private ArrayList<custom_posts_returned> myposts=new ArrayList<custom_posts_returned>();
     private CreateTime createTime;
 
     public Home() {
@@ -66,7 +66,7 @@ public class Home extends Fragment {
     private void GetMyHomePosts(){
         if(mAuth.getCurrentUser()!=null){
 
-            final HomePostsAdapter postadapter=new HomePostsAdapter(getActivity(),myposts);
+            final ArrayAdapterForPost postadapter=new ArrayAdapterForPost(getActivity(),myposts);
             Post_listview.setAdapter(postadapter);
             final ArrayList<String> communityIds=new ArrayList<String>();
             final ArrayList<String> friendsList=new ArrayList<String>();
@@ -119,6 +119,23 @@ public class Home extends Fragment {
                                     myposts.clear();
                                     for (DataSnapshot postsnapshot : dataSnapshot.getChildren()) {
                                         Posts post = postsnapshot.getValue(Posts.class);
+                                        custom_posts_returned newpost=new custom_posts_returned();
+                                        newpost.setPost_Id(postsnapshot.getKey());
+                                        newpost.setCountComment(post.getCountComment());
+                                        newpost.setCountLike(post.getCountLike());
+                                        newpost.setPost_date(post.getPostdate());
+                                        newpost.setPlaceTypeId(post.getPlaceTypeId());
+                                        newpost.setCommunityId(post.getPlaceId());
+                                        if(post.getImageId()!=null){
+                                            newpost.setPost_image(post.getImageId());
+
+                                        }
+
+                                        newpost.setpost_owner_ID(post.getUserId());
+                                        if(post.getPostcontent()!=null){
+                                            newpost.setPost_text(post.getPostcontent());
+                                        }
+
                                         if (friendsList.contains(post.getUserId())&&TextUtils.equals(post.getPlaceTypeId(),"1")|| communityIds.contains(post.getPlaceId())) {
                                             String timePuplisher =post.getPostdate();
                                             createTime =new CreateTime(timePuplisher);
@@ -128,7 +145,8 @@ public class Home extends Fragment {
                                                 e.printStackTrace();
                                             }
                                             post.setPostdate(createTime.calculateTime());
-                                            myposts.add(post);
+                                            newpost.setPost_date(createTime.calculateTime());
+                                            myposts.add(newpost);
                                         }
                                     }
                                     Collections.reverse(myposts);
