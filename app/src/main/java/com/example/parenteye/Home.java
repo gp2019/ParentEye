@@ -79,6 +79,9 @@ public class Home extends Fragment {
                         final String[] myFriendsID = myfriends.split(",");
                         for(String id:myFriendsID){
                             friendsList.add(id);
+                            System.out.println(
+
+                            );
                         } }
                     memberRef.addValueEventListener(new ValueEventListener() {
                         @Override

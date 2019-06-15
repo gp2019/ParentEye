@@ -71,7 +71,7 @@ public class AccountActivity extends Activity {
     private TextView useraddresse;
     private TextView usergender;
     final long ONE_MEGABYTE = 1024 * 1024;
-    private ImageView Addfriend;
+    private ImageView Addfriend,myFriends;
     private TextView addfriendtext;
     private TextView userEmail;
     private  TextView userdate;
@@ -127,6 +127,7 @@ public class AccountActivity extends Activity {
         Post_listview=(ListView)findViewById(R.id.accountPost_listview);
         Accountprofile=(CircleImageView) findViewById(R.id.Accountprofile);
         AccountCover=(ImageView)findViewById(R.id.Accountcover);
+        myFriends=(ImageView)findViewById(R.id.myFriends);
         Accountname=(TextView) findViewById(R.id.Accountname);
         userdate=(TextView) findViewById(R.id.userdate);
         useraddresse=(TextView) findViewById(R.id.userAdresse);
@@ -156,6 +157,12 @@ public class AccountActivity extends Activity {
         AccountfriendsDialogtxtclose =(TextView) AccountfriendsDialog.findViewById(R.id.txtclose);
         AccountfriendsDialogList=(ListView) AccountfriendsDialog.findViewById(R.id.accout_friends);
 
+        myFriends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent userfriendsIntent=new Intent(AccountActivity.this,ViewPager_myFriends.class);
+                startActivity(userfriendsIntent);            }
+        });
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, cities);
 
@@ -752,6 +759,7 @@ public class AccountActivity extends Activity {
             });
         }
     }
+
     private void putuserdatainupdateform(){
         editAccountname.setText(Accountname.getText().toString());
         edituseremail.setText(userEmail.getText().toString());
