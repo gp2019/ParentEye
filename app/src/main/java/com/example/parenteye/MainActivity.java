@@ -345,12 +345,12 @@ search.setOnClickListener(new View.OnClickListener() {
                 notifi.addNotificationsOfLikes(postid1, "zkoZkODkLSYO8aZFhc0iVOILHc42");
 
                 //addNotificationsOfComments(postid1, LikeridAya);
-               // notifi.addNotificationsOfComments(postid2, "zkoZkODkLSYO8aZFhc0iVOILHc42");
-                //notifi.addNotificationsOfComments(postid1, "zkoZkODkLSYO8aZFhc0iVOILHc42");
+                notifi.addNotificationsOfComments(postid2, "zkoZkODkLSYO8aZFhc0iVOILHc42");
+                notifi.addNotificationsOfComments(postid1, "zkoZkODkLSYO8aZFhc0iVOILHc42");
 
                 //Add activitylog on likes , comments
                 activityLog.addActivityLogOfLikes(postid2);
-                //activityLog.addActivityLogOfComments(postid1);
+                activityLog.addActivityLogOfComments(postid1);
 
 
 
@@ -378,7 +378,7 @@ search.setOnClickListener(new View.OnClickListener() {
                 notifi.addNotificationsOfFriendRequest(FriendWantToRequest_Id);
 
                 /// son sends a friend request to
-                //activityLog.addActivityLogOfSendFriendRequest(FriendWantToRequest_Id);
+                activityLog.addActivityLogOfSendFriendRequest(FriendWantToRequest_Id);
 
 
                 //son recieve a friend request from
@@ -428,7 +428,7 @@ search.setOnClickListener(new View.OnClickListener() {
             }
         });
 
-//        GetMyHomePosts();
+        GetMyHomePosts();
         showProfilepic();
 
 
@@ -462,7 +462,6 @@ search.setOnClickListener(new View.OnClickListener() {
 
     private void CreatePost(String Uid) {
         Intent login_main = new Intent(MainActivity.this, Create_Post.class);
-        login_main.putExtra("userId", Uid);
         login_main.putExtra("placeTypeId", "1");
         login_main.putExtra("placeId", "");
         startActivity(login_main);
