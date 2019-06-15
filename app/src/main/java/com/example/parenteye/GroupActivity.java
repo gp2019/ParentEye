@@ -96,12 +96,12 @@ public class GroupActivity extends AppCompatActivity {
                         IsExist=2;
                         join_unjoin.setText("cancel request");
                         //hena 7aget ahmed
-                        CommunityRef.child(groupId).child("AdminId").addValueEventListener(new ValueEventListener() {
+                        CommunityRef.child(groupId).child("adminId").addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 String adminidd=dataSnapshot.getValue(String.class);
                                 Notifications note=new Notifications();
-                                note.addNotificationsOfGroupJoinRequest(adminidd,groupname);
+                                note.addNotificationsOfGroupJoinRequest(adminidd,groupId,groupname);
                                 ActivityLog log=new ActivityLog();
                                 log.addLogActivityChildSendGroupRequest(adminidd,groupId,groupname);
                                 log.addLogActivityChildReceiveJoinGroupRequest(adminidd,groupId,groupname);
@@ -150,7 +150,7 @@ public class GroupActivity extends AppCompatActivity {
                                         join_unjoin.setText("join Group");
                                         IsExist=0;
                       //hena 7aget ahmed
-                      CommunityRef.child(groupId).child("AdminId").addValueEventListener(new ValueEventListener() {
+                      CommunityRef.child(groupId).child("adminId").addValueEventListener(new ValueEventListener() {
                           @Override
                           public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                               String adminidd=dataSnapshot.getValue(String.class);

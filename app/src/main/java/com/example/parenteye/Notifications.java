@@ -297,14 +297,14 @@ public class Notifications {
     }
     //************************  add notification func on join group request ***************
 
-    public void addNotificationsOfGroupJoinRequest( String groupAdminId,String groupname) {
+    public void addNotificationsOfGroupJoinRequest( String groupAdminId,String groupId,String groupname) {
         DatabaseReference notification_reference = database.getReference("notifications").child(groupAdminId);
 
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("userId", currentUser.getUid()); // or hashMap.put("userid ", firebaseUser.getUid());
         hashMap.put("NotificationMessage", "send to you a join group  "+groupname);
-        hashMap.put("postId", " ");
+        hashMap.put("postId", groupId);
         hashMap.put("isPost", false);
         hashMap.put("isFriendRequest",false);
         hashMap.put("isGroupRequest",true);
@@ -326,8 +326,8 @@ public class Notifications {
         hashMap.put("postId", groupid);
         hashMap.put("isPost", false);
         hashMap.put("isFriendRequest",false);
-        hashMap.put("isGroupRequest",true);
-
+        hashMap.put("isGroupRequest",false);
+        hashMap.put("groupRequestResponse",true);
         notification_reference.push().setValue(hashMap);
 
         //to call ----->  addNotificationsOfFriendRequest(FriendRequesterId)
@@ -339,11 +339,12 @@ public class Notifications {
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("userId", currentUser.getUid()); // or hashMap.put("userid ", firebaseUser.getUid());
-        hashMap.put("NotificationMessage", "Reject your join group "+groupname);
+        hashMap.put("NotificationMessage", "Reject your join group  "+groupname);
         hashMap.put("postId", groupid);
         hashMap.put("isPost", false);
         hashMap.put("isFriendRequest",false);
-        hashMap.put("isGroupRequest",true);
+        hashMap.put("isGroupRequest",false);
+        hashMap.put("groupRequestResponse",true);
 
         notification_reference.push().setValue(hashMap);
 
