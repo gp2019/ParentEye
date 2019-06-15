@@ -411,24 +411,26 @@ search.setOnClickListener(new View.OnClickListener() {
                 notifi.DeleteNotificationOfLike(postid2, "L7zI36Be0qS2pwLic4Jd8RDdWjD2");
             }
         });
-        myRef.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String Role=dataSnapshot.getValue(Users.class).getRoleId();
-                if(!TextUtils.equals("1",Role)){
-                    addchild.setVisibility(View.GONE);
-                    mychildren.setVisibility(View.GONE);
-                    ActivitylogBtn.setVisibility(View.GONE);
+        if(mAuth.getCurrentUser()!=null) {
+            myRef.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    String Role = dataSnapshot.getValue(Users.class).getRoleId();
+                    if (!TextUtils.equals("1", Role)) {
+                        addchild.setVisibility(View.GONE);
+                        mychildren.setVisibility(View.GONE);
+                        ActivitylogBtn.setVisibility(View.GONE);
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+            showProfilepic();
+        }
 
-             showProfilepic();
 
 
 

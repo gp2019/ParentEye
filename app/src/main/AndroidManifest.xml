@@ -18,11 +18,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".SpecificPostActivity"></activity>
         <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".SearchActivity" />
         <activity android:name=".MakeGroupActivity" />
@@ -47,7 +43,13 @@
         <activity android:name=".ChatActivity" />
         <activity
             android:name=".Main2Activity"
-            android:theme="@style/AppTheme.FullScreen"></activity>
+            android:theme="@style/AppTheme.FullScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".SignupActivity"
             android:theme="@style/AppTheme.FullScreen" />
