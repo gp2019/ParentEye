@@ -41,8 +41,6 @@ public class NotificationFragment extends Fragment {
 
     public static NotificationAdapter notificationAdapter  ;
 
-    public static ActivityLogAdapter activityLogAdapter;
-
     public List<Notifications> notificationsList  = new ArrayList<>();
 
 

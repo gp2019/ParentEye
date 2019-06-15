@@ -48,6 +48,26 @@ public class Notifications {
     private boolean isComment;
     private boolean isLike;
     private boolean isFriendRequest;
+    private boolean isGroupRequest;
+
+    private boolean groupRequestResponse;
+    private boolean friendRequestResponse;
+    public boolean getIsGroupRequestResponse() {
+        return groupRequestResponse;
+    }
+
+    public void setGroupRequestResponse(boolean groupRequestResponse) {
+        this.groupRequestResponse = groupRequestResponse;
+    }
+
+    public boolean getIsisFriendRequestResponse() {
+        return friendRequestResponse;
+    }
+
+    public void setFriendRequestResponse(boolean friendRequestResponse) {
+        this.friendRequestResponse = friendRequestResponse;
+    }
+;
 
     public boolean getisGroupRequest() {
         return isGroupRequest;
@@ -57,7 +77,6 @@ public class Notifications {
         isGroupRequest = groupRequest;
     }
 
-    private boolean isGroupRequest;
 
     public List<Notifications> notificationsList  = new ArrayList<>();
 
@@ -82,7 +101,9 @@ public class Notifications {
 
     }
 
-    public Notifications(String id, String userId, String notificationMessage, Date date, boolean seen ,boolean isPost,boolean isLike ,boolean isComment,boolean isFriendRequest,boolean isGrouprequest) {
+    public Notifications(String id, String userId, String notificationMessage, Date date,
+                         boolean seen ,boolean isPost,boolean isLike ,boolean isComment,boolean isFriendRequest
+            ,boolean isGrouprequest,boolean groupRequestResponse ,boolean friendRequestResponse) {
         this.id = id;
         this.userId = userId;
         NotificationMessage = notificationMessage;
@@ -93,6 +114,9 @@ public class Notifications {
         this.isPost=isPost;
         this.isFriendRequest=isFriendRequest;
         this.isGroupRequest=isGrouprequest;
+        this.friendRequestResponse = friendRequestResponse;
+        this.groupRequestResponse = groupRequestResponse;
+
     }
 
     public void setId(String id) {
@@ -236,9 +260,44 @@ public class Notifications {
         //to call ----->  addNotificationsOfFriendRequest(FriendRequesterId)
 
     }
-    //************************  add notification func on Friend request ***************
 
-    public void addNotificationsOfGroupRequest( String groupAdminId) {
+
+    public void addNotificationsAcceptFriendRequest( String SenderFriendRequest ) {
+        DatabaseReference notification_reference = database.getReference("notifications").child(SenderFriendRequest);
+
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("userId", currentUser.getUid()); // or hashMap.put("userid ", firebaseUser.getUid());
+        hashMap.put("NotificationMessage", "Accept you a Friend Request ");
+        hashMap.put("postId", "");
+        hashMap.put("isPost", false);
+        hashMap.put("isFriendRequest",false);
+        hashMap.put("friendRequestResponse",true);
+        notification_reference.push().setValue(hashMap);
+
+        //to call ----->  addNotificationsOfFriendRequest(FriendRequesterId)
+
+    }
+    public void addNotificationsRejectFriendRequest( String SenderFriendRequest ) {
+        DatabaseReference notification_reference = database.getReference("notifications").child(SenderFriendRequest);
+
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("userId", currentUser.getUid()); // or hashMap.put("userid ", firebaseUser.getUid());
+        hashMap.put("NotificationMessage", "Reject you a Friend Request ");
+        hashMap.put("postId", "");
+        hashMap.put("isPost", false);
+        hashMap.put("isFriendRequest",false);
+        hashMap.put("friendRequestResponse",true);
+
+        notification_reference.push().setValue(hashMap);
+
+        //to call ----->  addNotificationsOfFriendRequest(FriendRequesterId)
+
+    }
+    //************************  add notification func on join group request ***************
+
+    public void addNotificationsOfGroupJoinRequest( String groupAdminId) {
         DatabaseReference notification_reference = database.getReference("notifications").child(groupAdminId);
 
 
@@ -255,6 +314,43 @@ public class Notifications {
         //to call ----->  addNotificationsOfFriendRequest(FriendRequesterId)
 
     }
+    //************************  add notification func on Accept group request ***************
+
+    public void addNotificationsOfAcceptGroupJoinRequest( String SenderJoinRequest ,String groupid) {
+        DatabaseReference notification_reference = database.getReference("notifications").child(SenderJoinRequest);
+
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("userId", currentUser.getUid()); // or hashMap.put("userid ", firebaseUser.getUid());
+        hashMap.put("NotificationMessage", "Accept your join group Request ");
+        hashMap.put("postId", groupid);
+        hashMap.put("isPost", false);
+        hashMap.put("isFriendRequest",false);
+        hashMap.put("isGroupRequest",true);
+
+        notification_reference.push().setValue(hashMap);
+
+        //to call ----->  addNotificationsOfFriendRequest(FriendRequesterId)
+
+    }
+    public void addNotificationsOfRejectGroupJoinRequest( String SenderJoinRequest ,String groupid) {
+        DatabaseReference notification_reference = database.getReference("notifications").child(SenderJoinRequest);
+
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("userId", currentUser.getUid()); // or hashMap.put("userid ", firebaseUser.getUid());
+        hashMap.put("NotificationMessage", "Reject your join group Request ");
+        hashMap.put("postId", groupid);
+        hashMap.put("isPost", false);
+        hashMap.put("isFriendRequest",false);
+        hashMap.put("isGroupRequest",true);
+
+        notification_reference.push().setValue(hashMap);
+
+        //to call ----->  addNotificationsOfFriendRequest(FriendRequesterId)
+
+    }
+
     //************************************* Delete notification func of Like ***************************
 
     public void DeleteNotificationOfLike(final String postid, final String post_publisher_Id)
