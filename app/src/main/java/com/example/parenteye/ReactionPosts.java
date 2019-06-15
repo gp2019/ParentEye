@@ -11,7 +11,7 @@ public class ReactionPosts {
 
     public ReactionPosts(String reactionId, String postORCommentId, String userId) {
         this.reactionId = reactionId;
-        PostORCommentId = postORCommentId;
+        this.PostORCommentId = postORCommentId;
         this.userId = userId;
     }
 

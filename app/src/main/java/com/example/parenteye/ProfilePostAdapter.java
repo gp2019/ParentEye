@@ -269,6 +269,7 @@ public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned>{
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (!dataSnapshot.exists()) {
+                            System.out.println("make like");
                             String ReactionID =post_returnedd.get(position).getPost_Id()+mAuth.getCurrentUser().getUid();
                             ReactionPosts reactionComment = new ReactionPosts(ReactionID, post_returnedd.get(position).getPost_Id(), post_returnedd.get(position).getpost_owner_ID(), post_returnedd.get(position).getPost_Id() + post_returnedd.get(position).getpost_owner_ID());
                             btLike.setBackgroundResource(R.drawable.heart_reaction);
@@ -278,6 +279,7 @@ public class ProfilePostAdapter extends ArrayAdapter<custom_posts_returned>{
                             dbRef2.child(post_returnedd.get(position).getPost_Id()).child("countLike").setValue(post_returnedd.get(position).getCountLike());
 
                         } else {
+                            System.out.println("do not make like");
                             btLike.setBackgroundResource(R.drawable.heart);
                             post_returnedd.get(position).setCountLike(post_returnedd.get(position).getCountLike() - 1);
                             countLike.setText(post_returnedd.get(position).getCountLike() + " Like");

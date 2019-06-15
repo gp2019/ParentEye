@@ -28,7 +28,7 @@ public class friends_fregment extends Fragment {
     DatabaseReference userref = database.getReference("Users");
     ArrayList<Users> curremtuserfriends=new ArrayList<Users>();
     private ListView friendsList;
-    public static final String friendId="Friend_Id";
+    public static final String friendId="friendId";
     public friends_fregment() {
         // Required empty public constructor
     }
