@@ -268,7 +268,8 @@ public class AccountActivity extends Activity {
 
                                 }
                                 Notifications notifi =new Notifications();
-                                notifi.DeleteNotificationOfRejectOrAcceptFriendRequest(userId);
+                                notifi.DeleteNotificationOfCancelFriendRequest(userId);
+
 
                             }
 
@@ -288,7 +289,8 @@ public class AccountActivity extends Activity {
                         addfriendtext.setText("cancel request");
                         Notifications notifi =new Notifications();
                         notifi.addNotificationsOfFriendRequest(userId);
-
+                       ActivityLog log=new ActivityLog();
+                       log.addLogActivityReceiveFriendRequest(userId);
                         IsExist=true;
                     }
 

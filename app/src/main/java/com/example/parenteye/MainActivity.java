@@ -32,6 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     private Button view_group;
     private Button showGroupRequest;
     private Button mainPage;
+    DatabaseReference CommunityRef = database.getReference("Community");
     //design
 
     private Button mainTwo;
@@ -87,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button commentNotify;
     public static final String ProfileId="ProfileId";
+    private CreateTime createTime;
 
 
 
@@ -437,7 +440,109 @@ search.setOnClickListener(new View.OnClickListener() {
 
 
 
+    private void GetMyHomePosts(){
 
+        if(mAuth.getCurrentUser()!=null){
+
+            final HomePostsAdapter postadapter=new HomePostsAdapter(MainActivity.this,myposts);
+            Post_listview.setAdapter(postadapter);
+            final ArrayList<String> communityIds=new ArrayList<String>();
+            final ArrayList<String> friendsList=new ArrayList<String>();
+
+            myRef3.child(mAuth.getCurrentUser().getUid()).child("userFriends").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.getValue(String.class)!=null) {
+                        String myfriends = dataSnapshot.getValue(String.class);
+                        final String[] myFriendsID = myfriends.split(",");
+                        for(String id:myFriendsID){
+                            friendsList.add(id);
+                            System.out.println("id is "+id);
+                            System.out.println("heloooooooooooooooooo is ");
+                            System.out.println("heloooooooooooooooooo is ");
+                            System.out.println("heloooooooooooooooooo is  ");
+                            System.out.println("heloooooooooooooooooo is ");
+                            System.out.println("heloooooooooooooooooo is ");
+                            System.out.println("heloooooooooooooooooo is  ");
+                        } }
+                    System.out.println("id is ");
+                    memberRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for(DataSnapshot membersnaphot:dataSnapshot.getChildren()){
+                                if(TextUtils.equals(membersnaphot.getValue(Members.class).getUserId(),mAuth.getCurrentUser().getUid())){
+                                    communityIds.add(membersnaphot.getValue(Members.class).getCommunityid());
+                                }
+                            }
+                          /*  if (dataSnapshot.getValue(Members.class)!=null) {
+                                for (DataSnapshot membersnapshot : dataSnapshot.getChildren()) {
+                                    Members member = membersnapshot.getValue(Members.class);
+                                    communityIds.add(member.getCommunityid());
+                                    //System.out.println(member.getCommunityid());
+                                }
+                            }*/
+                            CommunityRef.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    for(DataSnapshot comsnaphot:dataSnapshot.getChildren()){
+                                        if(TextUtils.equals(comsnaphot.getValue(Community.class).getAdminId(),mAuth.getCurrentUser().getUid())){
+                                            communityIds.add(comsnaphot.getKey());
+                                            //System.out.println("Helooooooooooooooooooooooooooooooooooooo"+comsnaphot.getKey());
+                                        }
+                                    }
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+                            myRef2.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    myposts.clear();
+                                    for (DataSnapshot postsnapshot : dataSnapshot.getChildren()) {
+                                        Posts post = postsnapshot.getValue(Posts.class);
+                                        if (friendsList.contains(post.getUserId())&&TextUtils.equals(post.getPlaceTypeId(),"1")|| communityIds.contains(post.getPlaceId())) {
+                                            String timePuplisher =post.getPostdate();
+                                            createTime =new CreateTime(timePuplisher);
+                                            try {
+                                                createTime.sdf();
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+                                            post.setPostdate(createTime.calculateTime());
+                                            myposts.add(post);
+                                        }
+                                    }
+                                    Collections.reverse(myposts);
+                                    postadapter.notifyDataSetChanged();
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+
+            });
+        }
+    }
 
 
 

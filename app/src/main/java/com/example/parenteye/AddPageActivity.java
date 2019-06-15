@@ -91,7 +91,7 @@ public class AddPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(mAuth.getCurrentUser()!=null) {
-                    String page_name = pagename.getText().toString();
+                    final String page_name = pagename.getText().toString();
                     String page_about = pageAbout.getText().toString();
                     if (!TextUtils.isEmpty(page_name) && !TextUtils.isEmpty(page_about)) {
                         Community page = new Community();
@@ -104,12 +104,14 @@ public class AddPageActivity extends AppCompatActivity {
                         if(profilekey!=null){
                             page.setPhotoId(profilekey);
                         }
-
-                        myRef.push().setValue(page).addOnCompleteListener(new OnCompleteListener<Void>() {
+                  final String pkey=myRef.push().getKey();
+                        myRef.child(pkey).setValue(page).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(AddPageActivity.this, "Page Done Successfully", Toast.LENGTH_LONG).show();
+                                    ActivityLog log=new ActivityLog();
+                                    log.addLogActivityChildCreatePage(pkey,page_name);
 
                                 } else {
                                     Toast.makeText(AddPageActivity.this, "Error !! " + task.getException(), Toast.LENGTH_LONG).show();

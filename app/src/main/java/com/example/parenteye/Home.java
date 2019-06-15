@@ -52,7 +52,7 @@ public class Home extends Fragment {
 
 
         Post_listview=(ListView) view.findViewById(R.id.Post_listview);
-        GetMyHomePosts();
+
         return view;
     }
 
@@ -60,10 +60,11 @@ public class Home extends Fragment {
     public void onStart() {
 
         super.onStart();
-
+        GetMyHomePosts();
     }
 
     private void GetMyHomePosts(){
+
         if(mAuth.getCurrentUser()!=null){
 
             final HomePostsAdapter postadapter=new HomePostsAdapter(getActivity(),myposts);
@@ -79,7 +80,15 @@ public class Home extends Fragment {
                         final String[] myFriendsID = myfriends.split(",");
                         for(String id:myFriendsID){
                             friendsList.add(id);
+                            System.out.println("id is "+id);
+                            System.out.println("heloooooooooooooooooo is ");
+                            System.out.println("heloooooooooooooooooo is ");
+                            System.out.println("heloooooooooooooooooo is  ");
+                            System.out.println("heloooooooooooooooooo is ");
+                            System.out.println("heloooooooooooooooooo is ");
+                            System.out.println("heloooooooooooooooooo is  ");
                         } }
+                    System.out.println("id is ");
                     memberRef.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -101,7 +110,7 @@ public class Home extends Fragment {
                                     for(DataSnapshot comsnaphot:dataSnapshot.getChildren()){
                                         if(TextUtils.equals(comsnaphot.getValue(Community.class).getAdminId(),mAuth.getCurrentUser().getUid())){
                                             communityIds.add(comsnaphot.getKey());
-                                            System.out.println("Helooooooooooooooooooooooooooooooooooooo"+comsnaphot.getKey());
+                                            //System.out.println("Helooooooooooooooooooooooooooooooooooooo"+comsnaphot.getKey());
                                         }
                                     }
                                 }

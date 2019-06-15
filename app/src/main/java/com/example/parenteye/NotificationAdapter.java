@@ -49,6 +49,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference FriendRequestRef = database.getReference("FriendRequest");
     DatabaseReference friendsRef = database.getReference("Friends");
+    DatabaseReference CommunityRef = database.getReference("Community");
 
 
     //initialize pure  context
@@ -63,6 +64,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     private StorageReference PStorageRef;
     public static final String searched_user_Id="searched_user_Id";
     public static final String specific_Post_Id="specific_Post_Id";
+    DatabaseReference groupReqRef = database.getReference("GroupRequests");
+    DatabaseReference membersRef = database.getReference("Members");
 
 
     //NotificationAdapter constructor
@@ -90,7 +93,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
          get data from notification database after pushed by the number of notification in the BD and put it into the layout
    */
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int position) {
 
 
         //initialize and get notification
@@ -207,9 +210,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                             for (DataSnapshot reqsnapshot : dataSnapshot.getChildren()) {
                                 if (TextUtils.equals(whoMakeAction, reqsnapshot.getValue(FriendRequest.class).getSenderid()) && TextUtils.equals(reqsnapshot.getValue(FriendRequest.class).getRecieverid(), mAuth.getCurrentUser().getUid())) {
                                     FriendRequestRef.child(reqsnapshot.getKey()).removeValue();
-                                    Notifications n = new Notifications();
-                                    n.DeleteNotificationOfRejectOrAcceptFriendRequest(whoMakeAction);
-                                    n.addNotificationsAcceptFriendRequest(whoMakeAction);
+
+
+
                                 }
 
                             }
@@ -237,6 +240,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                         public void onCancelled(@NonNull DatabaseError databaseError) {
 
                         }
+
                     });
                     friendsRef.child(whoMakeAction).child("userFriends").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -256,7 +260,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
                         }
                     });
-
+                    Notifications n = new Notifications();
+                    n.DeleteNotificationOfRejectOrAcceptFriendRequest(whoMakeAction);
+                    n.addNotificationsAcceptFriendRequest(whoMakeAction);
 
                 }
             });
@@ -318,6 +324,43 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             viewHolder.Holder_Accept_notifi_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    groupReqRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for(DataSnapshot resnapshot:dataSnapshot.getChildren()){
+                                if(TextUtils.equals(resnapshot.getValue(GroupRequests.class).getGroupId(),PostId)&&TextUtils.equals(resnapshot.getValue(GroupRequests.class).getUserid(),whoMakeAction)){
+                                    groupReqRef.child(resnapshot.getKey()).removeValue();
+
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                    Members new_member=new Members();
+                    new_member.setCommunityid(PostId);
+                    new_member.setUserId(whoMakeAction);
+                    new_member.setTyptId("1");
+                    membersRef.push().setValue(new_member);
+                    CommunityRef.child(PostId).child("Communityname").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            ActivityLog log=new ActivityLog();
+                            log.addLogActivityAcceptGroupRequest(whoMakeAction,PostId,dataSnapshot.getValue(String.class));
+                            Notifications note=new Notifications();
+                            note.addNotificationsOfAcceptGroupJoinRequest(whoMakeAction,PostId,dataSnapshot.getValue(String.class));
+                            note.DeleteNotificationOfRejectOrAcceptJoinGroupRequest(whoMakeAction);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
 
                 }
             });
@@ -328,7 +371,39 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             viewHolder.Holder_reject_notifi_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    groupReqRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for(DataSnapshot resnapshot:dataSnapshot.getChildren()){
+                                if(TextUtils.equals(resnapshot.getValue(GroupRequests.class).getGroupId(),PostId)&&TextUtils.equals(resnapshot.getValue(GroupRequests.class).getUserid(),whoMakeAction)){
+                                    groupReqRef.child(resnapshot.getKey()).removeValue();
 
+                                    CommunityRef.child(PostId).child("Communityname").addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            Notifications note=new Notifications();
+                                            note.addNotificationsOfRejectGroupJoinRequest(whoMakeAction,PostId,dataSnapshot.getValue(String.class));
+                                            ActivityLog log=new ActivityLog();
+                                            log.DeleteLogRejectGroupRequest(whoMakeAction,PostId);
+                                            note.DeleteNotificationOfRejectOrAcceptJoinGroupRequest(whoMakeAction);
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    });
+
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
                 }
             });
 

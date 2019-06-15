@@ -466,7 +466,7 @@ public class ActivityLog {
 
     }
 
-    public void addLogActivityChildReceiveJoinGroupRequest(final String ChildGroupAdmin,final String groupId) {
+    public void addLogActivityChildReceiveJoinGroupRequest(final String ChildGroupAdmin,final String groupId,final String groupname) {
 
 
         ParentChildren_reference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -484,7 +484,7 @@ public class ActivityLog {
 
                             HashMap<String, Object> hashMap = new HashMap<>();
                             hashMap.put("childId", ChildGroupAdmin); // or hashMap.put("userid ", firebaseUser.getUid());
-                            hashMap.put("ActivityLogMessage", "kide receive join group request from ");
+                            hashMap.put("ActivityLogMessage", "kide receive join group request "+groupname+" group from ");
                             hashMap.put("userId", currentUser.getUid());
                             hashMap.put("postId", groupId);
                             hashMap.put("isPost", false);
@@ -515,7 +515,7 @@ public class ActivityLog {
         //to call ----->  addNotificationsOfFriendRequest(FriendRequesterId)
 
     }
-    public void addLogActivityChildSendGroupRequest(final String ChildGroupAdmin,final String groupId) {
+    public void addLogActivityChildSendGroupRequest(final String ChildGroupAdmin,final String groupId,final String groupname) {
 
 
         ParentChildren_reference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -533,7 +533,7 @@ public class ActivityLog {
 
                             HashMap<String, Object> hashMap = new HashMap<>();
                             hashMap.put("childId", currentUser.getUid()); // or hashMap.put("userid ", firebaseUser.getUid());
-                            hashMap.put("ActivityLogMessage", "kide receive join group request from ");
+                            hashMap.put("ActivityLogMessage", "kide receive join group request to  "+groupname+" group from ");
                             hashMap.put("userId", ChildGroupAdmin);
                             hashMap.put("postId", groupId);
                             hashMap.put("isPost", false);
@@ -559,7 +559,7 @@ public class ActivityLog {
 
     }
 
-        public void addLogActivityAcceptGroupRequest(final String userid,final String groupId) {
+        public void addLogActivityAcceptGroupRequest(final String userid,final String groupId,final String groupname) {
 
 
             ParentChildren_reference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -577,7 +577,7 @@ public class ActivityLog {
 
                                 HashMap<String, Object> hashMap = new HashMap<>();
                                 hashMap.put("childId", userid); // or hashMap.put("userid ", firebaseUser.getUid());
-                                hashMap.put("ActivityLogMessage", "kide joined group ");
+                                hashMap.put("ActivityLogMessage", "kide joined "+groupname+ " group");
                                 hashMap.put("userId", currentUser.getUid());
                                 hashMap.put("postId", groupId);
                                 hashMap.put("isPost", false);
@@ -609,7 +609,7 @@ public class ActivityLog {
     }
 
 
-    public void addLogActivityChildCreateGroup(final String groupId) {
+    public void addLogActivityChildCreateGroup(final String groupId,final String groupname) {
 
 
         ParentChildren_reference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -627,7 +627,7 @@ public class ActivityLog {
 
                             HashMap<String, Object> hashMap = new HashMap<>();
                             hashMap.put("childId", currentUser.getUid()); // or hashMap.put("userid ", firebaseUser.getUid());
-                            hashMap.put("ActivityLogMessage", "kide Create group ");
+                            hashMap.put("ActivityLogMessage", "kid Create group "+groupname);
                             hashMap.put("postId", groupId);
                             hashMap.put("isPost", false);
                             hashMap.put("isLike", false);
@@ -659,7 +659,7 @@ public class ActivityLog {
     }
 
 
-    public void addLogActivityChildCreatePage(final String PageId) {
+    public void addLogActivityChildCreatePage(final String PageId,final String pagename) {
 
 
         ParentChildren_reference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -677,7 +677,7 @@ public class ActivityLog {
 
                             HashMap<String, Object> hashMap = new HashMap<>();
                             hashMap.put("childId", currentUser.getUid()); // or hashMap.put("userid ", firebaseUser.getUid());
-                            hashMap.put("ActivityLogMessage", "kide Create page ");
+                            hashMap.put("ActivityLogMessage", "kid Create page "+pagename);
                             hashMap.put("postId", PageId);
                             hashMap.put("isPost", false);
                             hashMap.put("isLike", false);

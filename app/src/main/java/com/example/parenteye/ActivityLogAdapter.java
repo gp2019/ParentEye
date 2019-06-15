@@ -48,6 +48,11 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
     private StorageReference PStorageRef;
     private StorageReference GroupStorageRef;
     private StorageReference pageStorageRef;
+    public static final String searched_user_Id="searched_user_Id";
+    public static final String specific_Post_Id="specific_Post_Id";
+    public static final String searched_page_Id="searched_page_Id";
+    public static final String searched_group_Id="searched_group_Id";
+    public static final String searched_Item_name="searched_Item_name";
 
     //NotificationAdapter constructor
     public ActivityLogAdapter(Context mContext, List<ActivityLog> mActivityLog) {
@@ -83,11 +88,13 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
 
         viewHolder.Holder_notification_content_text.setText(activityLog.getActivityLogMessage());
         //put the notification text into the content holder
-        String whoMakeAction = activityLog.getChildId();
+        final String childId = activityLog.getChildId();
         //call getuserInfo func to get the user name and profile pic of him
-        getuserInfo(viewHolder.Holder_notification_profile_image, viewHolder.Holder_notification_user_name, whoMakeAction);
+        getuserInfo(viewHolder.Holder_notification_profile_image, viewHolder.Holder_notification_user_name, childId);
 
-        String PostId = activityLog.getPostId();
+        final String PostId = activityLog.getPostId();
+        final String friendID = activityLog.getuserId();
+
 
         //getPostImage(viewHolder.Holder_notification_post_content ,viewHolder.Holder_notification_post_image, PostId);
 
@@ -108,7 +115,7 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
             // accept and reject lay out will gone
             viewHolder.Holder_Friend_request_notifi_layout.setVisibility(View.GONE);
 
-            String friendID = activityLog.getuserId();
+
             //if ispost is false photo of post and content will replace with photo of riend and the name of him
 
             getuserInfo(viewHolder.Holder_notification_post_image, viewHolder.Holder_notification_post_content,friendID);
@@ -141,8 +148,10 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
                 @Override
                 public void onClick(View v) {
 
-                    Intent in = new Intent(mContext, MainActivity.class);
-                    mContext.startActivity(in);
+                    Intent specificPost_intent=new Intent(mContext,SpecificPostActivity.class);
+                    specificPost_intent.putExtra(specific_Post_Id,PostId);
+                    mContext.startActivity(specificPost_intent);
+                    System.out.println("post id is  "+PostId);
 
 
                     // new Intent((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.notification_fragment_container,
@@ -156,7 +165,10 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
             viewHolder.Holder_notification_post_image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Intent specificPost_intent=new Intent(mContext,SpecificPostActivity.class);
+                    specificPost_intent.putExtra(specific_Post_Id,PostId);
+                    mContext.startActivity(specificPost_intent);
+                    System.out.println("post id is  "+PostId);
                 }
             });
 
@@ -168,7 +180,9 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
             viewHolder.Holder_notification_profile_image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Intent searched_intent=new Intent(mContext,AccountActivity.class);
+                    searched_intent.putExtra(searched_user_Id,childId);
+                    mContext.startActivity(searched_intent);
                 }
             });
             /*************************************** action on child profile username btn**************************
@@ -177,7 +191,9 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
             viewHolder.Holder_notification_user_name.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Intent searched_intent=new Intent(mContext,AccountActivity.class);
+                    searched_intent.putExtra(searched_user_Id,childId);
+                    mContext.startActivity(searched_intent);
                 }
             });
 
@@ -196,9 +212,9 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
                 @Override
                 public void onClick(View v) {
 
-                    Intent in = new Intent(mContext, MainActivity.class);
-                    mContext.startActivity(in);
-
+                    Intent searched_intent=new Intent(mContext,AccountActivity.class);
+                    searched_intent.putExtra(searched_user_Id,friendID);
+                    mContext.startActivity(searched_intent);
 
                     // new Intent((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.notification_fragment_container,
                     //new custom_posts_returned()).commit();
@@ -211,7 +227,9 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
             viewHolder.Holder_notification_post_image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Intent searched_intent=new Intent(mContext,AccountActivity.class);
+                    searched_intent.putExtra(searched_user_Id,friendID);
+                    mContext.startActivity(searched_intent);
                 }
             });
 
@@ -223,7 +241,9 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
             viewHolder.Holder_notification_profile_image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+        Intent searched_intent=new Intent(mContext,AccountActivity.class);
+                    searched_intent.putExtra(searched_user_Id,childId);
+                    mContext.startActivity(searched_intent);
                 }
             });
             /*************************************** action on child profile username btn**************************
@@ -232,7 +252,9 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
             viewHolder.Holder_notification_user_name.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Intent searched_intent=new Intent(mContext,AccountActivity.class);
+                    searched_intent.putExtra(searched_user_Id,childId);
+                    mContext.startActivity(searched_intent);
                 }
             });
 
@@ -248,8 +270,9 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
                 @Override
                 public void onClick(View v) {
 
-                    Intent in = new Intent(mContext, MainActivity.class);
-                    mContext.startActivity(in);
+                    Intent searched_intent=new Intent(mContext,GroupActivity.class);
+                    searched_intent.putExtra(searched_group_Id,PostId);
+                    mContext.startActivity(searched_intent);
 
 
                     // new Intent((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.notification_fragment_container,
@@ -263,7 +286,9 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
             viewHolder.Holder_notification_post_image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Intent searched_intent=new Intent(mContext,GroupActivity.class);
+                    searched_intent.putExtra(searched_group_Id,PostId);
+                    mContext.startActivity(searched_intent);
                 }
             });
 
@@ -275,7 +300,9 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
             viewHolder.Holder_notification_profile_image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Intent searched_intent=new Intent(mContext,AccountActivity.class);
+                    searched_intent.putExtra(searched_user_Id,childId);
+                    mContext.startActivity(searched_intent);
                 }
             });
             /*************************************** action on child profile username btn**************************
@@ -284,7 +311,9 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
             viewHolder.Holder_notification_user_name.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Intent searched_intent=new Intent(mContext,AccountActivity.class);
+                    searched_intent.putExtra(searched_user_Id,childId);
+                    mContext.startActivity(searched_intent);
                 }
             });
 
@@ -298,9 +327,10 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
                 @Override
                 public void onClick(View v) {
 
-                    Intent in = new Intent(mContext, MainActivity.class);
-                    mContext.startActivity(in);
 
+                    Intent searched_intent=new Intent(mContext,PageActivity.class);
+                    searched_intent.putExtra(searched_page_Id,PostId);
+                    mContext.startActivity(searched_intent);
 
                     // new Intent((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.notification_fragment_container,
                     //new custom_posts_returned()).commit();
@@ -314,6 +344,9 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
                 @Override
                 public void onClick(View v) {
 
+                    Intent searched_intent=new Intent(mContext,PageActivity.class);
+                    searched_intent.putExtra(searched_page_Id,PostId);
+                    mContext.startActivity(searched_intent);
                 }
             });
 
@@ -325,7 +358,9 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
             viewHolder.Holder_notification_profile_image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Intent searched_intent=new Intent(mContext,AccountActivity.class);
+                    searched_intent.putExtra(searched_user_Id,childId);
+                    mContext.startActivity(searched_intent);
                 }
             });
             /*************************************** action on child profile username btn**************************
@@ -334,7 +369,9 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
             viewHolder.Holder_notification_user_name.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Intent searched_intent=new Intent(mContext,AccountActivity.class);
+                    searched_intent.putExtra(searched_user_Id,childId);
+                    mContext.startActivity(searched_intent);
                 }
             });
 
