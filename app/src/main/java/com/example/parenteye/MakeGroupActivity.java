@@ -78,7 +78,7 @@ public class MakeGroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (mAuth.getCurrentUser() != null) {
-                    String group_name = groupName.getText().toString();
+                   final  String group_name = groupName.getText().toString();
                     String group_about = aboutGroup.getText().toString();
                     if (!TextUtils.isEmpty(group_name) || !TextUtils.isEmpty(group_about)) {
                         Community group = new Community();
@@ -93,10 +93,13 @@ public class MakeGroupActivity extends AppCompatActivity {
                         if (coverkey != null) {
                             group.setCoverPhotoId(coverkey);
                         }
-                        myRef.push().setValue(group).addOnCompleteListener(new OnCompleteListener<Void>() {
+                       final String gKey=myRef.push().getKey();
+                        myRef.child(gKey).setValue(group).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
+                                    ActivityLog log=new ActivityLog();
+                                    log.addLogActivityChildCreateGroup(gKey,group_name);
                                     Toast.makeText(MakeGroupActivity.this, "Your Group Created Successfully", Toast.LENGTH_LONG).show();
 
                                 } else {

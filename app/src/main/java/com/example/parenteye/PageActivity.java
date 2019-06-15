@@ -281,44 +281,55 @@ public class PageActivity extends AppCompatActivity {
     public  void GetPagePosts(){
         Intent intent = getIntent();
         final   String PageId = intent.getStringExtra("searched_page_Id");
-        final   String PageName = intent.getStringExtra("searched_Item_name");
-       // final String PageId="-Lg1OLwvGrf5AJFx6-jK"; //will be get automatic later
-       // final String PageName="page 2";//will be get automatic later
+       // final   String PageName = intent.getStringExtra("searched_Item_name");
         final PagePostAdapter pageAdapter=new PagePostAdapter(PageActivity.this,Page_posts);
         Page_Post_listview.setAdapter(pageAdapter);
-        postref.addValueEventListener(new ValueEventListener() {
+        CommunityRef.child(PageId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Page_posts.clear();
-                for(DataSnapshot pagepostsnapshot:dataSnapshot.getChildren()){
-                    Posts pagepost=pagepostsnapshot.getValue(Posts.class);
-                    if(TextUtils.equals(pagepost.getPlaceTypeId(),"2")&&TextUtils.equals(pagepost.getPlaceId(),PageId)){
-                        custom_posts_returned custom=new custom_posts_returned();
-                        custom.setPost_owner_name(PageName);
-                        custom.setpost_owner_ID(pagepost.getPlaceId());
-                        custom.setPost_Id(pagepostsnapshot.getKey());
-                        String timePuplisher =pagepost.getPostdate();
-                        createTime =new CreateTime(timePuplisher);
-                        try {
-                            createTime.sdf();
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                        custom.setPost_date(createTime.calculateTime());
-                        if(pagepost.getPostcontent()!=null){
-                            custom.setPost_text(pagepost.getPostcontent());
-                            // System.out.println("content "+ custom.getPost_text());
-                        }
-                        if(pagepost.isHasimage()==true){
-                            custom.setPost_image(pagepost.getImageId());
-                        }
-                        Page_posts.add(custom);
-                        //   System.out.println("added "+ custom.getpost_owner_ID());
-                    }
-                }
+              final String PageName=dataSnapshot.getValue(Community.class).getCommunityname();
 
-                Collections.reverse(Page_posts);
-                pageAdapter.notifyDataSetChanged();
+                postref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Page_posts.clear();
+                        for(DataSnapshot pagepostsnapshot:dataSnapshot.getChildren()){
+                            Posts pagepost=pagepostsnapshot.getValue(Posts.class);
+                            if(TextUtils.equals(pagepost.getPlaceTypeId(),"2")&&TextUtils.equals(pagepost.getPlaceId(),PageId)){
+                                custom_posts_returned custom=new custom_posts_returned();
+                                custom.setPost_owner_name(PageName);
+                                custom.setpost_owner_ID(pagepost.getPlaceId());
+                                custom.setPost_Id(pagepostsnapshot.getKey());
+                                String timePuplisher =pagepost.getPostdate();
+                                createTime =new CreateTime(timePuplisher);
+                                try {
+                                    createTime.sdf();
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                                custom.setPost_date(createTime.calculateTime());
+                                if(pagepost.getPostcontent()!=null){
+                                    custom.setPost_text(pagepost.getPostcontent());
+                                    // System.out.println("content "+ custom.getPost_text());
+                                }
+                                if(pagepost.isHasimage()==true){
+                                    custom.setPost_image(pagepost.getImageId());
+                                }
+                                Page_posts.add(custom);
+                                //   System.out.println("added "+ custom.getpost_owner_ID());
+                            }
+                        }
+
+                        Collections.reverse(Page_posts);
+                        pageAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
             }
 
             @Override
@@ -326,6 +337,8 @@ public class PageActivity extends AppCompatActivity {
 
             }
         });
+       // final String PageId="-Lg1OLwvGrf5AJFx6-jK"; //will be get automatic later
+       // final String PageName="page 2";//will be get automatic later
 
 
     }

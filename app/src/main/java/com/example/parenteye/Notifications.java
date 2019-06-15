@@ -297,13 +297,13 @@ public class Notifications {
     }
     //************************  add notification func on join group request ***************
 
-    public void addNotificationsOfGroupJoinRequest( String groupAdminId) {
+    public void addNotificationsOfGroupJoinRequest( String groupAdminId,String groupname) {
         DatabaseReference notification_reference = database.getReference("notifications").child(groupAdminId);
 
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("userId", currentUser.getUid()); // or hashMap.put("userid ", firebaseUser.getUid());
-        hashMap.put("NotificationMessage", "send to you a join group Request ");
+        hashMap.put("NotificationMessage", "send to you a join group  "+groupname);
         hashMap.put("postId", " ");
         hashMap.put("isPost", false);
         hashMap.put("isFriendRequest",false);
@@ -316,13 +316,13 @@ public class Notifications {
     }
     //************************  add notification func on Accept group request ***************
 
-    public void addNotificationsOfAcceptGroupJoinRequest( String SenderJoinRequest ,String groupid) {
+    public void addNotificationsOfAcceptGroupJoinRequest( String SenderJoinRequest ,String groupid,String groupname) {
         DatabaseReference notification_reference = database.getReference("notifications").child(SenderJoinRequest);
 
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("userId", currentUser.getUid()); // or hashMap.put("userid ", firebaseUser.getUid());
-        hashMap.put("NotificationMessage", "Accept your join group Request ");
+        hashMap.put("NotificationMessage", "Accept your join Request on "+groupname+" group");
         hashMap.put("postId", groupid);
         hashMap.put("isPost", false);
         hashMap.put("isFriendRequest",false);
@@ -333,13 +333,13 @@ public class Notifications {
         //to call ----->  addNotificationsOfFriendRequest(FriendRequesterId)
 
     }
-    public void addNotificationsOfRejectGroupJoinRequest( String SenderJoinRequest ,String groupid) {
+    public void addNotificationsOfRejectGroupJoinRequest( String SenderJoinRequest ,String groupid,String groupname) {
         DatabaseReference notification_reference = database.getReference("notifications").child(SenderJoinRequest);
 
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("userId", currentUser.getUid()); // or hashMap.put("userid ", firebaseUser.getUid());
-        hashMap.put("NotificationMessage", "Reject your join group Request ");
+        hashMap.put("NotificationMessage", "Reject your join group "+groupname);
         hashMap.put("postId", groupid);
         hashMap.put("isPost", false);
         hashMap.put("isFriendRequest",false);

@@ -85,6 +85,7 @@ public class GroupActivity extends AppCompatActivity {
                // System.out.println("Is Exist"+IsExist);
                 Intent intent = getIntent();
                 final   String groupId = intent.getStringExtra("searched_group_Id");
+                final   String groupname = intent.getStringExtra("searched_Item_name"); //for ahmed
               //  final String groupId="-Lg1Gggi2Xo1Qx2-rLG4"; //will be get automatic later
                 if (mAuth.getCurrentUser() != null) {
                     if (IsExist == 0) {
@@ -94,6 +95,25 @@ public class GroupActivity extends AppCompatActivity {
                         groupReqRef.push().setValue(request);
                         IsExist=2;
                         join_unjoin.setText("cancel request");
+                        //hena 7aget ahmed
+                        CommunityRef.child(groupId).child("AdminId").addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                String adminidd=dataSnapshot.getValue(String.class);
+                                Notifications note=new Notifications();
+                                note.addNotificationsOfGroupJoinRequest(adminidd,groupname);
+                                ActivityLog log=new ActivityLog();
+                                log.addLogActivityChildSendGroupRequest(adminidd,groupId,groupname);
+                                log.addLogActivityChildReceiveJoinGroupRequest(adminidd,groupId,groupname);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
+
 
 
                     }
@@ -129,6 +149,24 @@ public class GroupActivity extends AppCompatActivity {
                                         groupReqRef.child(gpreqsnapshot.getKey()).removeValue();
                                         join_unjoin.setText("join Group");
                                         IsExist=0;
+                      //hena 7aget ahmed
+                      CommunityRef.child(groupId).child("AdminId").addValueEventListener(new ValueEventListener() {
+                          @Override
+                          public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                              String adminidd=dataSnapshot.getValue(String.class);
+                              Notifications note=new Notifications();
+                              note.DeleteNotificationOfCancelJoinGroupRequest(adminidd);
+                              ActivityLog log=new ActivityLog();
+                              log.DeleteLogSonCancelGroupRequest(adminidd,groupId);
+                              log.DeleteLogUserCancelGroupRequestToYourSon(adminidd,groupId);
+                          }
+
+                          @Override
+                          public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                          }
+                      });
+
                                     }
                                 }
                             }
