@@ -15,20 +15,10 @@
         android:background="@color/colorPrimary"
         android:gravity="top">
 
-        <ImageView
-            android:id="@+id/arrow_back"
-            android:layout_width="wrap_content"
-            android:layout_height="55dp"
-            android:layout_alignParentLeft="true"
-            android:padding="12dp"
-            android:src="@android:drawable/ic_menu_revert"
-            android:textColor="@color/white" />
-
         <TextView
             android:id="@+id/create_post"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/arrow_back"
             android:gravity="center"
             android:padding="14dp"
             android:text="Create Post"

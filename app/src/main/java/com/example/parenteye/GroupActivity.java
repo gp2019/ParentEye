@@ -205,7 +205,7 @@ public class GroupActivity extends AppCompatActivity {
         login_main.putExtra("placeTypeId", "3");
         login_main.putExtra("placeId", CommunityId);
         startActivity(login_main);
-        finish();
+
     }
 
     private void Intialize_variables(){
@@ -414,5 +414,6 @@ public class GroupActivity extends AppCompatActivity {
             }
         });
     }
+
 
 }

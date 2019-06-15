@@ -570,7 +570,6 @@ search.setOnClickListener(new View.OnClickListener() {
         login_main.putExtra("placeTypeId", "1");
         login_main.putExtra("placeId", "");
         startActivity(login_main);
-        finish();
     }
 
     private void CreateComment(String Uid) {

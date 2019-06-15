@@ -101,6 +101,7 @@ public class MakeGroupActivity extends AppCompatActivity {
                                     ActivityLog log=new ActivityLog();
                                     log.addLogActivityChildCreateGroup(gKey,group_name);
                                     Toast.makeText(MakeGroupActivity.this, "Your Group Created Successfully", Toast.LENGTH_LONG).show();
+                                    go_newGroup(gKey);
 
                                 } else {
                                     Toast.makeText(MakeGroupActivity.this, "Error !! " + task.getException(), Toast.LENGTH_LONG).show();
@@ -212,5 +213,12 @@ public class MakeGroupActivity extends AppCompatActivity {
 
 
 
+    private  void  go_newGroup(String groupID)
+    {
+        Intent intent = new Intent( getApplicationContext(), GroupActivity.class );
+        intent.putExtra("searched_group_Id",groupID);
+        startActivity(intent);
+        finish();
+    }
 
 }

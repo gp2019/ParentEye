@@ -110,6 +110,7 @@ public class AddPageActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(AddPageActivity.this, "Page Done Successfully", Toast.LENGTH_LONG).show();
+                                    go_newPage(pkey);
                                     ActivityLog log=new ActivityLog();
                                     log.addLogActivityChildCreatePage(pkey,page_name);
 
@@ -211,6 +212,14 @@ public class AddPageActivity extends AppCompatActivity {
                     });
         }
         */
+
+    private  void  go_newPage(String PageID)
+    {
+        Intent intent = new Intent( getApplicationContext(), PageActivity.class );
+        intent.putExtra("searched_group_Id",PageID);
+        startActivity(intent);
+        finish();
+    }
     }
 
 

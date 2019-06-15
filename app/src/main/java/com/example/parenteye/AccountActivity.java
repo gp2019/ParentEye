@@ -413,6 +413,8 @@ public class AccountActivity extends Activity {
                         custom.setPost_Id(postSnapshot.getKey());
                         custom.setCountComment(newpost.getCountComment());
                         custom.setCountLike(newpost.getCountLike());
+                        custom.setPlaceTypeId(newpost.getPlaceTypeId());
+                        custom.setCommunityId(newpost.getPlaceId());
                         String timePuplisher =newpost.getPostdate();
                         createTime =new CreateTime(timePuplisher);
                         try {
@@ -472,6 +474,8 @@ public class AccountActivity extends Activity {
                         custom.setPost_owner_name(PageName);
                         custom.setpost_owner_ID(pagepost.getPlaceId());
                         custom.setPost_Id(pagepostsnapshot.getKey());
+                        custom.setPlaceTypeId(pagepost.getPlaceTypeId());
+                        custom.setCommunityId(pagepost.getPlaceId());
                         if(pagepost.getPostcontent()!=null){
                             custom.setPost_text(pagepost.getPostcontent());
                             // System.out.println("content "+ custom.getPost_text());
@@ -512,6 +516,8 @@ public class AccountActivity extends Activity {
                         custom_posts_returned custom=new custom_posts_returned();
                         custom.setPost_owner_name(post.getUserId());
                         custom.setpost_owner_ID(post.getUserId());
+                        custom.setPlaceTypeId(post.getPlaceTypeId());
+                        custom.setCommunityId(post.getPlaceId());
                         custom.setPost_Id(grouppostsnapshot.getKey());
                         if(post.getPostcontent()!=null){
                             custom.setPost_text(post.getPostcontent());
