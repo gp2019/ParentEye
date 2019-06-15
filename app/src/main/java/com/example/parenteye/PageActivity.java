@@ -167,6 +167,8 @@ public class PageActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (TextUtils.equals(dataSnapshot.getValue(String.class),mAuth.getCurrentUser().getUid())){
                     floatingActionButton.setVisibility(View.VISIBLE);
+                }else{
+                    floatingActionButton.setVisibility(View.GONE);
                 }
 
             }

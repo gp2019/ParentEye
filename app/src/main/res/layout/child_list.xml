@@ -43,6 +43,7 @@
                     android:id="@+id/btPlus"
                     android:layout_width="25dp"
                     android:layout_height="20dp"
+                    android:layout_marginLeft="30dp"
                     android:backgroundTint="@color/colorPrimary"
                     android:background="@android:drawable/arrow_up_float"/>
 
@@ -50,7 +51,7 @@
                 <EditText
                     android:id="@+id/counter"
                     android:inputType="number"
-                    android:ems="1"
+                    android:ems="4"
                    android:gravity="center"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="20dp"
@@ -63,6 +64,7 @@
                     android:id="@+id/btMins"
                     android:layout_width="25dp"
                     android:layout_height="20dp"
+                    android:layout_marginLeft="30dp"
                     android:layout_below="@id/counter"
                     android:backgroundTint="@color/colorPrimary"
                     android:background="@android:drawable/arrow_down_float"/>

@@ -191,8 +191,9 @@ public class GroupActivity extends AppCompatActivity {
                     Members members = membersnapshot.getValue(Members.class);
                     if (TextUtils.equals(members.getUserId(),mAuth.getCurrentUser().getUid())&&TextUtils.equals(members.getCommunityid(),CommunityId)){
                         floatingActionButton.setVisibility(View.VISIBLE);
+                    }else {
+                        floatingActionButton.setVisibility(View.VISIBLE);
                     }
-
                 }
 
 
