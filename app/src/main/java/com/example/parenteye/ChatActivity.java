@@ -57,7 +57,7 @@ public class ChatActivity extends AppCompatActivity {
         friendstate=(TextView)findViewById(R.id.friendstate);
         fab=(FloatingActionButton) findViewById(R.id.fab);
         Intent FriendIntent=getIntent();
-        final String friendId=FriendIntent.getStringExtra(UserFriendsActivity.friendId);
+        final String friendId=FriendIntent.getStringExtra("friendId");
         fab.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -134,7 +134,7 @@ public class ChatActivity extends AppCompatActivity {
     {
 
         Intent FriendIntent=getIntent();
-        final String friendId=FriendIntent.getStringExtra(UserFriendsActivity.friendId);
+        final String friendId=FriendIntent.getStringExtra("friendId");
         ListView listofmessage= (ListView) findViewById(R.id.list_of_message);
         adapter=new FirebaseListAdapter<Chat>(this,Chat.class,R.layout.list_item,
                 FirebaseDatabase.getInstance().getReference().child("Chat").child(mAuth.getCurrentUser().getUid()).child(friendId))
