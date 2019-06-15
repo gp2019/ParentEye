@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -385,7 +384,7 @@ public class AccountActivity extends Activity {
     private void GetProfilePosts()
     {
 
-        final ProfilePostAdapter postadapterr=new ProfilePostAdapter(AccountActivity.this,Profile_posts);
+        final ArrayAdapterForPost postadapterr=new ArrayAdapterForPost(AccountActivity.this,Profile_posts);
         Post_listview.setAdapter(postadapterr);
 
         Intent intent = getIntent();
@@ -451,7 +450,7 @@ public class AccountActivity extends Activity {
     private void GetPagePosts(){
         final String PageId="-La0sXFPy2dXzxX-Xws6";
         final String PageName="aya page";
-        final PagePostAdapter pageAdapter=new PagePostAdapter(AccountActivity.this,Page_posts);
+        final ArrayAdapterForPost pageAdapter=new ArrayAdapterForPost(AccountActivity.this,Page_posts);
         Post_listview.setAdapter(pageAdapter);
         postref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -492,7 +491,7 @@ public class AccountActivity extends Activity {
     private void GetGroupPosts(){
         final String GropuId="-LaD606SB3PE0sWfy6Pc";
         final String GroupName="group1 test";
-        final ProfilePostAdapter groupAdapter=new ProfilePostAdapter(AccountActivity.this,Group_posts);
+        final ArrayAdapterForPost groupAdapter=new ArrayAdapterForPost(AccountActivity.this,Group_posts);
         Post_listview.setAdapter(groupAdapter);
         postref.addValueEventListener(new ValueEventListener() {
             @Override
