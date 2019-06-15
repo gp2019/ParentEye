@@ -44,12 +44,13 @@ public class ArrayAdapterForPost extends ArrayAdapter<custom_posts_returned> {
     final long ONE_MEGABYTE = 1024 * 1024;
     private StorageReference userStorageRef = FirebaseStorage.getInstance().getReference("UserImages/");
     private StorageReference pageStorageRef = FirebaseStorage.getInstance().getReference("PageImages/");
-
+    private ActivityLog activityLog = new ActivityLog();
     private StorageReference postStorageRef = FirebaseStorage.getInstance().getReference("PostImages/");
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference userRef = database.getReference("Users");
     DatabaseReference communityRef = database.getReference("Community");
 
+    private Notifications notifications = new Notifications();
     ArrayList<custom_posts_returned> post_returnedd;
     private int position;
 
@@ -292,13 +293,20 @@ public class ArrayAdapterForPost extends ArrayAdapter<custom_posts_returned> {
                             countLike.setText(post_returnedd.get(position).getCountLike() + " Like");
                             dbRef3.child(rectionId).setValue(reactionComment);
                             dbRef2.child(post_returnedd.get(position).getPost_Id()).child("countLike").setValue(post_returnedd.get(position).getCountLike());
-
+                            if (!post_returnedd.get(position).getpost_owner_ID().equals(mAuth.getCurrentUser().getUid())){
+                                notifications.addNotificationsOfLikes(post_returnedd.get(position).getPost_Id(),post_returnedd.get(position).getpost_owner_ID());
+                                activityLog.addActivityLogOfLikes(post_returnedd.get(position).getPost_Id());
+                            }
                         } else {
                             imLike.setImageResource(R.drawable.heart);
                             post_returnedd.get(position).setCountLike(post_returnedd.get(position).getCountLike() - 1);
                             countLike.setText(post_returnedd.get(position).getCountLike() + " Like");
                             dbRef2.child(post_returnedd.get(position).getPost_Id()).child("countLike").setValue(post_returnedd.get(position).getCountLike());
                             dbRef3.child(rectionId).removeValue();
+                            if (!post_returnedd.get(position).getpost_owner_ID().equals(mAuth.getCurrentUser().getUid())){
+                            notifications.DeleteNotificationOfLike(post_returnedd.get(position).getPost_Id(),post_returnedd.get(position).getpost_owner_ID());
+                                activityLog.DeleteLogOfLike(post_returnedd.get(position).getPost_Id());
+                            }
                         }
 
                     }

@@ -53,12 +53,13 @@ public class Create_Comment extends AppCompatActivity {
     private FirebaseAuth mAuth;
     ProgressBar progressBar;
     DatabaseReference dbRef,dbRef2,dbRef3,dbRef4;
-     ArrayList<PostComments> comments_of_post;
+    ArrayList<PostComments> comments_of_post;
     PostComments postComments;
     private RecyclerView recyclerView;
     private ArrayAdapterForComment mAdapter;
     private String postId=null;
     private String countOfLike;
+    private  String userIDPost;
     private LinearLayout Show_Like;
     ImageView noInernet;
     private TextView postLikeDate;
@@ -75,6 +76,8 @@ public class Create_Comment extends AppCompatActivity {
     private String CommentId,ContentComment;
     private Clipboard clipboard = new Clipboard();
     private String ReactionId;
+    private ActivityLog activityLog = new ActivityLog();
+    private Notifications notification = new Notifications();
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference galleryRef = database.getReference("Gallery");
 
@@ -128,15 +131,18 @@ public class Create_Comment extends AppCompatActivity {
 
                             postComments=new PostComments(cID,writeComment.getText().toString(),currentUser.getUid(),postId,false,hasImage,imagekey,new getCurrentTime().getDateTime(),0);
                             dbRef.child( cID ).setValue( postComments );
-
                             dbRef4.child(postId).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                                      int count=dataSnapshot.child("countComment").getValue(Integer.class);
-                                      dbRef4.child(postId).child("countComment").setValue(count+1);
+                                     dbRef4.child(postId).child("countComment").setValue(count+1);
+                                     String uidOwner = dataSnapshot.child("userId").getValue(String.class);
+                                     if(!uidOwner.equals(currentUser.getUid())){
+                                         activityLog.addActivityLogOfComments(postId,writeComment.getText().toString());
+                                         notification.addNotificationsOfComments(postId,uidOwner,writeComment.getText().toString());
+                                     }
 
-                                    Log.i("Count",""+count);
                                 }
 
                                 @Override
@@ -248,7 +254,20 @@ public class Create_Comment extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
+                        dbRef4.child(postId).child("userId").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()){
+                                    userIDPost = dataSnapshot.getValue(String.class);
+                                }
 
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
                         if (dataSnapshot.exists()){
 
                             final int[] min = new int[1];
@@ -268,6 +287,12 @@ public class Create_Comment extends AppCompatActivity {
                             postLikeDate.setText((min[0])+" Like");
                             dbRef4.child(postId).child("countLike").setValue(min[0]);
                             dbRef3.child(ReactionId).removeValue();
+
+                            if (!userIDPost.equals(mAuth.getCurrentUser().getUid())){
+                                notification.addNotificationsOfLikes(postId,userIDPost);
+                                activityLog.addActivityLogOfLikes(postId);
+                            }
+
 
                         }
 
@@ -292,6 +317,11 @@ public class Create_Comment extends AppCompatActivity {
                             dbRef3.child(ReactionId).setValue(reactionComment);
                             dbRef4.child(postId).child("countLike").setValue(plus[0]);
 
+
+                            if (!userIDPost.equals(mAuth.getCurrentUser().getUid())){
+                                notification.DeleteNotificationOfLike(postId,userIDPost);
+                                activityLog.DeleteLogOfLike(postId);
+                            }
                         }
 
                     }
@@ -429,6 +459,25 @@ public class Create_Comment extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
 
                 DeletComment();
+
+                dbRef4.child(postId).child("userId").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()){
+                            String userid= dataSnapshot.getValue(String.class);
+                            if(!userid.equals(mAuth.getCurrentUser().getUid())) {
+
+                                notification.addNotificationsOfComments(postId, userid, writeComment.getText().toString());
+                                activityLog.DeleteLogOfComment(postId,writeComment.getText().toString());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
             }
         });
 
