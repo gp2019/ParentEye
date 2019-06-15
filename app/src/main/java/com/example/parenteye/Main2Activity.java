@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabItem;
 import android.support.design.widget.TabLayout;
@@ -24,6 +25,7 @@ import android.widget.Toolbar;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,8 +36,11 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.example.parenteye.NotificationFragment.notificationAdapter;
 
 public class Main2Activity extends AppCompatActivity {
     private Button search;
@@ -55,15 +60,39 @@ public class Main2Activity extends AppCompatActivity {
     private TabItem sideMenu;
     private ViewPager viewPager;
     PagerController mPagerController;
-
+private TextView add_notifi_icon;
     private Button ic_sideMenu;
     private Button Main2;
 
 
+    int y;
+    int i;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+
+
+        readNotifications();
+
+        y=i;
+        add_notifi_icon=findViewById(R.id.add_notifi_icon);
+
+        add_notifi_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+
+
+        x=i-y;
+        String n =String.valueOf(x);
+
+        add_notifi_icon.setVisibility(View.VISIBLE);
+        add_notifi_icon.setText(n);
+
 
         mAuth = FirebaseAuth.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference("UserImages/");
@@ -114,6 +143,12 @@ public class Main2Activity extends AppCompatActivity {
         tabLayout=findViewById(R.id.tablayout);
         home=findViewById(R.id.Home);
         notification=findViewById(R.id.notification);
+
+
+
+
+
+
         friendRequest=findViewById(R.id.friendRequests);
         sideMenu=findViewById(R.id.sideMenu);
         viewPager=findViewById(R.id.viewpager);
@@ -123,6 +158,11 @@ public class Main2Activity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
+                if(tab.getPosition()==1)
+                {
+                    add_notifi_icon.setVisibility(View.GONE);
+
+                }
             }
 
             @Override
@@ -135,6 +175,12 @@ public class Main2Activity extends AppCompatActivity {
 
             }
         });
+
+
+
+
+
+
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
     }
 
@@ -173,5 +219,57 @@ public class Main2Activity extends AppCompatActivity {
 
             }
         });
+    }
+
+    int x;
+    public void readNotifications() {
+        //FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        //FirebaseHelper firebaseHelper = new FirebaseHelper();
+
+
+        //String userId = "EzH9MI0WJ7N0AwZNUidC45e2wiP2";
+
+
+        DatabaseReference notification_reference = database.getReference("notifications").child(user.getUid());
+
+
+        notification_reference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                 i++;
+
+                 x=i-y;
+             String n =String.valueOf(x);
+
+             add_notifi_icon.setVisibility(View.VISIBLE);
+                add_notifi_icon.setText(n);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
 }

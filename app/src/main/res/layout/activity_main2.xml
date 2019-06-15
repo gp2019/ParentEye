@@ -24,6 +24,16 @@
         android:layout_marginTop="10dp"
         android:transitionName="tvLogin"
         >
+        <TextView
+            android:id="@+id/add_notifi_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:text="0"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:background="@color/errorColor"
+
+            />
 
 
         <Button
@@ -100,7 +110,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:icon="@drawable/tnotification"/>
-
 
 
         <android.support.design.widget.TabItem
