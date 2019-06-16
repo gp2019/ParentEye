@@ -20,13 +20,6 @@ android {
     }
 }
 
-android {
-    defaultConfig {
-        ndk {
-            abiFilters "armeabi-v7a"
-        }
-    }
-}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])

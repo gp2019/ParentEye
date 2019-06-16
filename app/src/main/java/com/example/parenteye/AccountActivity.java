@@ -298,6 +298,7 @@ public class AccountActivity extends Activity {
                         notifi.addNotificationsOfFriendRequest(userId);
                        ActivityLog log=new ActivityLog();
                        log.addLogActivityReceiveFriendRequest(userId);
+
                         IsExist=true;
                     }
 

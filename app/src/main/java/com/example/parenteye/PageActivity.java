@@ -205,9 +205,13 @@ public class PageActivity extends AppCompatActivity {
     public  void getPageInfo(){
         if(mAuth.getCurrentUser()!=null){
             Intent intent = getIntent();
+
             final   String PageId = intent.getStringExtra("searched_page_Id");
+            if(PageId != null ){
+                CheckIsAdmin();
+
+            }
          // final String PageId="-Lg1OLwvGrf5AJFx6-jK"; //will be get automatic later
-            CheckIsAdmin();
             CommunityRef.child(PageId).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

@@ -47,7 +47,22 @@ public class ActivityLog {
 
 
     private boolean isGroupRequest ;
+
+
+
+    private boolean iscreategroup;
     private boolean isPage;
+
+
+
+    public boolean getiscreategroup() {
+        return iscreategroup;
+    }
+
+    public void setIscreategroup(boolean iscreategroup) {
+        this.iscreategroup = iscreategroup;
+    }
+
 
     public boolean getisPage() {
         return isPage;
@@ -416,6 +431,9 @@ public class ActivityLog {
 
     //************************  add activity log func on recieve AddFriend request ***************
 
+
+    //lesaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
     public void addLogActivityReceiveFriendRequest(final String childReceiverRequestFriend_Id) {
 
 
@@ -466,7 +484,7 @@ public class ActivityLog {
 
     }
 
-    public void addLogActivityChildReceiveJoinGroupRequest(final String ChildGroupAdmin,final String groupId,final String groupname) {
+    public void addLogChildReceiveJoinGroupRequest(final String ChildGroupAdmin,final String groupId,final String groupname) {
 
 
         ParentChildren_reference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -513,9 +531,13 @@ public class ActivityLog {
 
 
         //to call ----->  addNotificationsOfFriendRequest(FriendRequesterId)
+        }
 
-    }
-    public void addLogActivityChildSendGroupRequest(final String ChildGroupAdmin,final String groupId,final String groupname) {
+
+
+
+
+    public void addLogChildSendGroupRequest(final String ChildGroupAdmin,final String groupId,final String groupname) {
 
 
         ParentChildren_reference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -533,7 +555,7 @@ public class ActivityLog {
 
                             HashMap<String, Object> hashMap = new HashMap<>();
                             hashMap.put("childId", currentUser.getUid()); // or hashMap.put("userid ", firebaseUser.getUid());
-                            hashMap.put("ActivityLogMessage", "kide receive join group request to  "+groupname+" group from ");
+                            hashMap.put("ActivityLogMessage", "kide send join group request to  "+groupname+" group from ");
                             hashMap.put("userId", ChildGroupAdmin);
                             hashMap.put("postId", groupId);
                             hashMap.put("isPost", false);
@@ -633,8 +655,8 @@ public class ActivityLog {
                             hashMap.put("isLike", false);
                             hashMap.put("isComment", false);
                             hashMap.put("isFriendRequest", false);
-                            hashMap.put("isGroupRequest",true);
-
+                            hashMap.put("isGroupRequest",false);
+                            hashMap.put("iscreategroup",true);
 
                             activityLog_reference.push().setValue(hashMap);
 
@@ -683,7 +705,7 @@ public class ActivityLog {
                             hashMap.put("isLike", false);
                             hashMap.put("isComment", false);
                             hashMap.put("isFriendRequest", false);
-                            hashMap.put("isGroupRequest",true);
+                            hashMap.put("isGroupRequest",false);
                             hashMap.put("isPage",true);
 
                             activityLog_reference.push().setValue(hashMap);
@@ -730,7 +752,7 @@ public class ActivityLog {
 
                             final DatabaseReference activityLog_reference = database.getReference("activityLog").child(parentChildren.getParentId());
 
-                            activityLog_reference.addValueEventListener(new ValueEventListener() {
+                            activityLog_reference.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     if (dataSnapshot.exists()) {
@@ -797,7 +819,7 @@ public class ActivityLog {
 
                             final DatabaseReference activityLog_reference = database.getReference("activityLog").child(parentChildren.getParentId());
 
-                            activityLog_reference.addValueEventListener(new ValueEventListener() {
+                            activityLog_reference.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     if (dataSnapshot.exists()) {
@@ -866,7 +888,7 @@ public class ActivityLog {
 
 
                             final DatabaseReference activityLog_reference = database.getReference("activityLog").child(parentChildren.getParentId());
-                            activityLog_reference.addValueEventListener(new ValueEventListener() {
+                            activityLog_reference.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     if (dataSnapshot.exists()) {
@@ -933,7 +955,7 @@ public class ActivityLog {
     //***************************************  Delete activity log of child receive a Friend Request ******************************
 
 
-    public void DeleteLogReceiverFriendRequest(final String childReceiveRequestFriend_Id) {
+    public void DeleteLogReceiverٌFriendRequest(final String childReceiveRequestFriend_Id) {
 
         String parentId = ParentOfCurrentUserChild(childReceiveRequestFriend_Id);
 
@@ -950,7 +972,8 @@ public class ActivityLog {
 
 
                             final DatabaseReference activityLog_reference = database.getReference("activityLog").child(parentChildren.getParentId());
-                            activityLog_reference.addValueEventListener(new ValueEventListener() {
+
+                            activityLog_reference.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     if (dataSnapshot.exists()) {
@@ -999,59 +1022,61 @@ public class ActivityLog {
 
     }
 
-    public void DeleteLogSonCancelGroupRequest(final String AdminGroup , final String groupId) {
-
-
-        ParentChildren_reference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-
-                        ParentChildren parentChildren = snapshot.getValue(ParentChildren.class);
-
-                        if (parentChildren.getChildId().equalsIgnoreCase(currentUser.getUid())) {
-
-
-                            final DatabaseReference activityLog_reference = database.getReference("activityLog").child(parentChildren.getParentId());
-                            activityLog_reference.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    if (dataSnapshot.exists()) {
-                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                            ActivityLog activityLog = snapshot.getValue(ActivityLog.class);
-                                            //notificationsList.add(notification);
-                                            if (activityLog.getisGroupRequest() && activityLog.getuserId().equalsIgnoreCase(AdminGroup) && activityLog.getChildId().equalsIgnoreCase(currentUser.getUid()) && activityLog.getPostId().equalsIgnoreCase(groupId)) {
-
-                                                activityLog_reference.child(snapshot.getKey()).removeValue();
-                                            }
-                                        }
-                                    }
-
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
-//            notification_reference.child(record).removeValue();
-
-                        }
-
-                    }
-                }
-            }
-
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-
-    }
+//    public void DeleteLogSonCancelGroupRequest(final String AdminGroup , final String groupId) {
+//
+//
+//        ParentChildren_reference.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.exists()) {
+//                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//
+//                        ParentChildren parentChildren = snapshot.getValue(ParentChildren.class);
+//
+//                        if (parentChildren.getChildId().equalsIgnoreCase(currentUser.getUid())) {
+//
+//
+//
+//                            final DatabaseReference activityLog_reference = database.getReference("activityLog").child(parentChildren.getParentId());
+//
+//                            activityLog_reference.addListenerForSingleValueEvent(new ValueEventListener() {
+//                                @Override
+//                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                                    if (dataSnapshot.exists()) {
+//                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                                            ActivityLog activityLog = snapshot.getValue(ActivityLog.class);
+//                                            //notificationsList.add(notification);
+//                                            if (activityLog.getisGroupRequest() && activityLog.getuserId().equalsIgnoreCase(AdminGroup) && activityLog.getChildId().equalsIgnoreCase(currentUser.getUid()) && activityLog.getPostId().equalsIgnoreCase(groupId)) {
+//
+//                                                activityLog_reference.child(snapshot.getKey()).removeValue();
+//                                            }
+//                                        }
+//                                    }
+//
+//                                }
+//
+//                                @Override
+//                                public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                                }
+//                            });
+////            notification_reference.child(record).removeValue();
+//
+//                        }
+//
+//                    }
+//                }
+//            }
+//
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//
+//
+//    }
 
 
 
@@ -1070,7 +1095,7 @@ public class ActivityLog {
 
 
                             final DatabaseReference activityLog_reference = database.getReference("activityLog").child(parentChildren.getParentId());
-                            activityLog_reference.addValueEventListener(new ValueEventListener() {
+                            activityLog_reference.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     if (dataSnapshot.exists()) {
@@ -1124,7 +1149,8 @@ public class ActivityLog {
 
 
                             final DatabaseReference activityLog_reference = database.getReference("activityLog").child(parentChildren.getParentId());
-                            activityLog_reference.addValueEventListener(new ValueEventListener() {
+
+                            activityLog_reference.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     if (dataSnapshot.exists()) {

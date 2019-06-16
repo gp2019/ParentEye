@@ -103,8 +103,11 @@ public class GroupActivity extends AppCompatActivity {
                                 Notifications note=new Notifications();
                                 note.addNotificationsOfGroupJoinRequest(adminidd,groupId,groupname);
                                 ActivityLog log=new ActivityLog();
-                                log.addLogActivityChildSendGroupRequest(adminidd,groupId,groupname);
-                                log.addLogActivityChildReceiveJoinGroupRequest(adminidd,groupId,groupname);
+
+                                log.addLogChildSendGroupRequest(adminidd,groupId,groupname);
+
+                                ActivityLog log2=new ActivityLog();
+                                log2.addLogChildReceiveJoinGroupRequest(adminidd,groupId,groupname);
                             }
 
                             @Override
@@ -157,7 +160,7 @@ public class GroupActivity extends AppCompatActivity {
                               Notifications note=new Notifications();
                               note.DeleteNotificationOfCancelJoinGroupRequest(adminidd);
                               ActivityLog log=new ActivityLog();
-                              log.DeleteLogSonCancelGroupRequest(adminidd,groupId);
+                              //log.DeleteLogSonCancelGroupRequest(adminidd,groupId);
                               log.DeleteLogUserCancelGroupRequestToYourSon(adminidd,groupId);
                           }
 

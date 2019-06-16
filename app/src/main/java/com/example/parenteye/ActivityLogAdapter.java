@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -93,6 +94,7 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
         getuserInfo(viewHolder.Holder_notification_profile_image, viewHolder.Holder_notification_user_name, childId);
 
         final String PostId = activityLog.getPostId();
+
         final String friendID = activityLog.getuserId();
 
 
@@ -127,7 +129,10 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
 
             String communityid = activityLog.getPostId();
 
-            getCommunityInfo(viewHolder.Holder_notification_post_content,viewHolder.Holder_notification_post_image,communityid);
+            getCommunityInfo(null,viewHolder.Holder_notification_post_image,communityid);
+
+            getuserInfo(null, viewHolder.Holder_notification_post_content,friendID);
+
 
         }else if (activityLog.getisPage()) {
 
@@ -138,6 +143,13 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
             getCommunityInfo(viewHolder.Holder_notification_post_content, viewHolder.Holder_notification_post_image, communityid);
             //check about friend request
 
+        }if(activityLog.getiscreategroup())
+        {
+            viewHolder.Holder_Friend_request_notifi_layout.setVisibility(View.GONE);
+
+            String communityid = activityLog.getPostId();
+
+            getCommunityInfo(viewHolder.Holder_notification_post_content, viewHolder.Holder_notification_post_image, communityid);
         }
 
                 //************************** Activity log is post
@@ -270,8 +282,8 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
                 @Override
                 public void onClick(View v) {
 
-                    Intent searched_intent=new Intent(mContext,GroupActivity.class);
-                    searched_intent.putExtra(searched_group_Id,PostId);
+                    Intent searched_intent=new Intent(mContext,AccountActivity.class);
+                    searched_intent.putExtra(searched_user_Id,friendID);
                     mContext.startActivity(searched_intent);
 
 
@@ -279,7 +291,14 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
                     //new custom_posts_returned()).commit();
                 }
             });
-
+            viewHolder.Holder_notification_content_text.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                    Intent searched_intent=new Intent(mContext,GroupActivity.class);
+//                    searched_intent.putExtra(searched_group_Id,PostId);
+//                    mContext.startActivity(searched_intent);
+                }
+            });
             /*************************************** action on post image used as image of group btn**************************
              *
              */
@@ -375,6 +394,26 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
                 }
             });
 
+        }if(activityLog.getiscreategroup())
+        {
+            viewHolder.Holder_notification_post_content.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent searched_intent=new Intent(mContext,GroupActivity.class);
+                    searched_intent.putExtra(searched_group_Id,PostId);
+                    mContext.startActivity(searched_intent);
+                }
+            });
+
+
+                    viewHolder.Holder_notification_post_image.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent searched_intent=new Intent(mContext,GroupActivity.class);
+                            searched_intent.putExtra(searched_group_Id,PostId);
+                            mContext.startActivity(searched_intent);
+                        }
+                    });
         }
 
 
@@ -453,7 +492,7 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
                         ,notification.getUserId() which means user iD
               */
 
-    private void getuserInfo(final ImageView imageView, final TextView username, String whoMakeAction) {
+    private void getuserInfo(@Nullable final ImageView imageView, final TextView username, String whoMakeAction) {
 
         //String publisherid="cR6RdBeU5Lg7CEFLhEniBT16ZxM2";
         DatabaseReference userReference = database.getReference("Users").child(whoMakeAction);
@@ -465,19 +504,24 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Users user = dataSnapshot.getValue(Users.class);
-                if(user.getProfile_pic_id() !=null)
-                {
-                    UStorageRef.child(user.getProfile_pic_id()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                        @Override
-                        public void onSuccess(byte[] bytes) {
-                            final Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                            imageView.setImageBitmap(bm);
-                        }
-                    });
-                }
-                username.setText(user.getUsername());
-                //Glide.with(mContext).load(user.getProfile_pic_id()).into(imageView);
 
+                if(imageView != null) {
+
+                    if (user.getProfile_pic_id() != null) {
+                        UStorageRef.child(user.getProfile_pic_id()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                            @Override
+                            public void onSuccess(byte[] bytes) {
+                                final Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                imageView.setImageBitmap(bm);
+                            }
+                        });
+                    }
+                }
+                if(username != null) {
+
+                    username.setText(user.getUsername());
+                    //Glide.with(mContext).load(user.getProfile_pic_id()).into(imageView);
+                }
             }
 
             @Override
@@ -505,22 +549,26 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     Posts post = dataSnapshot.getValue(Posts.class);
+                    if(post_content != null) {
 
-                    if(post.getPostcontent()!=null) {
+                        if (post.getPostcontent() != null) {
 
-                        post_content.setText(post.getPostcontent());
-                    }
-                    if (post.getImageId() != null) {
-                        PStorageRef.child(post.getImageId()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                            @Override
-                            public void onSuccess(byte[] bytes) {
-                                final Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                imageView.setImageBitmap(bm);
+                            post_content.setText(post.getPostcontent());
+                        }
+                        if (post.getImageId() != null) {
+                            if(imageView!=null){
+                                PStorageRef.child(post.getImageId()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                    @Override
+                                    public void onSuccess(byte[] bytes) {
+                                        final Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                        imageView.setImageBitmap(bm);
+                                    }
+                                });
                             }
-                        });
+
+                        }
+
                     }
-
-
                 }
             }
 
@@ -636,32 +684,47 @@ public class ActivityLogAdapter extends RecyclerView.Adapter<ActivityLogAdapter.
                 if (dataSnapshot.exists()) {
                     Community community = dataSnapshot.getValue(Community.class);
 
+
                     if(community.getCommunityType().equalsIgnoreCase("page")) {
 
-                        communityName.setText(community.getCommunityname());
+                        if(communityName != null)
+                        {
+                            communityName.setText(community.getCommunityname());
 
-                        if (community.getPhotoId() !=null){
-                            PStorageRef.child(community.getPhotoId()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                                @Override
-                                public void onSuccess(byte[] bytes) {
-                                    final Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                    imageView.setImageBitmap(bm);
-                                }
-                            });
                         }
 
+                        if(imageView != null)
+                        {
+                            if (community.getPhotoId() !=null){
+                                PStorageRef.child(community.getPhotoId()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                    @Override
+                                    public void onSuccess(byte[] bytes) {
+                                        final Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                        imageView.setImageBitmap(bm);
+                                    }
+                                });
+                            }
+                        }
+
+
+
                     }else if(community.getCommunityType().equalsIgnoreCase("group") ){
+                        if(communityName != null)
+                        {
+                            communityName.setText(community.getCommunityname());
 
-                        communityName.setText(community.getCommunityname());
+                        }
 
-                        if (community.getCoverPhotoId() !=null){
-                            PStorageRef.child(community.getCoverPhotoId()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                                @Override
-                                public void onSuccess(byte[] bytes) {
-                                    final Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                    imageView.setImageBitmap(bm);
-                                }
-                            });
+                        if(imageView != null) {
+                            if (community.getCoverPhotoId() != null) {
+                                PStorageRef.child(community.getCoverPhotoId()).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                    @Override
+                                    public void onSuccess(byte[] bytes) {
+                                        final Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                        imageView.setImageBitmap(bm);
+                                    }
+                                });
+                            }
                         }
                     }
                 }

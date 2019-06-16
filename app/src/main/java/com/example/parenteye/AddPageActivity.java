@@ -216,7 +216,7 @@ public class AddPageActivity extends AppCompatActivity {
     private  void  go_newPage(String PageID)
     {
         Intent intent = new Intent( getApplicationContext(), PageActivity.class );
-        intent.putExtra("searched_group_Id",PageID);
+        intent.putExtra("searched_page_Id",PageID);
         startActivity(intent);
         finish();
     }

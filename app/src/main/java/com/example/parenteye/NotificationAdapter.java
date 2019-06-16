@@ -145,6 +145,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             ///// when notification is response on add friend request
         }else {
 
+            getuserInfo(viewHolder.Holder_notification_post_image, viewHolder.Holder_notification_post_content, whoMakeAction);
+
             viewHolder.Holder_Friend_request_notifi_layout.setVisibility(View.GONE);
 
         }
@@ -158,7 +160,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 @Override
                 public void onClick(View v) {
                     Intent searched_intent=new Intent(mContext,AccountActivity.class);
-                    searched_intent.putExtra(searched_user_Id,whoMakeAction);
+                    searched_intent.putExtra(searched_user_Id,mAuth.getCurrentUser().getUid());
                     mContext.startActivity(searched_intent);
                 }
             });
@@ -167,7 +169,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 @Override
                 public void onClick(View v) {
                     Intent searched_intent=new Intent(mContext,AccountActivity.class);
-                    searched_intent.putExtra(searched_user_Id,whoMakeAction);
+                    searched_intent.putExtra(searched_user_Id,mAuth.getCurrentUser().getUid());
                     mContext.startActivity(searched_intent);
                     System.out.println("Going intent");
                     System.out.println("Going intent");
